@@ -25,21 +25,27 @@ export class SocketAddrV4 {
 	/**
 	 * Parses a string in the format of `"ipv4:port"`,
 	 * where the port is an unsigned 16-bit integer.
+	 *
+	 * This will return undefined if:
+	 * - The IPv4 address cannot be parsed.
+	 * - The IPV4 address can be parsed, but there's no `:` delimiter.
+	 * - The port number can't be parsed, or is out of bounds of an unsigned
+	 *   16-bit integer (0 to 65,535).
 	 */
-	public static fromString(s: string): SocketAddrV4 | undefined {
+	public static parse(s: string): SocketAddrV4 | undefined {
 		const [addr, idx] = parseIpv4Addr(s)
 		if (addr === undefined) {
 			return undefined
 		}
 
-		const afterAddr = idx + 1
+		const afterAddr = idx
 		if (s[afterAddr] !== ':') {
 			return undefined
 		}
 
-		const [portStr, _] = takeAsciiDigits(s, afterAddr)
-		const portNum = Number.parseInt(portStr[0])
-		if (Number.isNaN(portNum)) {
+		const [portStr, _] = takeAsciiDigits(s, afterAddr + 1)
+		const portNum = Number.parseInt(portStr)
+		if (Number.isNaN(portNum) || (portNum > 65535)) {
 			return undefined
 		}
 
