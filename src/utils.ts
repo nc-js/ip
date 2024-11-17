@@ -13,8 +13,12 @@ export function arrayStartsWith(
 	return true
 }
 
+export function clampUint8(n: number): number {
+	return Math.max(0, Math.min(255, Math.trunc(n)))
+}
+
 export function clampUint16(n: number): number {
-	return Math.max(0, Math.min(65535, n))
+	return Math.max(0, Math.min(65535, Math.trunc(n)))
 }
 
 function isCodePointBetween(

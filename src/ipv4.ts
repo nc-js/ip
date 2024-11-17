@@ -1,5 +1,5 @@
 import type { IpAddrValue } from './ip.ts'
-import { arrayStartsWith } from './utils.ts'
+import { arrayStartsWith, clampUint8 } from './utils.ts'
 import { parseIpv4Addr } from './parser.ts'
 
 /**
@@ -70,9 +70,13 @@ export class Ipv4Addr implements IpAddrValue {
 		c: number,
 		d: number,
 	): Ipv4Addr {
-		const bits = new Uint8ClampedArray([a, b, c, d])
 		return new Ipv4Addr(
-			new Uint8Array([bits[0], bits[1], bits[2], bits[3]]),
+			new Uint8Array([
+				clampUint8(a),
+				clampUint8(b),
+				clampUint8(c),
+				clampUint8(d),
+			]),
 		)
 	}
 
