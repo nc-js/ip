@@ -1,5 +1,5 @@
 import { assert, assertEquals, assertFalse } from '@std/assert'
-import { Ipv4Addr } from '../src/ipv4.ts'
+import { Ipv4Addr } from './ipv4.ts'
 
 Deno.test('special address broadcast', () => {
 	const localhost = Ipv4Addr.BROADCAST

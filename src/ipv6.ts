@@ -237,7 +237,7 @@ export class Ipv6Addr implements IpAddrValue {
 	 */
 	// deno-fmt-ignore
 	public isGlobal(): boolean {
-		const ipv4Mapped = new Uint16Array([0, 0, 0, 0, 0xffff])
+		const ipv4Mapped = new Uint16Array([0, 0, 0, 0, 0, 0xffff])
 		const ipv4Translated = new Uint16Array([0x64, 0xff9b, 1])
 		const discardOnly = new Uint16Array([0x100, 0, 0, 0])
 

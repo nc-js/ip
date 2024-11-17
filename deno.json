@@ -8,7 +8,7 @@
 	"publish": {
 		"include": [
 			"src/",
-			"!src/**/*.test.ts",
+			"!src/**/*_test.ts",
 			"README.md",
 			"LICENSE"
 		]
