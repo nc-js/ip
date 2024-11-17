@@ -45,7 +45,7 @@ jobs:
           - job-name: doc
             job-step: documentation
             cmd: deno doc --lint $ENTRYPOINT
-            continue-on-error: true
+            continue-on-error: false
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
