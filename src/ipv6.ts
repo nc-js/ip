@@ -1,17 +1,29 @@
+import type { IpAddrValue } from './ip.ts'
 import { arrayStartsWith, clampUint16 } from './utils.ts'
 
-export class Ipv6Addr {
+/**
+ * A representation of an IPv6 address
+ */
+export class Ipv6Addr implements IpAddrValue {
+	/**
+	 * A localhost address at ::1, or 0:0:0:0:0:0:0:1
+	 */
 	// deno-fmt-ignore
 	public static LOCALHOST: Ipv6Addr = new Ipv6Addr(
 		new Uint16Array([0, 0, 0, 0, 0, 0, 0, 1])
 	)
 
+	/**
+	 * An unspecified address at ::, or 0:0:0:0:0:0:0:0
+	 */
 	// deno-fmt-ignore
 	public static UNSPECIFIED: Ipv6Addr = new Ipv6Addr(
 		new Uint16Array([0, 0, 0, 0, 0, 0, 0, 0])
 	)
 
+	/** Eight unsigned 16-bit segments */
 	public segments: Uint16Array
+
 	private constructor(segments: Uint16Array) {
 		this.segments = segments
 	}
@@ -76,6 +88,11 @@ export class Ipv6Addr {
 		)
 	}
 
+	/**
+	 * Attempts to create an Ipv6Addr from an array of numbers.
+	 * Returns undefined if the array length is not equal to 8,
+	 * otherwise returns an Ipv6Addr.
+	 */
 	public static tryFromArray(array: number[]): Ipv6Addr | undefined {
 		if (array.length !== 8) {
 			return undefined
@@ -93,31 +110,41 @@ export class Ipv6Addr {
 		)
 	}
 
+	/**
+	 * Attempts to create an `Ipv6Addr` from a `Uint16Array`.
+	 * Fails and returns `undefined` if the array length is not equal to 8,
+	 * otherwise returns an `Ipv6Addr`.
+	 */
 	public static tryFromUint16Array(array: Uint16Array): Ipv6Addr | undefined {
-		return (array.length === 16) ? new Ipv6Addr(array) : undefined
+		return (array.length === 8) ? new Ipv6Addr(array) : undefined
 	}
 
+	/**
+	 * Attempts to create an `Ipv6Addr` from a `DataView`.
+	 * Fails and returns `undefined` if the view is not 16 bytes long,
+	 * otherwise returns an `Ipv6Addr`.
+	 */
 	public static tryFromDataView(view: DataView): Ipv6Addr | undefined {
-		if (view.byteLength !== 8) {
+		if (view.byteLength !== 16) {
 			return undefined
 		}
 
 		return new Ipv6Addr(
 			new Uint16Array([
-				view.getUint8(0),
-				view.getUint8(1),
-				view.getUint8(2),
-				view.getUint8(3),
-				view.getUint8(4),
-				view.getUint8(5),
-				view.getUint8(6),
-				view.getUint8(7),
+				view.getUint16(0),
+				view.getUint16(1),
+				view.getUint16(2),
+				view.getUint16(3),
+				view.getUint16(4),
+				view.getUint16(5),
+				view.getUint16(6),
+				view.getUint16(7),
 			]),
 		)
 	}
 
 	public toString(): string {
-		return `${this.a}.${this.b}.${this.c}.${this.d}.${this.e}.${this.f}.${this.g}.${this.h}`
+		return `${this.a}:${this.b}:${this.c}:${this.d}:${this.e}:${this.f}:${this.g}:${this.h}`
 	}
 
 	public equals(other: Ipv6Addr): boolean {

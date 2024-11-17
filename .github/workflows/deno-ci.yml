@@ -37,12 +37,15 @@ jobs:
           - job-name: fmt
             job-step: formatting
             cmd: deno fmt --check
+            continue-on-error: false
           - job-name: lint
             job-step: linting
+            continue-on-error: false
             cmd: deno lint
           - job-name: doc
             job-step: documentation
             cmd: deno doc --lint $ENTRYPOINT
+            continue-on-error: true
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -52,3 +55,4 @@ jobs:
             deno-version: v2.x
       - name: Check ${{ matrix.job-check }}
         run: ${{ matrix.cmd }}
+        continue-on-error: ${{ matrix.continue-on-error }}

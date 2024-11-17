@@ -17,28 +17,20 @@ export function clampUint16(n: number): number {
 	return Math.max(0, Math.min(65535, n))
 }
 
-export function uint8ArrayToUint32(array: ArrayLike<number>) {
-	return (
-		(array[0] << 24) |
-		(array[1] << 16) |
-		(array[2] << 8) |
-		array[3]
-	) >>> 0
-}
-
-export const isCodePointBetween = (
+function isCodePointBetween(
 	value: string,
 	low: number,
 	max: number,
-): boolean => {
+): boolean {
 	const codePoint = value.codePointAt(0)
 	return (codePoint === undefined
 		? false
 		: codePoint >= low && codePoint <= max)
 }
 
-export const isAsciiDigit = (v: string): boolean =>
-	isCodePointBetween(v, 0x0030, 0x0039)
+export function isAsciiDigit(v: string): boolean {
+	return isCodePointBetween(v, 0x0030, 0x0039)
+}
 
 export function takeAsciiDigits(
 	s: string,

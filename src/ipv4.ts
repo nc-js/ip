@@ -1,13 +1,9 @@
 import { equals } from '@std/bytes/equals'
 import type { IpAddrValue } from './ip.ts'
-import {
-	arrayStartsWith,
-	takeAsciiDigits,
-	uint8ArrayToUint32,
-} from './utils.ts'
+import { arrayStartsWith, takeAsciiDigits } from './utils.ts'
 
 /**
- * A representation of an IPv4 address.
+ * A representation of an IPv4 address
  */
 export class Ipv4Addr implements IpAddrValue {
 	public static BROADCAST: Ipv4Addr = new Ipv4Addr(
@@ -106,7 +102,7 @@ export class Ipv4Addr implements IpAddrValue {
 	}
 
 	public static tryFromUint8Array(
-		array: Uint8Array
+		array: Uint8Array,
 	): Ipv4Addr | undefined {
 		return (array.length === 4) ? new Ipv4Addr(array) : undefined
 	}
@@ -212,4 +208,13 @@ export class Ipv4Addr implements IpAddrValue {
 	public isUnspecified(): boolean {
 		return this.equals(Ipv4Addr.UNSPECIFIED)
 	}
+}
+
+function uint8ArrayToUint32(array: ArrayLike<number>) {
+	return (
+		(array[0] << 24) |
+		(array[1] << 16) |
+		(array[2] << 8) |
+		array[3]
+	) >>> 0
 }
