@@ -20,8 +20,8 @@ export class Ipv4Addr implements IpAddrValue {
 		new Uint8Array([0, 0, 0, 0]),
 	)
 
-	public octets: ArrayLike<number>
-	private constructor(octets: ArrayLike<number>) {
+	public octets: Uint8Array
+	private constructor(octets: Uint8Array) {
 		this.octets = octets
 	}
 
@@ -106,7 +106,7 @@ export class Ipv4Addr implements IpAddrValue {
 	}
 
 	public static tryFromUint8Array(
-		array: ArrayLike<number>,
+		array: Uint8Array
 	): Ipv4Addr | undefined {
 		return (array.length === 4) ? new Ipv4Addr(array) : undefined
 	}
