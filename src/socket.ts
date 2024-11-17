@@ -1,5 +1,6 @@
-import { Ipv4Addr } from './ipv4.ts'
+import type { Ipv4Addr } from './ipv4.ts'
 import type { Ipv6Addr } from './ipv6.ts'
+import { parseIpv4Addr } from './parser.ts'
 import { clampUint16, takeAsciiDigits } from './utils.ts'
 
 /**
@@ -26,16 +27,17 @@ export class SocketAddrV4 {
 	 * where the port is an unsigned 16-bit integer.
 	 */
 	public static fromString(s: string): SocketAddrV4 | undefined {
-		const addr = Ipv4Addr.parse(s)
+		const [addr, idx] = parseIpv4Addr(s)
 		if (addr === undefined) {
 			return undefined
 		}
-		const afterAddr = addr.toString().length
-		if (s[afterAddr + 1] !== ':') {
+
+		const afterAddr = idx + 1
+		if (s[afterAddr] !== ':') {
 			return undefined
 		}
 
-		const [portStr, _] = takeAsciiDigits(s, afterAddr + 1)
+		const [portStr, _] = takeAsciiDigits(s, afterAddr)
 		const portNum = Number.parseInt(portStr[0])
 		if (Number.isNaN(portNum)) {
 			return undefined

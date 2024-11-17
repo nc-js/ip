@@ -1,6 +1,6 @@
-import { equals } from '@std/bytes/equals'
 import type { IpAddrValue } from './ip.ts'
-import { arrayStartsWith, takeAsciiDigits } from './utils.ts'
+import { arrayStartsWith } from './utils.ts'
+import { parseIpv4Addr } from './parser.ts'
 
 /**
  * A representation of an IPv4 address
@@ -103,32 +103,8 @@ export class Ipv4Addr implements IpAddrValue {
 	 * return `undefined`.
 	 */
 	public static parse(s: string): Ipv4Addr | undefined {
-		const view = new DataView(new ArrayBuffer(4))
-		let seenDots = 0
-		let idx = 0
-
-		while (seenDots <= 3) {
-			const [octetString, newIdx] = takeAsciiDigits(s, idx)
-
-			// parse octet
-			const octetNumber: number = Number.parseInt(octetString, 10)
-			if (octetNumber < 0 || octetNumber > 255) {
-				return undefined
-			}
-			view.setUint8(seenDots, octetNumber)
-			idx = newIdx
-
-			// check for next dot
-			if (seenDots < 3) {
-				if (s[newIdx] !== '.') {
-					return undefined
-				}
-				idx++
-			}
-			seenDots++
-		}
-
-		return Ipv4Addr.tryFromDataView(view)
+		const [result, _] = parseIpv4Addr(s)
+		return result
 	}
 
 	/**
@@ -222,7 +198,10 @@ export class Ipv4Addr implements IpAddrValue {
 	 * Checks if this IPv4 address equals another IPv4 address.
 	 */
 	public equals(other: Ipv4Addr): boolean {
-		return equals(this.octets, other.octets)
+		return this.a === other.a &&
+			this.b === other.b &&
+			this.c === other.c &&
+			this.d === other.d
 	}
 
 	/**
