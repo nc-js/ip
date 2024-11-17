@@ -1,3 +1,6 @@
+# editors
+.zed
+
 # node + deno + bun
 node_modules
 .npmrc
