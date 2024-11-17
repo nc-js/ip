@@ -194,12 +194,12 @@ Deno.test('is unspecified', () => {
 })
 
 Deno.test('multicast scope: interface local', () => {
-	// min octet
+	// min hextet
 	assertEquals(
 		Ipv6Addr.newAddr(0xff01, 0, 0, 0, 0, 0, 0, 0).multicastScope(),
 		'InterfaceLocal',
 	)
-	// max octet
+	// max hextet
 	assertEquals(
 		Ipv6Addr.newAddr(0xfff1, 0, 0, 0, 0, 0, 0, 0).multicastScope(),
 		'InterfaceLocal',
@@ -212,12 +212,12 @@ Deno.test('multicast scope: interface local', () => {
 })
 
 Deno.test('multicast scope: link local', () => {
-	// min octet
+	// min hextet
 	assertEquals(
 		Ipv6Addr.newAddr(0xff02, 0, 0, 0, 0, 0, 0, 0).multicastScope(),
 		'LinkLocal',
 	)
-	// max octet
+	// max hextet
 	assertEquals(
 		Ipv6Addr.newAddr(0xfff2, 0, 0, 0, 0, 0, 0, 0).multicastScope(),
 		'LinkLocal',
@@ -230,12 +230,12 @@ Deno.test('multicast scope: link local', () => {
 })
 
 Deno.test('multicast scope: realm local', () => {
-	// min octet
+	// min hextet
 	assertEquals(
 		Ipv6Addr.newAddr(0xff03, 0, 0, 0, 0, 0, 0, 0).multicastScope(),
 		'RealmLocal',
 	)
-	// max octet
+	// max hextet
 	assertEquals(
 		Ipv6Addr.newAddr(0xfff3, 0, 0, 0, 0, 0, 0, 0).multicastScope(),
 		'RealmLocal',
@@ -248,12 +248,12 @@ Deno.test('multicast scope: realm local', () => {
 })
 
 Deno.test('multicast scope: admin local', () => {
-	// min octet
+	// min hextet
 	assertEquals(
 		Ipv6Addr.newAddr(0xfff4, 0, 0, 0, 0, 0, 0, 0).multicastScope(),
 		'AdminLocal',
 	)
-	// max octet
+	// max hextet
 	assertEquals(
 		Ipv6Addr.newAddr(0xfff4, 0, 0, 0, 0, 0, 0, 0).multicastScope(),
 		'AdminLocal',
@@ -266,12 +266,12 @@ Deno.test('multicast scope: admin local', () => {
 })
 
 Deno.test('multicast scope: site local', () => {
-	// min octet
+	// min hextet
 	assertEquals(
 		Ipv6Addr.newAddr(0xff05, 0, 0, 0, 0, 0, 0, 0).multicastScope(),
 		'SiteLocal',
 	)
-	// max octet
+	// max hextet
 	assertEquals(
 		Ipv6Addr.newAddr(0xfff5, 0, 0, 0, 0, 0, 0, 0).multicastScope(),
 		'SiteLocal',
@@ -284,12 +284,12 @@ Deno.test('multicast scope: site local', () => {
 })
 
 Deno.test('multicast scope: organization local', () => {
-	// min octet
+	// min hextet
 	assertEquals(
 		Ipv6Addr.newAddr(0xff08, 0, 0, 0, 0, 0, 0, 0).multicastScope(),
 		'OrganizationLocal',
 	)
-	// max octet
+	// max hextet
 	assertEquals(
 		Ipv6Addr.newAddr(0xfff8, 0, 0, 0, 0, 0, 0, 0).multicastScope(),
 		'OrganizationLocal',
@@ -302,12 +302,12 @@ Deno.test('multicast scope: organization local', () => {
 })
 
 Deno.test('multicast scope: global', () => {
-	// min octet
+	// min hextet
 	assertEquals(
 		Ipv6Addr.newAddr(0xff0e, 0, 0, 0, 0, 0, 0, 0).multicastScope(),
 		'Global',
 	)
-	// max octet
+	// max hextet
 	assertEquals(
 		Ipv6Addr.newAddr(0xfffe, 0, 0, 0, 0, 0, 0, 0).multicastScope(),
 		'Global',
