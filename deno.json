@@ -24,7 +24,7 @@
 		"@std/random": "jsr:@std/random@^0.1.0"
 	},
 	"fmt": {
-		"include": ["src/"],
+		"include": ["bench/", "src/"],
 		"useTabs": true,
 		"semiColons": false,
 		"singleQuote": true,
