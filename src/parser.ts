@@ -9,7 +9,7 @@ import { takeAsciiDigits } from './utils.ts'
 type ParseResult<T> = [T | undefined, number]
 
 export function parseIpv4Addr(s: string): ParseResult<Ipv4Addr> {
-	const view = new DataView(new ArrayBuffer(4))
+	const array = new Uint8Array(4)
 	let seenDots = 0
 	let idx = 0
 
@@ -21,7 +21,7 @@ export function parseIpv4Addr(s: string): ParseResult<Ipv4Addr> {
 		if (octetNumber < 0 || octetNumber > 255) {
 			return [undefined, idx]
 		}
-		view.setUint8(seenDots, octetNumber)
+		array[seenDots] = octetNumber
 		idx = newIdx
 
 		// check for next dot
@@ -34,5 +34,5 @@ export function parseIpv4Addr(s: string): ParseResult<Ipv4Addr> {
 		seenDots++
 	}
 
-	return [Ipv4Addr.tryFromDataView(view), idx]
+	return [Ipv4Addr.tryFromUint8Array(array), idx]
 }
