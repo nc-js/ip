@@ -109,40 +109,40 @@ Deno.test('next of 255.255.255.255 is undefined', () => {
 	assertEquals(addr.next(), undefined)
 })
 
-Deno.test(function equals() {
+Deno.test('equals', () => {
 	const addr = Ipv4Addr.newAddr(127, 0, 0, 1)
 	assert(addr.equals(Ipv4Addr.LOCALHOST))
 })
 
-Deno.test(function isBenchmarking() {
+Deno.test('is benchmarking', () => {
 	assert(Ipv4Addr.newAddr(198, 18, 0, 0).isBenchmarking())
 	assert(Ipv4Addr.newAddr(198, 19, 255, 255).isBenchmarking())
 	assertFalse(Ipv4Addr.newAddr(198, 17, 255, 255).isBenchmarking())
 	assertFalse(Ipv4Addr.newAddr(198, 20, 0, 0).isBenchmarking())
 })
 
-Deno.test(function isBroadcast() {
+Deno.test('is broadcast', () => {
 	assert(Ipv4Addr.newAddr(255, 255, 255, 255).isBroadcast())
 })
 
-Deno.test(function isDocumentation() {
+Deno.test('is documentation', () => {
 	assert(Ipv4Addr.newAddr(192, 0, 2, 255).isDocumentation())
 	assert(Ipv4Addr.newAddr(198, 51, 100, 65).isDocumentation())
 	assert(Ipv4Addr.newAddr(203, 0, 113, 6).isDocumentation())
 	assertFalse(Ipv4Addr.newAddr(193, 34, 17, 19).isDocumentation())
 })
 
-Deno.test(function isLoopback() {
+Deno.test('is loopback', () => {
 	assert(Ipv4Addr.LOCALHOST.isLoopback())
 })
 
-Deno.test(function isMulticast() {
+Deno.test('is multicast', () => {
 	assert(Ipv4Addr.newAddr(224, 0, 0, 0).isMulticast())
 	assert(Ipv4Addr.newAddr(239, 0, 0, 0).isMulticast())
 	assertFalse(Ipv4Addr.newAddr(240, 0, 0, 0).isMulticast())
 })
 
-Deno.test(function isPrivate() {
+Deno.test('is private', () => {
 	assert(Ipv4Addr.newAddr(10, 0, 0, 1).isPrivate())
 	assert(Ipv4Addr.newAddr(10, 10, 10, 10).isPrivate())
 	assert(Ipv4Addr.newAddr(172, 16, 10, 10).isPrivate())
@@ -152,20 +152,20 @@ Deno.test(function isPrivate() {
 	assertFalse(Ipv4Addr.newAddr(192, 169, 0, 2).isPrivate())
 })
 
-Deno.test(function isReserved() {
+Deno.test('is reserved', () => {
 	assert(Ipv4Addr.newAddr(240, 0, 0, 0).isReserved())
 	assert(Ipv4Addr.newAddr(255, 255, 255, 254).isReserved())
 	assertFalse(Ipv4Addr.newAddr(239, 255, 255, 255).isReserved())
 	assertFalse(Ipv4Addr.newAddr(255, 255, 255, 255).isReserved())
 })
 
-Deno.test(function isShared() {
+Deno.test('is shared', () => {
 	assert(Ipv4Addr.newAddr(100, 64, 0, 0).isShared())
 	assert(Ipv4Addr.newAddr(100, 127, 255, 255).isShared())
 	assertFalse(Ipv4Addr.newAddr(100, 128, 0, 0).isShared())
 })
 
-Deno.test(function isUnspecified() {
+Deno.test('is unspecified', () => {
 	assert(Ipv4Addr.newAddr(0, 0, 0, 0).isUnspecified())
 })
 
