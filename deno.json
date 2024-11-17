@@ -20,7 +20,7 @@
 		"./socket": "./src/socket.ts"
 	},
 	"imports": {
-		"@std/assert": "jsr:@std/assert@1"
+		"@std/assert": "jsr:@std/assert@^1.0.8"
 	},
 	"fmt": {
 		"include": ["src/"],

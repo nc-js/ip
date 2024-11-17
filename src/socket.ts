@@ -45,7 +45,7 @@ export class SocketAddrV4 {
 
 		const [portStr, _] = takeAsciiDigits(s, afterAddr + 1)
 		const portNum = Number.parseInt(portStr)
-		if (Number.isNaN(portNum) || (portNum > 65535)) {
+		if (Number.isNaN(portNum) || portNum > 65535) {
 			return undefined
 		}
 
