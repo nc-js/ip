@@ -1,4 +1,7 @@
-export function arrayStartsWith(a: ArrayLike<number>, b: ArrayLike<number>): boolean {
+export function arrayStartsWith(
+	a: ArrayLike<number>,
+	b: ArrayLike<number>,
+): boolean {
 	if (b.length > a.length) {
 		return false
 	}

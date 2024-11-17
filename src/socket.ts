@@ -10,19 +10,19 @@ export class SocketAddrV4 {
 		this.port = port
 	}
 
-	public static fromString(s: string): SocketAddrV4|undefined {
+	public static fromString(s: string): SocketAddrV4 | undefined {
 		const addr = Ipv4Addr.parse(s)
-		if(addr === undefined) {
+		if (addr === undefined) {
 			return undefined
 		}
 		const afterAddr = addr.toString().length
-		if(s[afterAddr + 1] !== ':') {
+		if (s[afterAddr + 1] !== ':') {
 			return undefined
 		}
 
 		const [portStr, _] = takeAsciiDigits(s, afterAddr + 1)
 		const portNum = Number.parseInt(portStr[0])
-		if(Number.isNaN(portNum)) {
+		if (Number.isNaN(portNum)) {
 			return undefined
 		}
 
@@ -38,7 +38,7 @@ export class SocketAddrV6 {
 		this.port = clampUint16(port)
 	}
 
-	public static fromString(s: string): SocketAddrV6|undefined {
+	public static fromString(s: string): SocketAddrV6 | undefined {
 		if (s[0] !== '[') {
 			return undefined
 		}
