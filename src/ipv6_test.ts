@@ -128,19 +128,45 @@ Deno.test('is documentation', () => {
 })
 
 // deno-fmt-ignore
-Deno.test('is global', () => {
-	assert(Ipv6Addr.newAddr(0x26, 0, 0x1c9, 0, 0, 0xafc8, 0x10, 0x1).isGlobal())
+Deno.test('is global: unspecified is not', () => {
 	assertFalse(Ipv6Addr.UNSPECIFIED.isGlobal())
+})
+
+Deno.test('is global: localhost is not', () => {
 	assertFalse(Ipv6Addr.LOCALHOST.isGlobal())
-	assertFalse(Ipv6Addr.newAddr(0, 0, 0, 0, 0, 0xffff, 0xc00a, 0x2ff).isGlobal())
+})
+
+Deno.test('is global: ipv4 mapped is not', () => {
+	assertFalse(
+		Ipv6Addr.newAddr(0, 0, 0, 0, 0, 0xffff, 0xc00a, 0x2ff).isGlobal(),
+	)
+})
+
+Deno.test('is global: benchmarking is not', () => {
 	assertFalse(Ipv6Addr.newAddr(0x2001, 2, 0, 0, 0, 0, 0, 1).isGlobal())
+})
+
+Deno.test('is global: documentation is not', () => {
 	assertFalse(Ipv6Addr.newAddr(0x2001, 0xdb8, 0, 0, 0, 0, 0, 0).isGlobal())
 	assertFalse(Ipv6Addr.newAddr(0x2001, 0xdb8, 0, 0, 0, 0, 0, 1).isGlobal())
-	assertFalse(Ipv6Addr.newAddr(0x2002, 0, 0, 0, 0, 0, 0, 0).isGlobal())
-	assertFalse(Ipv6Addr.newAddr(0xfc00, 0, 0, 0, 0, 0, 0, 0).isGlobal())
-	assertFalse(Ipv6Addr.newAddr(0xfc02, 0, 0, 0, 0, 0, 0, 1).isGlobal())
+})
+
+Deno.test('is global: yes', () => {
+	assert(Ipv6Addr.newAddr(0x26, 0, 0x1c9, 0, 0, 0xafc8, 0x10, 0x1).isGlobal())
+})
+
+Deno.test('is global: unicast address with link-local scope', () => {
 	assertFalse(Ipv6Addr.newAddr(0xfe80, 0, 0, 0, 0, 0, 0, 0).isGlobal())
 	assertFalse(Ipv6Addr.newAddr(0xfe81, 0, 0, 0, 0, 0, 0, 1).isGlobal())
+})
+
+Deno.test('is global: unique local address is not', () => {
+	assertFalse(Ipv6Addr.newAddr(0xfc00, 0, 0, 0, 0, 0, 0, 0).isGlobal())
+	assertFalse(Ipv6Addr.newAddr(0xfc02, 0, 0, 0, 0, 0, 0, 1).isGlobal())
+})
+
+Deno.test('is global: 1st hextet as 0x2002 is not', () => {
+	assertFalse(Ipv6Addr.newAddr(0x2002, 0, 0, 0, 0, 0, 0, 0).isGlobal())
 })
 
 Deno.test('is loopback', () => {
