@@ -1,6 +1,5 @@
 import { assert, assertEquals, assertFalse, assertNotEquals } from '@std/assert'
 import { Ipv6Addr } from './ipv6.ts'
-import { IpAddr } from './mod.ts'
 
 Deno.test('special address localhost', () => {
 	const localhost = Ipv6Addr.LOCALHOST
