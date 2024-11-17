@@ -238,10 +238,10 @@ export class Ipv4Addr implements IpAddrValue {
 
 	/**
 	 * Checks if this IPv4 address is a broadcast address.
-	 * 
+	 *
 	 * This is defined in [IETF RFC 919][rfc919] as
 	 * `255.255.255.255`.
-	 * 
+	 *
 	 * [rfc919]: https://datatracker.ietf.org/doc/html/rfc919
 	 */
 	public isBroadcast(): boolean {

@@ -285,9 +285,9 @@ export class Ipv6Addr implements IpAddrValue {
 
 	/**
 	 * Checks if this IPv6 address is a multicast address.
-	 * 
+	 *
 	 * This is defined in [IETF RFC 4291][rfc4921] as `ff00::/8`.
-	 * 
+	 *
 	 * [rfc4921]: https://datatracker.ietf.org/doc/html/rfc4291
 	 */
 	public isMulticast(): boolean {
@@ -296,10 +296,10 @@ export class Ipv6Addr implements IpAddrValue {
 
 	/**
 	 * Checks if this IPv6 address is a unique local address.
-	 * 
+	 *
 	 * This is defined in [IETF RFC 4193][rfc4193] as any address
 	 * that is not a multicast address.
-	 * 
+	 *
 	 * [rfc4193]: https://datatracker.ietf.org/doc/html/rfc4193
 	 */
 	public isUnicast(): boolean {
@@ -308,7 +308,7 @@ export class Ipv6Addr implements IpAddrValue {
 
 	/**
 	 * Checks if this IPv6 address is a globally routable unicast address.
-	 * 
+	 *
 	 * This checks if:
 	 * - The address is a unicast address
 	 * - The address is not a loopback address
@@ -330,9 +330,9 @@ export class Ipv6Addr implements IpAddrValue {
 
 	/**
 	 * Checks if this IPv6 address is a link-local unicast address.
-	 * 
+	 *
 	 * This is defined in [IETF RFC 4291 § 2.5.6][rfc4921] as `fe80::/10`.
-	 * 
+	 *
 	 * [rfc4921]: https://datatracker.ietf.org/doc/html/rfc4291
 	 */
 	public isUnicastLinkLocal(): boolean {
@@ -341,9 +341,9 @@ export class Ipv6Addr implements IpAddrValue {
 
 	/**
 	 * Checks if this IPv6 address is a unique local address.
-	 * 
+	 *
 	 * This is defined in [IETF RFC 4193][rfc4193] as `fc00::/7`.
-	 * 
+	 *
 	 * [rfc4193]: https://datatracker.ietf.org/doc/html/rfc4193
 	 */
 	public isUniqueLocal(): boolean {
@@ -352,9 +352,9 @@ export class Ipv6Addr implements IpAddrValue {
 
 	/**
 	 * Checks if this IPv6 address is an unspecified address.
-	 * 
+	 *
 	 * This is defined in [IETF RFC 4291 § 2.5.2][rfc4921] as `::`.
-	 * 
+	 *
 	 * [rfc4921]: https://datatracker.ietf.org/doc/html/rfc4291
 	 */
 	public isUnspecified(): boolean {

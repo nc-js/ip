@@ -67,7 +67,7 @@ export class SocketAddrV6 {
 	/**
 	 * Parses a string in the format of `"[ipv6]:port"`,
 	 * where the port is an unsigned 16-bit integer.
-	 * 
+	 *
 	 * TODO: Finish this implementation
 	 */
 	public static fromString(s: string): SocketAddrV6 | undefined {
