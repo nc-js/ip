@@ -22,10 +22,8 @@ function isCodePointBetween(
 	low: number,
 	max: number,
 ): boolean {
-	const codePoint = value.codePointAt(0)
-	return (codePoint === undefined
-		? false
-		: codePoint >= low && codePoint <= max)
+	const codePoint = value.codePointAt(0) as number
+	return codePoint >= low && codePoint <= max
 }
 
 export function isAsciiDigit(v: string): boolean {

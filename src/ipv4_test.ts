@@ -99,14 +99,34 @@ Deno.test('to string', () => {
 	assertEquals(localhost.toString(), '127.0.0.1')
 })
 
-Deno.test('previous of 0.0.0.0 is undefined', () => {
+Deno.test('previous: 0.0.0.0 -> undefined', () => {
 	const addr = Ipv4Addr.UNSPECIFIED
 	assertEquals(addr.previous(), undefined)
 })
 
-Deno.test('next of 255.255.255.255 is undefined', () => {
+Deno.test('previous: 255.255.255.255 -> 255.255.255.254', () => {
+	const addr = Ipv4Addr.BROADCAST
+	assert(addr.previous()?.equals(Ipv4Addr.newAddr(255, 255, 255, 254)))
+})
+
+Deno.test('previous: 0.0.1.0 -> 0.0.0.255', () => {
+	const addr = Ipv4Addr.newAddr(0, 0, 1, 0)
+	assert(addr.previous()?.equals(Ipv4Addr.newAddr(0, 0, 0, 255)))
+})
+
+Deno.test('next: 255.255.255.255 -> undefined', () => {
 	const addr = Ipv4Addr.BROADCAST
 	assertEquals(addr.next(), undefined)
+})
+
+Deno.test('next: 0.0.0.0 -> 0.0.0.1', () => {
+	const addr = Ipv4Addr.UNSPECIFIED
+	assert(addr.next()?.equals(Ipv4Addr.newAddr(0, 0, 0, 1)))
+})
+
+Deno.test('next: 0.0.0.255 -> 0.0.1.0', () => {
+	const addr = Ipv4Addr.newAddr(0, 0, 0, 255)
+	assert(addr.next()?.equals(Ipv4Addr.newAddr(0, 0, 1, 0)))
 })
 
 Deno.test('equals', () => {
@@ -130,6 +150,53 @@ Deno.test('is documentation', () => {
 	assert(Ipv4Addr.newAddr(198, 51, 100, 65).isDocumentation())
 	assert(Ipv4Addr.newAddr(203, 0, 113, 6).isDocumentation())
 	assertFalse(Ipv4Addr.newAddr(193, 34, 17, 19).isDocumentation())
+})
+
+Deno.test('is global: unspecified is not', () => {
+	assertFalse(Ipv4Addr.UNSPECIFIED.isGlobal())
+})
+
+Deno.test('is global: reserved are not', () => {
+	assertFalse(Ipv4Addr.newAddr(10, 254, 0, 0).isGlobal())
+	assertFalse(Ipv4Addr.newAddr(192, 168, 10, 65).isGlobal())
+	assertFalse(Ipv4Addr.newAddr(172, 16, 10, 65).isGlobal())
+})
+
+Deno.test('is global: shared is', () => {
+	assertFalse(Ipv4Addr.newAddr(100, 100, 0, 0).isGlobal())
+})
+
+Deno.test('is global: loopback is not', () => {
+	assertFalse(Ipv4Addr.LOCALHOST.isGlobal())
+})
+
+Deno.test('is global: link local is not', () => {
+	assertFalse(Ipv4Addr.newAddr(169, 254, 45, 1).isGlobal())
+})
+
+Deno.test('is global: documentation is not', () => {
+	assertFalse(Ipv4Addr.newAddr(192, 0, 2, 255).isGlobal())
+	assertFalse(Ipv4Addr.newAddr(198, 51, 100, 65).isGlobal())
+	assertFalse(Ipv4Addr.newAddr(203, 0, 113, 6).isGlobal())
+})
+
+Deno.test('is global: benchmarking is not', () => {
+	assertFalse(Ipv4Addr.newAddr(198, 18, 0, 0).isGlobal())
+})
+
+Deno.test('is global: reserved is not', () => {
+	assertFalse(Ipv4Addr.newAddr(250, 10, 20, 30).isGlobal())
+})
+
+Deno.test('is global: broadcast is not', () => {
+	assertFalse(Ipv4Addr.BROADCAST.isGlobal())
+})
+
+Deno.test('is link local', () => {
+	assert(Ipv4Addr.newAddr(169, 254, 0, 0).isLinkLocal())
+	assert(Ipv4Addr.newAddr(169, 254, 255, 255).isLinkLocal())
+	assertFalse(Ipv4Addr.newAddr(169, 253, 255, 255).isLinkLocal())
+	assertFalse(Ipv4Addr.newAddr(169, 255, 0, 0).isLinkLocal())
 })
 
 Deno.test('is loopback', () => {

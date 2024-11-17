@@ -134,8 +134,12 @@ Deno.test('is global', () => {
 	assertFalse(Ipv6Addr.LOCALHOST.isGlobal())
 	assertFalse(Ipv6Addr.newAddr(0, 0, 0, 0, 0, 0xffff, 0xc00a, 0x2ff).isGlobal())
 	assertFalse(Ipv6Addr.newAddr(0x2001, 2, 0, 0, 0, 0, 0, 1).isGlobal())
+	assertFalse(Ipv6Addr.newAddr(0x2001, 0xdb8, 0, 0, 0, 0, 0, 0).isGlobal())
 	assertFalse(Ipv6Addr.newAddr(0x2001, 0xdb8, 0, 0, 0, 0, 0, 1).isGlobal())
+	assertFalse(Ipv6Addr.newAddr(0x2002, 0, 0, 0, 0, 0, 0, 0).isGlobal())
+	assertFalse(Ipv6Addr.newAddr(0xfc00, 0, 0, 0, 0, 0, 0, 0).isGlobal())
 	assertFalse(Ipv6Addr.newAddr(0xfc02, 0, 0, 0, 0, 0, 0, 1).isGlobal())
+	assertFalse(Ipv6Addr.newAddr(0xfe80, 0, 0, 0, 0, 0, 0, 0).isGlobal())
 	assertFalse(Ipv6Addr.newAddr(0xfe81, 0, 0, 0, 0, 0, 0, 1).isGlobal())
 })
 
@@ -319,6 +323,10 @@ Deno.test('multicast scope: global', () => {
 })
 
 Deno.test('multicast scope: unknown', () => {
+	assertEquals(
+		Ipv6Addr.LOCALHOST.multicastScope(),
+		undefined,
+	)
 	assertEquals(
 		Ipv6Addr.newAddr(0xffff, 0, 0, 0, 0, 0, 0, 0).multicastScope(),
 		undefined,

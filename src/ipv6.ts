@@ -223,7 +223,7 @@ export class Ipv6Addr implements IpAddrValue {
 	 * Checks if this IPv6 address is a documentation address.
 	 *
 	 * This range is defined in [IETF RFC 3849][rfc3849]
-	 * as `2000:db8::/32`.
+	 * as `2001:db8::/32`.
 	 */
 	public isDocumentation(): boolean {
 		return this.a === 0x2001 && this.b === 0xdb8
