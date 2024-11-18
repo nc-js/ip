@@ -1,9 +1,9 @@
 import { Ipv4Addr } from '../src/mod.ts'
-import { getRandomAddress } from './getRandomAddress.ts'
+import { randomAddress } from './getRandomAddress.ts'
 
 const addresses: string[] = []
 for (let i = 0; i < 100_000; i++) {
-	addresses.push(getRandomAddress())
+	addresses.push(randomAddress())
 }
 
 // precompile regular expressions

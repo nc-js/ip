@@ -44,12 +44,16 @@ export class SocketAddrV4 {
 		}
 
 		const [portStr, _] = takeAsciiDigits(s, afterAddr + 1)
-		const portNum = Number.parseInt(portStr)
+		const portNum = Number.parseInt(portStr, 10)
 		if (Number.isNaN(portNum) || portNum > 65535) {
 			return undefined
 		}
 
 		return new SocketAddrV4(addr, portNum)
+	}
+
+	public toString(): string {
+		return `${this.addr}:${this.port}`
 	}
 }
 
