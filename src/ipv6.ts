@@ -124,12 +124,12 @@ export class Ipv6Addr implements IpAddrValue {
 	/**
 	 * Attempts to create an `Ipv6Addr` from an array of numbers.
 	 *
-	 * This returns `undefined` if the array length is not equal to 8,
+	 * This returns `null` if the array length is not equal to 8,
 	 * otherwise returns an `Ipv6Addr`.
 	 */
-	public static tryFromArray(array: number[]): Ipv6Addr | undefined {
+	public static tryFromArray(array: number[]): Ipv6Addr | null {
 		if (array.length !== 8) {
-			return undefined
+			return null
 		}
 
 		return Ipv6Addr.newAddr(
@@ -147,22 +147,22 @@ export class Ipv6Addr implements IpAddrValue {
 	/**
 	 * Attempts to create an `Ipv6Addr` from a `Uint16Array`.
 	 *
-	 * This returns `undefined` if the array length is not equal to 8,
+	 * This returns `null` if the array length is not equal to 8,
 	 * otherwise returns an `Ipv6Addr`.
 	 */
-	public static tryFromUint16Array(array: Uint16Array): Ipv6Addr | undefined {
-		return (array.length === 8) ? new Ipv6Addr(array) : undefined
+	public static tryFromUint16Array(array: Uint16Array): Ipv6Addr | null {
+		return (array.length === 8) ? new Ipv6Addr(array) : null
 	}
 
 	/**
 	 * Attempts to create an `Ipv6Addr` from a `DataView`.
 	 *
-	 * This returns `undefined` if the view is not 16 bytes long,
+	 * This returns `null` if the view is not 16 bytes long,
 	 * otherwise returns an `Ipv6Addr`.
 	 */
-	public static tryFromDataView(view: DataView): Ipv6Addr | undefined {
+	public static tryFromDataView(view: DataView): Ipv6Addr | null {
 		if (view.byteLength !== 16) {
-			return undefined
+			return null
 		}
 
 		return new Ipv6Addr(
@@ -370,9 +370,9 @@ export class Ipv6Addr implements IpAddrValue {
 	 *
 	 * [rfc7346]: https://datatracker.ietf.org/doc/html/rfc7346#section-2
 	 */
-	public multicastScope(): MulticastScope | undefined {
+	public multicastScope(): MulticastScope | null {
 		if (!this.isMulticast()) {
-			return undefined
+			return null
 		}
 
 		switch (this.a & 0x000f) {
@@ -391,7 +391,7 @@ export class Ipv6Addr implements IpAddrValue {
 			case 14:
 				return 'Global'
 			default:
-				return undefined
+				return null
 		}
 	}
 }

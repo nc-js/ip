@@ -3,10 +3,10 @@ import { takeAsciiDigits } from './utils.ts'
 
 /**
  * - A tuple where:
- * - the first member is either the resulting type, or undefined
+ * - the first member is either the resulting type, or null
  * - the second member is the index where the parser finally left off at
  */
-type ParseResult<T> = [T | undefined, number]
+type ParseResult<T> = [T | null, number]
 
 export function parseIpv4Addr(s: string): ParseResult<Ipv4Addr> {
 	const array = new Uint8Array(4)
@@ -19,7 +19,7 @@ export function parseIpv4Addr(s: string): ParseResult<Ipv4Addr> {
 		// parse octet
 		const octetNumber: number = Number.parseInt(octetString, 10)
 		if (octetNumber < 0 || octetNumber > 255) {
-			return [undefined, idx]
+			return [null, idx]
 		}
 		array[seenDots] = octetNumber
 		idx = newIdx
@@ -27,7 +27,7 @@ export function parseIpv4Addr(s: string): ParseResult<Ipv4Addr> {
 		// check for next dot
 		if (seenDots < 3) {
 			if (s[newIdx] !== '.') {
-				return [undefined, idx]
+				return [null, idx]
 			}
 			idx++
 		}
