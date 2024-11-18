@@ -3,7 +3,7 @@ import {
 	randomAddress,
 	randomPort,
 	// randomWellKnownPort,
-} from './getRandomAddress.ts'
+} from './random.ts'
 
 const sockets: string[] = []
 for (let i = 0; i < 100_000; i++) {

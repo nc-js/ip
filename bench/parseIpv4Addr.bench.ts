@@ -1,5 +1,5 @@
 import { Ipv4Addr } from '../src/mod.ts'
-import { randomAddress } from './getRandomAddress.ts'
+import { randomAddress } from './random.ts'
 
 const addresses: string[] = []
 for (let i = 0; i < 100_000; i++) {
