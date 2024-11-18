@@ -1,44 +1,24 @@
-# TypeScript package with JSR
+# @nc/net-addr
 
-This repository template allows writing TypeScript packages in pure ESM, and
-publishing them to the [JSR registry](https://jsr.io). It provides some default settings for a
-relatively zero-config startup.
+This library is a TypeScript port of Rust's network address types from the `std::net` module.
 
-## Getting started
+## Install
+```shell
+deno add jsr:@nc/net-addr  # deno
+npx jsr add @nc/net-addr   # npm
+```
 
-First, create a new repository. Choose your method:
+## Usage
+### IPv4 addresses
+```ts
+import { assert, assertEquals } from '@std/assert'
+import { IPv4Addr } from '@nc/net-addr/v4'
 
-- **GitHub UI**:
-  [Click here](https://github.com/new?template_name=jsr&template_owner=neoncitylights)
-  to use this template. (Or, press "Use this template" button in the top-right corner)
-- **GitHub CLI**:
-  ```shell
-  # create a public or private repository from the template
-  gh repo create --template neoncitylights/jsr --public --clone {{repository}}
-  gh repo create --template neoncitylights/jsr --private --clone {{repository}}
-  ```
+const ip1 = IPv4Addr.newAddr(127, 0, 0, 1)
+const ip2 = IPv4Addr.tryFromUint8Array(new Uint8Array([127, 0, 0, 0, 1]))
 
-Then, make sure to update the following:
- - [`./LICENSE`](./LICENSE): change `{{author}}` to your username
-or real name, whichever you prefer.
- - [`./deno.json`](./deno.json): change the package name to your own.
- - [`./.github/workflows/publish.yml`](./.github/workflows/publish.yml): Uncomment out the top so that the workflow will publish your package every time there's a commit pushed to `main` branch.
- - Delete this `README.md` file, rename `LIBRARY.md` to `README.md`, and update with your own information.
-
-## Basic commands to know
-- `deno fmt`: Format files
-- `deno lint`: Lint files
-- `deno lint --fix`: Auto-apply lint fixes where possible
-- `deno test`: Run unit tests
-- `deno check`: Type-check code without executing
-- `deno doc --lint`: Lint the JSDoc in your source code before publishing
-- `deno doc --html ./src/mod.ts`: Generate HTML documentation from the entrypoint
-
-## Further reading
-- [JSR documentation](https://jsr.io/docs/)
-- [`deno.json` documentation reference](https://docs.deno.com/runtime/fundamentals/configuration/
-)
-- [Deno CLI subcommands reference](https://docs.deno.com/runtime/reference/cli/)
+assert(ip1.equals(ip2))
+```
 
 ## License
 

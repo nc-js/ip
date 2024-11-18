@@ -1,5 +1,5 @@
 {
-	"name": "@example/package",
+	"name": "@nc/net-addr",
 	"version": "0.1.0",
 	"license": "MIT",
 	"tasks": {
@@ -8,20 +8,26 @@
 	"publish": {
 		"include": [
 			"src/",
+			"!src/**/*_test.ts",
 			"README.md",
 			"LICENSE"
 		]
 	},
 	"exports": {
-		".": "./src/mod.ts"
+		".": "./src/mod.ts",
+		"./ipv4": "./src/ipv4.ts",
+		"./ipv6": "./src/ipv6.ts",
+		"./socket": "./src/socket.ts"
 	},
 	"imports": {
-		"@std/assert": "jsr:@std/assert@1"
+		"@std/assert": "jsr:@std/assert@^1.0.8",
+		"@std/random": "jsr:@std/random@^0.1.0"
 	},
 	"fmt": {
-		"include": ["src/"],
+		"include": ["bench/", "src/"],
 		"useTabs": true,
 		"semiColons": false,
+		"singleQuote": true,
 		"indentWidth": 4
 	},
 	"lint": {
