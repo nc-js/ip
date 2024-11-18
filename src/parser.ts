@@ -1,4 +1,5 @@
 import { Ipv4Addr } from './ipv4.ts'
+import { SocketAddrV4 } from './mod.ts'
 import { takeAsciiDigits } from './utils.ts'
 
 /**
@@ -14,7 +15,7 @@ export function parseIpv4Addr(s: string): ParseResult<Ipv4Addr> {
 	let idx = 0
 
 	while (seenDots <= 3) {
-		const [octetString, newIdx] = takeAsciiDigits(s, idx)
+		const [octetString, newIdx] = takeAsciiDigits(s, idx, 1, 3)
 
 		// parse octet
 		const octetNumber: number = Number.parseInt(octetString, 10)
@@ -35,4 +36,23 @@ export function parseIpv4Addr(s: string): ParseResult<Ipv4Addr> {
 	}
 
 	return [Ipv4Addr.tryFromUint8Array(array), idx]
+}
+
+export function parseSocketAddrV4(s: string): ParseResult<SocketAddrV4> {
+	const [addr, afterAddr] = parseIpv4Addr(s)
+	if (addr === null) {
+		return [null, afterAddr]
+	}
+
+	if (s[afterAddr] !== ':') {
+		return [null, afterAddr]
+	}
+
+	const [portStr, afterPort] = takeAsciiDigits(s, afterAddr + 1, 1, 5)
+	const portNum = Number.parseInt(portStr, 10)
+	if (Number.isNaN(portNum) || portNum > 65535) {
+		return [null, afterPort]
+	}
+
+	return [new SocketAddrV4(addr, portNum), afterPort]
 }
