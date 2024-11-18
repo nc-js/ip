@@ -11,30 +11,30 @@ Deno.test('socket addresss v4: parse is ok', () => {
 
 Deno.test('socket address v4: parse is error, empty string', () => {
 	const socket = SocketAddrV4.parse('')
-	assertEquals(socket, undefined)
+	assertEquals(socket, null)
 })
 
 Deno.test('socket address v4: parse is error, no ipv4 address', () => {
 	const socket = SocketAddrV4.parse(':8080')
-	assertEquals(socket, undefined)
+	assertEquals(socket, null)
 })
 
 Deno.test('socket address v4: parse is error, invalid ipv4 address', () => {
 	const socket = SocketAddrV4.parse('256.0.0.1:8080')
-	assertEquals(socket, undefined)
+	assertEquals(socket, null)
 })
 
 Deno.test('socket address v4: parse is error, no colon delimiter', () => {
 	const socket = SocketAddrV4.parse('127.0.0.1!8080')
-	assertEquals(socket, undefined)
+	assertEquals(socket, null)
 })
 
 Deno.test('socket address v4: parse is error, no port', () => {
 	const socket = SocketAddrV4.parse('127.0.0.1:')
-	assertEquals(socket, undefined)
+	assertEquals(socket, null)
 })
 
 Deno.test('socket address v4: parse is error, port is out of bounds', () => {
 	const socket = SocketAddrV4.parse('127.0.0.1:65536')
-	assertEquals(socket, undefined)
+	assertEquals(socket, null)
 })

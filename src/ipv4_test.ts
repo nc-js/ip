@@ -54,7 +54,7 @@ Deno.test('try from array is ok', () => {
 
 Deno.test('try from array is error', () => {
 	const addr = Ipv4Addr.tryFromArray([1, 2, 3, 4, 5])
-	assertEquals(addr, undefined)
+	assertEquals(addr, null)
 })
 
 Deno.test('try from uint8array is ok', () => {
@@ -75,7 +75,7 @@ Deno.test('try from uint8array is error', () => {
 			new ArrayBuffer(5),
 		),
 	)
-	assertEquals(addr, undefined)
+	assertEquals(addr, null)
 })
 
 Deno.test('try from dataview is ok', () => {
@@ -91,7 +91,7 @@ Deno.test('try from dataview is ok', () => {
 
 Deno.test('try from dataview is error', () => {
 	const view = new DataView(new ArrayBuffer(5))
-	assertEquals(Ipv4Addr.tryFromDataView(view), undefined)
+	assertEquals(Ipv4Addr.tryFromDataView(view), null)
 })
 
 Deno.test('to string', () => {
@@ -99,9 +99,9 @@ Deno.test('to string', () => {
 	assertEquals(localhost.toString(), '127.0.0.1')
 })
 
-Deno.test('previous: 0.0.0.0 -> undefined', () => {
+Deno.test('previous: 0.0.0.0 -> null', () => {
 	const addr = Ipv4Addr.UNSPECIFIED
-	assertEquals(addr.previous(), undefined)
+	assertEquals(addr.previous(), null)
 })
 
 Deno.test('previous: 255.255.255.255 -> 255.255.255.254', () => {
@@ -114,9 +114,9 @@ Deno.test('previous: 0.0.1.0 -> 0.0.0.255', () => {
 	assert(addr.previous()?.equals(Ipv4Addr.newAddr(0, 0, 0, 255)))
 })
 
-Deno.test('next: 255.255.255.255 -> undefined', () => {
+Deno.test('next: 255.255.255.255 -> null', () => {
 	const addr = Ipv4Addr.BROADCAST
-	assertEquals(addr.next(), undefined)
+	assertEquals(addr.next(), null)
 })
 
 Deno.test('next: 0.0.0.0 -> 0.0.0.1', () => {
@@ -256,10 +256,10 @@ Deno.test('parse 255.255.255.255 is ok', () => {
 
 Deno.test('parse errors because number is too big', () => {
 	const maybeIp = Ipv4Addr.parse('256.255.255.255')
-	assertEquals(maybeIp, undefined)
+	assertEquals(maybeIp, null)
 })
 
 Deno.test('parse errors because of no dot', () => {
 	const maybeIp = Ipv4Addr.parse('127!0.0.1')
-	assertEquals(maybeIp, undefined)
+	assertEquals(maybeIp, null)
 })

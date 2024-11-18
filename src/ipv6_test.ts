@@ -52,7 +52,7 @@ Deno.test('try from array is ok', () => {
 
 Deno.test('try from array is error', () => {
 	const addr = Ipv6Addr.tryFromArray([1, 2, 3, 4, 5, 6, 7, 8, 9])
-	assertEquals(addr, undefined)
+	assertEquals(addr, null)
 })
 
 Deno.test('try from uint16array is ok', () => {
@@ -74,7 +74,7 @@ Deno.test('try from uint16array is error', () => {
 	const addr = Ipv6Addr.tryFromUint16Array(
 		new Uint16Array([1, 2, 3, 4, 5, 6, 7, 8, 9]),
 	)
-	assertEquals(addr, undefined)
+	assertEquals(addr, null)
 })
 
 Deno.test('try from dataview is ok', () => {
@@ -84,7 +84,7 @@ Deno.test('try from dataview is ok', () => {
 
 Deno.test('try from dataview is error', () => {
 	const addr = Ipv6Addr.tryFromDataView(new DataView(new ArrayBuffer(17)))
-	assertEquals(addr, undefined)
+	assertEquals(addr, null)
 })
 
 Deno.test('localhost to full string', () => {
@@ -351,10 +351,10 @@ Deno.test('multicast scope: global', () => {
 Deno.test('multicast scope: unknown', () => {
 	assertEquals(
 		Ipv6Addr.LOCALHOST.multicastScope(),
-		undefined,
+		null,
 	)
 	assertEquals(
 		Ipv6Addr.newAddr(0xffff, 0, 0, 0, 0, 0, 0, 0).multicastScope(),
-		undefined,
+		null,
 	)
 })

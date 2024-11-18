@@ -104,9 +104,9 @@ export class Ipv4Addr implements IpAddrValue {
 	 * of an unsigned 8-bit integer, 0 to 255), each separated by a dot.
 	 *
 	 * If the string does not conform to the format, it will
-	 * return `undefined`.
+	 * return `null`.
 	 */
-	public static parse(s: string): Ipv4Addr | undefined {
+	public static parse(s: string): Ipv4Addr | null {
 		const [result, _] = parseIpv4Addr(s)
 		return result
 	}
@@ -114,12 +114,12 @@ export class Ipv4Addr implements IpAddrValue {
 	/**
 	 * Attempts to create an `Ipv4Addr` from an array of numbers.
 	 *
-	 * This returns `undefined` if the array length is not equal to 4,
+	 * This returns `null` if the array length is not equal to 4,
 	 * otherwise returns an `Ipv4Addr`.
 	 */
-	public static tryFromArray(array: number[]): Ipv4Addr | undefined {
+	public static tryFromArray(array: number[]): Ipv4Addr | null {
 		if (array.length !== 4) {
-			return undefined
+			return null
 		}
 
 		return Ipv4Addr.newAddr(
@@ -133,24 +133,24 @@ export class Ipv4Addr implements IpAddrValue {
 	/**
 	 * Attempts to create an `Ipv4Addr` from a `Uint8Array`.
 	 *
-	 * This returns `undefined` if the array length is not equal to 4,
+	 * This returns `null` if the array length is not equal to 4,
 	 * otherwise returns an `Ipv4Addr`.
 	 */
 	public static tryFromUint8Array(
 		array: Uint8Array,
-	): Ipv4Addr | undefined {
-		return (array.length === 4) ? new Ipv4Addr(array) : undefined
+	): Ipv4Addr | null {
+		return (array.length === 4) ? new Ipv4Addr(array) : null
 	}
 
 	/**
 	 * Attempts to create an `Ipv4Addr` from a `DataView`.
 	 *
-	 * This returns `undefined` if the view is not 4 bytes long,
+	 * This returns `null` if the view is not 4 bytes long,
 	 * otherwise returns an `Ipv4Addr`.
 	 */
-	public static tryFromDataView(view: DataView): Ipv4Addr | undefined {
+	public static tryFromDataView(view: DataView): Ipv4Addr | null {
 		if (view.byteLength !== 4) {
-			return undefined
+			return null
 		}
 
 		return new Ipv4Addr(
@@ -173,12 +173,12 @@ export class Ipv4Addr implements IpAddrValue {
 	/**
 	 * Returns the address that occurs before this address.
 	 *
-	 * If the current address is `0.0.0.0`, this returns undefined.
+	 * If the current address is `0.0.0.0`, this returns null.
 	 */
-	public previous(): Ipv4Addr | undefined {
+	public previous(): Ipv4Addr | null {
 		const n = uint8ArrayToUint32(this.octets) - 1
 		if (n < 0) {
-			return undefined
+			return null
 		}
 
 		return Ipv4Addr.fromUint32(n)
@@ -187,12 +187,12 @@ export class Ipv4Addr implements IpAddrValue {
 	/**
 	 * Returns the address that occurs after this address.
 	 *
-	 * If the current address is `255.255.255.255`, this returns undefined.
+	 * If the current address is `255.255.255.255`, this returns null.
 	 */
-	public next(): Ipv4Addr | undefined {
+	public next(): Ipv4Addr | null {
 		const n = uint8ArrayToUint32(this.octets) + 1
 		if (n > 65535) {
-			return undefined
+			return null
 		}
 
 		return Ipv4Addr.fromUint32(n)
