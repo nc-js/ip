@@ -52,6 +52,10 @@ export class SocketAddrV4 {
 		return new SocketAddrV4(addr, portNum)
 	}
 
+	/**
+	 * Returns the socket address as a string in the format of
+	 * `<ipaddr4>:<port>`
+	 */
 	public toString(): string {
 		return `${this.addr}:${this.port}`
 	}

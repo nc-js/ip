@@ -14,7 +14,8 @@ for (let i = 0; i < 100_000; i++) {
 const looseRegex = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3}):(\d{1,5})$/
 
 const octet = '(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]?|0)'
-const port = '(0|[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])'
+const port =
+	'(0|[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])'
 const strictRegex = new RegExp(`^${octet}\.${octet}.${octet}.${octet}:${port}`)
 
 // benchmarks
@@ -48,8 +49,11 @@ Deno.bench('parse+create socket address v4 with regex, strict', () => {
 	}
 })
 
-Deno.bench({ name: 'parse+create socket address v4 with handwritten', baseline: true }, () => {
-	for(const socket of sockets) {
+Deno.bench({
+	name: 'parse+create socket address v4 with handwritten',
+	baseline: true,
+}, () => {
+	for (const socket of sockets) {
 		SocketAddrV4.parse(socket)
 	}
 })
