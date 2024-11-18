@@ -1,7 +1,7 @@
 import type { Ipv4Addr } from './ipv4.ts'
 import type { Ipv6Addr } from './ipv6.ts'
-import { parseIpv4Addr } from './parser.ts'
-import { clampUint16, takeAsciiDigits } from './utils.ts'
+import { parseSocketAddrV4 } from './parser.ts'
+import { clampUint16 } from './utils.ts'
 
 /**
  * A socket address, containing an IPv4 address and a port number.
@@ -19,7 +19,7 @@ export class SocketAddrV4 {
 	 */
 	public constructor(addr: Ipv4Addr, port: number) {
 		this.addr = addr
-		this.port = clampUint16(port)
+		this.port = port
 	}
 
 	/**
@@ -33,23 +33,8 @@ export class SocketAddrV4 {
 	 *   16-bit integer (0 to 65,535).
 	 */
 	public static parse(s: string): SocketAddrV4 | null {
-		const [addr, idx] = parseIpv4Addr(s)
-		if (addr === null) {
-			return null
-		}
-
-		const afterAddr = idx
-		if (s[afterAddr] !== ':') {
-			return null
-		}
-
-		const [portStr, _] = takeAsciiDigits(s, afterAddr + 1)
-		const portNum = Number.parseInt(portStr, 10)
-		if (Number.isNaN(portNum) || portNum > 65535) {
-			return null
-		}
-
-		return new SocketAddrV4(addr, portNum)
+		const [socket, _] = parseSocketAddrV4(s)
+		return socket
 	}
 
 	/**
