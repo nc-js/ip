@@ -21,67 +21,88 @@ export class Ipv6Addr implements IpAddrValue {
 		new Uint16Array([0, 0, 0, 0, 0, 0, 0, 0])
 	)
 
-	/** A fixed-size array of 8 unsigned 16-bit segments */
-	public segments: Uint16Array
+	/** A fixed-size array of 8 unsigned 16-bit integers */
+	private readonly _segments: Uint16Array
 
 	private constructor(segments: Uint16Array) {
-		this.segments = segments
+		this._segments = segments
+	}
+
+	/**
+	 * A fixed-size array of 16 unsigned 8-bit integers
+	 */
+	public octets(): Uint8Array {
+		const uint8Array = new Uint8Array(16)
+		for (let i = 0; i < 8; i++) {
+			const idx = i * 2
+			const hextet = this._segments[i]
+			uint8Array[idx] = hextet & 0xff // Lower 8 bits
+			uint8Array[idx + 1] = (hextet >> 8) & 0xff // Upper 8 bits
+		}
+		return uint8Array
+	}
+
+	/**
+	 * A fixed-size array of 8 unsigned 16-bit integers.
+	 */
+	public segments(): Uint16Array {
+		return this._segments
 	}
 
 	/**
 	 * The first segment of the IPv6 address in network byte order,
 	 * from bits 0-15.
 	 */
-	get a(): number {
-		return this.segments[0]
+	public get a(): number {
+		return this._segments[0]
 	}
 
 	/**
 	 * The second segment of the IPv6 address in network byte order,
 	 * from bits 16-31.
 	 */
-	get b(): number {
-		return this.segments[1]
+	public get b(): number {
+		return this._segments[1]
 	}
 
 	/**
 	 * The third segment of the IPv6 address in network byte order,
 	 * from bits 32-47.
 	 */
-	get c(): number {
-		return this.segments[2]
+	public get c(): number {
+		return this._segments[2]
 	}
 
 	/**
 	 * The fourth segment of the IPv6 address in network byte order,
 	 * from bits 48-63.
 	 */
-	get d(): number {
-		return this.segments[3]
+	public get d(): number {
+		return this._segments[3]
 	}
 
 	/**
 	 * The fifth segment of the IPv6 address in network byte order,
 	 * from bits 64-79.
 	 */
-	get e(): number {
-		return this.segments[4]
+	public get e(): number {
+		return this._segments[4]
 	}
 
 	/**
 	 * The sixth segment of the IPv6 address in network byte order,
 	 * from bits 80-95.
 	 */
-	get f(): number {
-		return this.segments[5]
+	public get f(): number {
+		return this._segments[5]
 	}
 
 	/**
 	 * The seventh segment of the IPv6 address in network byte order,
 	 * from bits 96-111.
 	 */
-	get g(): number {
-		return this.segments[6]
+	public get g(): number {
+		return this._segments[6]
 	}
 
 	/**
@@ -89,7 +110,7 @@ export class Ipv6Addr implements IpAddrValue {
 	 * from bits 112-127.
 	 */
 	get h(): number {
-		return this.segments[7]
+		return this._segments[7]
 	}
 
 	/**
@@ -185,7 +206,7 @@ export class Ipv6Addr implements IpAddrValue {
 	 */
 	public toString(): string {
 		const hextets = []
-		for (const segment of this.segments) {
+		for (const segment of this._segments) {
 			hextets.push(segment.toString(16).padStart(4, '0'))
 		}
 		return hextets.join(':')
@@ -243,15 +264,15 @@ export class Ipv6Addr implements IpAddrValue {
 
 		return !(this.isUnspecified()
 			|| this.isLoopback()
-			|| arrayStartsWith(this.segments, ipv4Mapped)
-			|| arrayStartsWith(this.segments, ipv4Translated)
-			|| arrayStartsWith(this.segments, discardOnly)
+			|| arrayStartsWith(this._segments, ipv4Mapped)
+			|| arrayStartsWith(this._segments, ipv4Translated)
+			|| arrayStartsWith(this._segments, discardOnly)
 			|| (
 				(this.a === 0x2001 && this.b < 0x200) && !(
-					uint128FromHextets(this.segments) === BigInt("0x20010001000000000000000000000001")
-					|| uint128FromHextets(this.segments) === BigInt("0x20010001000000000000000000000002")
-					|| arrayStartsWith(this.segments, new Uint16Array([0x2001, 0x3]))
-					|| arrayStartsWith(this.segments, new Uint16Array([0x2001, 4, 0x112]))
+					uint128FromArray(this._segments) === BigInt("0x20010001000000000000000000000001")
+					|| uint128FromArray(this._segments) === BigInt("0x20010001000000000000000000000002")
+					|| arrayStartsWith(this._segments, new Uint16Array([0x2001, 0x3]))
+					|| arrayStartsWith(this._segments, new Uint16Array([0x2001, 4, 0x112]))
 					|| (this.a === 0x2001 && (this.b >= 0x10 && this.b <= 0x3f))
 				)
 			)
@@ -267,7 +288,7 @@ export class Ipv6Addr implements IpAddrValue {
 	 */
 	public isIpv4Mapped(): boolean {
 		return arrayStartsWith(
-			this.segments,
+			this._segments,
 			new Uint16Array([0, 0, 0, 0, 0, 0xffff]),
 		)
 	}
@@ -412,7 +433,7 @@ export type MulticastScope =
 	| 'OrganizationLocal'
 	| 'Global'
 
-function uint128FromHextets(array: Uint16Array): bigint {
+function uint128FromArray(array: Uint16Array): bigint {
 	let result = BigInt(0)
 	for (let i = 0; i < array.length; i++) {
 		result = (result << BigInt(16)) | BigInt(array[i])

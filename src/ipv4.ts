@@ -21,10 +21,11 @@ export class Ipv4Addr implements IpAddrValue {
 		new Uint8Array([0, 0, 0, 0]),
 	)
 
-	/** A fixed-size array of 4 octets */
-	public octets: Uint8Array
+	/** A fixed-size array of 4 unsigned 8-bit integers */
+	private _octets: Uint8Array
+
 	private constructor(octets: Uint8Array) {
-		this.octets = octets
+		this._octets = octets
 	}
 
 	/**
@@ -32,7 +33,7 @@ export class Ipv4Addr implements IpAddrValue {
 	 * from bits 0-7.
 	 */
 	public get a(): number {
-		return this.octets[0]
+		return this._octets[0]
 	}
 
 	/**
@@ -40,7 +41,7 @@ export class Ipv4Addr implements IpAddrValue {
 	 * from bits 8-15.
 	 */
 	public get b(): number {
-		return this.octets[1]
+		return this._octets[1]
 	}
 
 	/**
@@ -48,7 +49,7 @@ export class Ipv4Addr implements IpAddrValue {
 	 * from bits 16-23.
 	 */
 	public get c(): number {
-		return this.octets[2]
+		return this._octets[2]
 	}
 
 	/**
@@ -56,7 +57,7 @@ export class Ipv4Addr implements IpAddrValue {
 	 * from bits 24-31.
 	 */
 	public get d(): number {
-		return this.octets[3]
+		return this._octets[3]
 	}
 
 	/**
@@ -176,7 +177,7 @@ export class Ipv4Addr implements IpAddrValue {
 	 * If the current address is `0.0.0.0`, this returns null.
 	 */
 	public previous(): Ipv4Addr | null {
-		const n = uint8ArrayToUint32(this.octets) - 1
+		const n = uint8ArrayToUint32(this._octets) - 1
 		if (n < 0) {
 			return null
 		}
@@ -190,12 +191,19 @@ export class Ipv4Addr implements IpAddrValue {
 	 * If the current address is `255.255.255.255`, this returns null.
 	 */
 	public next(): Ipv4Addr | null {
-		const n = uint8ArrayToUint32(this.octets) + 1
+		const n = uint8ArrayToUint32(this._octets) + 1
 		if (n > 65535) {
 			return null
 		}
 
 		return Ipv4Addr.fromUint32(n)
+	}
+
+	/**
+	 * A fixed-size array of 4 unsigned 8-bit integers.
+	 */
+	public octets(): Uint8Array {
+		return this._octets
 	}
 
 	/**
@@ -242,9 +250,9 @@ export class Ipv4Addr implements IpAddrValue {
 	 * [rfc5737]: https://datatracker.ietf.org/doc/html/rfc5737
 	 */
 	public isDocumentation(): boolean {
-		return arrayStartsWith(this.octets, new Uint8Array([192, 0, 2])) ||
-			arrayStartsWith(this.octets, new Uint8Array([198, 51, 100])) ||
-			arrayStartsWith(this.octets, new Uint8Array([203, 0, 113]))
+		return arrayStartsWith(this._octets, new Uint8Array([192, 0, 2])) ||
+			arrayStartsWith(this._octets, new Uint8Array([198, 51, 100])) ||
+			arrayStartsWith(this._octets, new Uint8Array([203, 0, 113]))
 	}
 
 	/**
@@ -278,7 +286,7 @@ export class Ipv4Addr implements IpAddrValue {
 	 * [rfc3927]: https://datatracker.ietf.org/doc/html/rfc3927
 	 */
 	public isLinkLocal(): boolean {
-		return arrayStartsWith(this.octets, new Uint8Array([169, 254]))
+		return arrayStartsWith(this._octets, new Uint8Array([169, 254]))
 	}
 
 	/**
