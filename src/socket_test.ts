@@ -107,7 +107,7 @@ Deno.test('socket address v4: parse is error, port is out of bounds', () => {
 	assertEquals(socket, null)
 })
 
-Deno.test('socket address v4 to string', () => {
+Deno.test('socket address v4: to string', () => {
 	const socket = SocketAddrV4.parse('0.0.0.0:8080') as SocketAddrV4
 	assertEquals(socket.toString(), '0.0.0.0:8080')
 })
