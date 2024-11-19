@@ -78,6 +78,27 @@ Deno.test('try from uint8array is error', () => {
 	assertEquals(addr, null)
 })
 
+Deno.test('try from uint8array is ok', () => {
+	const addr = Ipv4Addr.tryFromUint8ClampedArray(
+		new Uint8ClampedArray([
+			0,
+			0,
+			0,
+			0,
+		]),
+	)
+	assert(addr instanceof Ipv4Addr)
+})
+
+Deno.test('try from uint8array is error', () => {
+	const addr = Ipv4Addr.tryFromUint8ClampedArray(
+		new Uint8ClampedArray(
+			new ArrayBuffer(5),
+		),
+	)
+	assertEquals(addr, null)
+})
+
 Deno.test('try from dataview is ok', () => {
 	const view = new DataView(new ArrayBuffer(4))
 	view.setUint8(0, 127)
@@ -127,6 +148,11 @@ Deno.test('next: 0.0.0.0 -> 0.0.0.1', () => {
 Deno.test('next: 0.0.0.255 -> 0.0.1.0', () => {
 	const addr = Ipv4Addr.newAddr(0, 0, 0, 255)
 	assert(addr.next()?.equals(Ipv4Addr.newAddr(0, 0, 1, 0)))
+})
+
+Deno.test('octets', () => {
+	const addr = Ipv4Addr.newAddr(1, 2, 3, 4)
+	assertEquals(addr.octets(), new Uint8Array([1, 2, 3, 4]))
 })
 
 Deno.test('equals', () => {
@@ -254,6 +280,11 @@ Deno.test('parse 255.255.255.255 is ok', () => {
 	assert(addr.equals(Ipv4Addr.BROADCAST))
 })
 
+Deno.test('parse errors if minus sign/negative integer appears', () => {
+	const maybeIp = Ipv4Addr.parse('255.-255.255.255')
+	assertEquals(maybeIp, null)
+})
+
 Deno.test('parse errors because number is too big', () => {
 	const maybeIp = Ipv4Addr.parse('256.255.255.255')
 	assertEquals(maybeIp, null)
@@ -261,5 +292,15 @@ Deno.test('parse errors because number is too big', () => {
 
 Deno.test('parse errors because of no dot', () => {
 	const maybeIp = Ipv4Addr.parse('127!0.0.1')
+	assertEquals(maybeIp, null)
+})
+
+Deno.test('parse errors because of too many dots', () => {
+	const maybeIp = Ipv4Addr.parse('1.2.3.4.')
+	assertEquals(maybeIp, null)
+})
+
+Deno.test('parse errors because of too many dots and segments', () => {
+	const maybeIp = Ipv4Addr.parse('1.2.3.4.5')
 	assertEquals(maybeIp, null)
 })

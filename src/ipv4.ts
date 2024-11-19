@@ -108,7 +108,11 @@ export class Ipv4Addr implements IpAddrValue {
 	 * return `null`.
 	 */
 	public static parse(s: string): Ipv4Addr | null {
-		const [result, _] = parseIpv4Addr(s)
+		const [result, afterResult] = parseIpv4Addr(s)
+		if (s[afterResult] === '.') {
+			return null
+		}
+
 		return result
 	}
 
@@ -141,6 +145,29 @@ export class Ipv4Addr implements IpAddrValue {
 		array: Uint8Array,
 	): Ipv4Addr | null {
 		return (array.length === 4) ? new Ipv4Addr(array) : null
+	}
+
+	/**
+	 * Attempts to create an `Ipv4Addr` from a `Uint8ClampedArray`.
+	 *
+	 * This returns `null` if the array length is not equal to 4,
+	 * otherwise returns an `Ipv4Addr`.
+	 */
+	public static tryFromUint8ClampedArray(
+		array: Uint8ClampedArray,
+	): Ipv4Addr | null {
+		if (array.length !== 4) {
+			return null
+		}
+
+		return new Ipv4Addr(
+			new Uint8Array([
+				array[0],
+				array[1],
+				array[2],
+				array[3],
+			]),
+		)
 	}
 
 	/**

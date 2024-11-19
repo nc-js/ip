@@ -3,6 +3,24 @@ import { SocketAddrV4 } from './mod.ts'
 import { takeAsciiDigits } from './utils.ts'
 
 /**
+ * This internal module has slightly "relaxed" parsers. What this means
+ * is that it will only parse as much input as is necessary, and will
+ * not validate the text that comes after that accepted input.
+ *
+ * This allows for combining parsers (e.g parsing IPv4 addresses
+ * AND port numbers).
+ *
+ * For example, calling `parseIpv4Addr('127.0.0.1...')` will:
+ *  - parse up to '127.0.0.1',
+ *  - accept that string and convert it to an `Ipv4Addr`,
+ *  - and return an index value of 9 (where the parser last left off at).
+ *
+ * NOTE, however, that the publicly exposed parser methods will NOT
+ * accept extra input.
+ * @module
+ */
+
+/**
  * - A tuple where:
  * - the first member is either the resulting type, or null
  * - the second member is the index where the parser finally left off at
@@ -16,10 +34,12 @@ export function parseIpv4Addr(s: string): ParseResult<Ipv4Addr> {
 
 	while (seenDots <= 3) {
 		const [octetString, newIdx] = takeAsciiDigits(s, idx, 1, 3)
-
-		// parse octet
 		const octetNumber: number = Number.parseInt(octetString, 10)
-		if (octetNumber < 0 || octetNumber > 255) {
+
+		// This intentionally does not check if the octet is less than 0,
+		// since the previous step of taking Unicode codepoints is
+		// guaranteed to only accept ASCII digits, never a U+002D (MINUS SIGN).
+		if (octetNumber > 255) {
 			return [null, idx]
 		}
 		array[seenDots] = octetNumber
@@ -50,9 +70,5 @@ export function parseSocketAddrV4(s: string): ParseResult<SocketAddrV4> {
 
 	const [portStr, afterPort] = takeAsciiDigits(s, afterAddr + 1, 1, 5)
 	const portNum = Number.parseInt(portStr, 10)
-	if (Number.isNaN(portNum) || portNum > 65535) {
-		return [null, afterPort]
-	}
-
-	return [new SocketAddrV4(addr, portNum), afterPort]
+	return [SocketAddrV4.tryNew(addr, portNum), afterPort]
 }
