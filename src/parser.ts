@@ -37,6 +37,10 @@ export function parseIpv4Addr(s: string): ParseResult<Ipv4Addr> {
 		seenDots++
 	}
 
+	if(s[idx] === '.') {
+		return [null, idx]
+	}
+
 	return [Ipv4Addr.tryFromUint8Array(array), idx]
 }
 

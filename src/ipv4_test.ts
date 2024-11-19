@@ -294,3 +294,8 @@ Deno.test('parse errors because of no dot', () => {
 	const maybeIp = Ipv4Addr.parse('127!0.0.1')
 	assertEquals(maybeIp, null)
 })
+
+Deno.test('parse errors because of too many dots/segments', () => {
+	const maybeIp = Ipv4Addr.parse('1.2.3.4.5')
+	assertEquals(maybeIp, null)
+})
