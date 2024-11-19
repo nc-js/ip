@@ -13,6 +13,7 @@
 
 ### Internal changes
 - `parseSocketAddrV4()` now simply parses, and does not validate. Instead, it calls `SocketAddrV4.tryNew()` to validate.
+- There are now more unit tests for methods and classes.
 
 ## 0.2.1 (2024-11-18)
 

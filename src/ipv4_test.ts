@@ -150,6 +150,11 @@ Deno.test('next: 0.0.0.255 -> 0.0.1.0', () => {
 	assert(addr.next()?.equals(Ipv4Addr.newAddr(0, 0, 1, 0)))
 })
 
+Deno.test('octets', () => {
+	const addr = Ipv4Addr.newAddr(1, 2, 3, 4)
+	assertEquals(addr.octets(), new Uint8Array([1, 2, 3, 4]))
+})
+
 Deno.test('equals', () => {
 	const addr = Ipv4Addr.newAddr(127, 0, 0, 1)
 	assert(addr.equals(Ipv4Addr.LOCALHOST))
