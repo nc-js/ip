@@ -9,7 +9,7 @@ import { SocketAddrV6 } from './socket.ts'
 Deno.test('socket address v4: tryNew is ok', () => {
 	const socket = SocketAddrV4.tryNew(
 		Ipv4Addr.newAddr(127, 0, 0, 1),
-		8080
+		8080,
 	)
 	assertInstanceOf(socket, SocketAddrV4)
 })
@@ -17,7 +17,7 @@ Deno.test('socket address v4: tryNew is ok', () => {
 Deno.test('socket address v4: tryNew errors if port is NaN', () => {
 	const socket = SocketAddrV4.tryNew(
 		Ipv4Addr.newAddr(127, 0, 0, 1),
-		Number.NaN
+		Number.NaN,
 	)
 	assertEquals(socket, null)
 })
@@ -25,7 +25,7 @@ Deno.test('socket address v4: tryNew errors if port is NaN', () => {
 Deno.test('socket address v4: tryNew errors if port is +Infinity', () => {
 	const socket = SocketAddrV4.tryNew(
 		Ipv4Addr.newAddr(127, 0, 0, 1),
-		Number.POSITIVE_INFINITY
+		Number.POSITIVE_INFINITY,
 	)
 	assertEquals(socket, null)
 })
@@ -33,7 +33,7 @@ Deno.test('socket address v4: tryNew errors if port is +Infinity', () => {
 Deno.test('socket address v4: tryNew errors if port is -Infinity', () => {
 	const socket = SocketAddrV4.tryNew(
 		Ipv4Addr.newAddr(127, 0, 0, 1),
-		Number.NEGATIVE_INFINITY
+		Number.NEGATIVE_INFINITY,
 	)
 	assertEquals(socket, null)
 })
@@ -78,7 +78,7 @@ Deno.test('socket address v4: parse is error, port is out of bounds', () => {
 Deno.test('socket address v6: tryNew is ok', () => {
 	const socket = SocketAddrV6.tryNew(
 		Ipv6Addr.newAddr(1, 2, 3, 4, 5, 6, 7, 8),
-		8080
+		8080,
 	)
 	assertInstanceOf(socket, SocketAddrV6)
 })
@@ -86,7 +86,7 @@ Deno.test('socket address v6: tryNew is ok', () => {
 Deno.test('socket address v6: tryNew errors if port is NaN', () => {
 	const socket = SocketAddrV6.tryNew(
 		Ipv6Addr.newAddr(1, 2, 3, 4, 5, 6, 7, 8),
-		Number.NaN
+		Number.NaN,
 	)
 	assertEquals(socket, null)
 })
@@ -94,7 +94,7 @@ Deno.test('socket address v6: tryNew errors if port is NaN', () => {
 Deno.test('socket address v6: tryNew errors if port is +Infinity', () => {
 	const socket = SocketAddrV6.tryNew(
 		Ipv6Addr.newAddr(1, 2, 3, 4, 5, 6, 7, 8),
-		Number.POSITIVE_INFINITY
+		Number.POSITIVE_INFINITY,
 	)
 	assertEquals(socket, null)
 })
@@ -102,7 +102,7 @@ Deno.test('socket address v6: tryNew errors if port is +Infinity', () => {
 Deno.test('socket address v6: tryNew errors if port is -Infinity', () => {
 	const socket = SocketAddrV6.tryNew(
 		Ipv6Addr.newAddr(1, 2, 3, 4, 5, 6, 7, 8),
-		Number.NEGATIVE_INFINITY
+		Number.NEGATIVE_INFINITY,
 	)
 	assertEquals(socket, null)
 })
