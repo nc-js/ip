@@ -46,7 +46,7 @@ Deno.test('socket address v4: tryNew errors if port is less than 0', () => {
 	assertEquals(socket, null)
 })
 
-Deno.test('socket address v6: tryNew errors if port is greater than 65,535', () => {
+Deno.test('socket address v4: tryNew errors if port is greater than 65,535', () => {
 	const socket = SocketAddrV4.tryNew(
 		Ipv4Addr.newAddr(127, 0, 0, 1),
 		65536,
@@ -54,7 +54,7 @@ Deno.test('socket address v6: tryNew errors if port is greater than 65,535', () 
 	assertEquals(socket, null)
 })
 
-Deno.test('socket addresss v4: parse is ok', () => {
+Deno.test('socket address v4: parse is ok', () => {
 	const socket = SocketAddrV4.parse('127.0.0.1:8080')
 	assert(socket instanceof SocketAddrV4)
 	assert(socket.addr.equals(Ipv4Addr.LOCALHOST))

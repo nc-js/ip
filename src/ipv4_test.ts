@@ -275,6 +275,11 @@ Deno.test('parse 255.255.255.255 is ok', () => {
 	assert(addr.equals(Ipv4Addr.BROADCAST))
 })
 
+Deno.test('parse errors if minus sign/negative integer appears', () => {
+	const maybeIp = Ipv4Addr.parse('255.-255.255.255')
+	assertEquals(maybeIp, null)
+})
+
 Deno.test('parse errors because number is too big', () => {
 	const maybeIp = Ipv4Addr.parse('256.255.255.255')
 	assertEquals(maybeIp, null)

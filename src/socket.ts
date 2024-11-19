@@ -1,7 +1,6 @@
 import type { Ipv4Addr } from './ipv4.ts'
 import type { Ipv6Addr } from './ipv6.ts'
 import { parseSocketAddrV4 } from './parser.ts'
-import { clampUint16 } from './utils.ts'
 
 /**
  * A socket address, containing an IPv4 address and a port number.
@@ -87,7 +86,7 @@ export class SocketAddrV6 {
 	 */
 	public constructor(addr: Ipv6Addr, port: number) {
 		this.addr = addr
-		this.port = clampUint16(port)
+		this.port = port
 	}
 
 	/**

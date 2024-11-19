@@ -16,9 +16,11 @@ export function parseIpv4Addr(s: string): ParseResult<Ipv4Addr> {
 
 	while (seenDots <= 3) {
 		const [octetString, newIdx] = takeAsciiDigits(s, idx, 1, 3)
-
-		// parse octet
 		const octetNumber: number = Number.parseInt(octetString, 10)
+
+		// This intentionally does not check if the octet is less than 0,
+		// since the previous step of taking Unicode codepoints is
+		// guaranteed to only accept ASCII digits, never a U+002D (MINUS SIGN).
 		if (octetNumber > 255) {
 			return [null, idx]
 		}

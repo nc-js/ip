@@ -8,6 +8,9 @@
 ### Features
 - `Ipv4Addr` can now be created from a `Uint8ClampedArray` with `Ipv4Addr.tryFromUint8ClampedArray()`.
 
+### Bug fixes
+- The implementation behavior of `SocketAddrV6`'s constructor is now consistent with how it is documented; it no longer clamps the port number. The caller must be responsible for checking that the port number is valid.
+
 ### Internal changes
 - `parseSocketAddrV4()` now simply parses, and does not validate. Instead, it calls `SocketAddrV4.tryNew()` to validate.
 
