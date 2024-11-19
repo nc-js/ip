@@ -13,7 +13,7 @@ import { takeAsciiDigits } from './utils.ts'
  * For example, calling `parseIpv4Addr('127.0.0.1...')` will:
  *  - parse up to '127.0.0.1',
  *  - accept that string and convert it to an `Ipv4Addr`,
- *  - and return an index value of 13 (where the parser last left off at).
+ *  - and return an index value of 9 (where the parser last left off at).
  *
  * NOTE, however, that the publicly exposed parser methods will NOT
  * accept extra input.
