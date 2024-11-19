@@ -245,6 +245,8 @@ export class Ipv6Addr implements IpAddrValue {
 	 *
 	 * This range is defined in [IETF RFC 3849][rfc3849]
 	 * as `2001:db8::/32`.
+	 *
+	 * [rfc3849]: https://datatracker.ietf.org/doc/html/rfc3849
 	 */
 	public isDocumentation(): boolean {
 		return this.a === 0x2001 && this.b === 0xdb8
@@ -296,7 +298,7 @@ export class Ipv6Addr implements IpAddrValue {
 	/**
 	 * Checks if this IPv6 address is a loopback address.
 	 *
-	 * This is defined in [IETF RFC 4291 § 2.5.3][rfc4921] as `::1`.
+	 * This is defined in [IETF RFC 4291 § 2.5.3][rfc4291] as `::1`.
 	 *
 	 * [rfc4291]: https://datatracker.ietf.org/doc/html/rfc4291
 	 */
@@ -307,9 +309,9 @@ export class Ipv6Addr implements IpAddrValue {
 	/**
 	 * Checks if this IPv6 address is a multicast address.
 	 *
-	 * This is defined in [IETF RFC 4291][rfc4921] as `ff00::/8`.
+	 * This is defined in [IETF RFC 4291][rfc4291] as `ff00::/8`.
 	 *
-	 * [rfc4921]: https://datatracker.ietf.org/doc/html/rfc4291
+	 * [rfc4291]: https://datatracker.ietf.org/doc/html/rfc4291
 	 */
 	public isMulticast(): boolean {
 		return (this.a & 0xff00) === 0xff00
