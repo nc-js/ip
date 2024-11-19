@@ -5,7 +5,13 @@ import { Ipv6Addr } from './mod.ts'
  * A representation of an IP address
  */
 export interface IpAddrValue {
-	/** Checks if this address equals another IP address */
+	/**
+	 * The array of unsigned 8-bit integers that make up this address.
+	 */
+	octets(): Uint8Array
+	/**
+	 * Checks if this address equals another IP address.
+	 */
 	equals(other: this): boolean
 	/**
 	 * Checks if this address is a benchmarking address.
@@ -59,7 +65,14 @@ export class IpAddr implements IpAddrValue {
 	}
 
 	/**
-	 * Checks if this address equals another IP address
+	 * The array of unsigned 8-bit integers that make up this address.
+	 */
+	octets(): Uint8Array {
+		return this.addr.octets()
+	}
+
+	/**
+	 * Checks if this address equals another IP address.
 	 */
 	equals(other: IpAddr): boolean {
 		return this.addr.equals(other)

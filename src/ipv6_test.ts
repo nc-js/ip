@@ -109,6 +109,14 @@ Deno.test('address with hex characters to full string', () => {
 	assertEquals(addr.toString(), '1234:5678:9abc:def0:1234:5678:9abc:def0')
 })
 
+Deno.test('octets', () => {
+	const addr = Ipv6Addr.newAddr(0xff00, 0, 0, 0, 0, 0, 0, 0)
+	assertEquals(
+		addr.octets(),
+		new Uint8Array([255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+	)
+})
+
 Deno.test('equals', () => {
 	const addr1 = Ipv6Addr.newAddr(1, 2, 3, 4, 5, 6, 7, 8)
 	const addr2 = Ipv6Addr.newAddr(1, 2, 3, 4, 5, 6, 7, 8)
