@@ -206,8 +206,8 @@ export class Ipv6Addr implements IpAddrValue {
 		for (let i = 0; i < 8; i++) {
 			const idx = i * 2
 			const hextet = this._segments[i]
-			uint8Array[idx] = hextet & 0xff // Lower 8 bits
-			uint8Array[idx + 1] = (hextet >> 8) & 0xff // Upper 8 bits
+			uint8Array[idx] = (hextet >> 8) & 0xff // Upper 8 bits
+			uint8Array[idx + 1] = hextet & 0xff // Lower 8 bits
 		}
 		return uint8Array
 	}
