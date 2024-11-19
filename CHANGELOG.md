@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.0
+
+### Breaking changes
+- `SocketAddrV4.tryNew()` and `SocketAddrV6.tryNew()` will now return `null` if the port number is outside of the unsigned 16-bit integer range, instead of truncating + clamping.
+
+### Features
+- `Ipv4Addr` can now be created from a `Uint8ClampedArray` with `Ipv4Addr.tryFromUint8ClampedArray()`.
+
+### Internal changes
+- `parseSocketAddrV4()` now simply parses, and does not validate. Instead, it calls `SocketAddrV4.tryNew()` to validate.
+
 ## 0.2.1 (2024-11-18)
 
 ### Documentation

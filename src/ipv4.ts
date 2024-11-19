@@ -144,6 +144,29 @@ export class Ipv4Addr implements IpAddrValue {
 	}
 
 	/**
+	 * Attempts to create an `Ipv4Addr` from a `Uint8ClampedArray`.
+	 *
+	 * This returns `null` if the array length is not equal to 4,
+	 * otherwise returns an `Ipv4Addr`.
+	 */
+	public static tryFromUint8ClampedArray(
+		array: Uint8ClampedArray,
+	): Ipv4Addr | null {
+		if (array.length !== 4) {
+			return null
+		}
+
+		return new Ipv4Addr(
+			new Uint8Array([
+				array[0],
+				array[1],
+				array[2],
+				array[3],
+			]),
+		)
+	}
+
+	/**
 	 * Attempts to create an `Ipv4Addr` from a `DataView`.
 	 *
 	 * This returns `null` if the view is not 4 bytes long,

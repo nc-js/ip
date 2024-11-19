@@ -19,7 +19,7 @@ export function parseIpv4Addr(s: string): ParseResult<Ipv4Addr> {
 
 		// parse octet
 		const octetNumber: number = Number.parseInt(octetString, 10)
-		if (octetNumber < 0 || octetNumber > 255) {
+		if (octetNumber > 255) {
 			return [null, idx]
 		}
 		array[seenDots] = octetNumber
@@ -50,9 +50,5 @@ export function parseSocketAddrV4(s: string): ParseResult<SocketAddrV4> {
 
 	const [portStr, afterPort] = takeAsciiDigits(s, afterAddr + 1, 1, 5)
 	const portNum = Number.parseInt(portStr, 10)
-	if (Number.isNaN(portNum) || portNum > 65535) {
-		return [null, afterPort]
-	}
-
-	return [new SocketAddrV4(addr, portNum), afterPort]
+	return [SocketAddrV4.tryNew(addr, portNum), afterPort]
 }

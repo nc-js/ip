@@ -78,6 +78,27 @@ Deno.test('try from uint8array is error', () => {
 	assertEquals(addr, null)
 })
 
+Deno.test('try from uint8array is ok', () => {
+	const addr = Ipv4Addr.tryFromUint8ClampedArray(
+		new Uint8ClampedArray([
+			0,
+			0,
+			0,
+			0,
+		]),
+	)
+	assert(addr instanceof Ipv4Addr)
+})
+
+Deno.test('try from uint8array is error', () => {
+	const addr = Ipv4Addr.tryFromUint8ClampedArray(
+		new Uint8ClampedArray(
+			new ArrayBuffer(5),
+		),
+	)
+	assertEquals(addr, null)
+})
+
 Deno.test('try from dataview is ok', () => {
 	const view = new DataView(new ArrayBuffer(4))
 	view.setUint8(0, 127)

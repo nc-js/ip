@@ -31,15 +31,15 @@ export class SocketAddrV4 {
 	 * Attempts to create a new `SocketAddrV4`.
 	 *
 	 * If the port is not an integer (including `NaN`, `Infinity`, and `-Infinity`),
-	 * then this will return null. Otherwise, the port number will be clamped and
-	 * truncated to an unsigned 16-bit integer.
+	 * OR the port is an integer but not within the range of an unsigned 16-bit integer,
+	 * then this will return null.
 	 */
 	public static tryNew(addr: Ipv4Addr, port: number): SocketAddrV4 | null {
-		if (!Number.isInteger(port)) {
-			return null
+		if (Number.isInteger(port) && port >= 0 && port <= 65535) {
+			return new SocketAddrV4(addr, port)
 		}
 
-		return new SocketAddrV4(addr, clampUint16(port))
+		return null
 	}
 
 	/**
@@ -98,11 +98,11 @@ export class SocketAddrV6 {
 	 * truncated to an unsigned 16-bit integer.
 	 */
 	public static tryNew(addr: Ipv6Addr, port: number): SocketAddrV6 | null {
-		if (!Number.isInteger(port)) {
-			return null
+		if (Number.isInteger(port) && port >= 0 && port <= 65535) {
+			return new SocketAddrV6(addr, port)
 		}
 
-		return new SocketAddrV6(addr, clampUint16(port))
+		return null
 	}
 
 	/**
