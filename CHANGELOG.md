@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1 (2024-11-18)
+
+### Documentation
+- Fixes a link to IETF RFC 3849 in `Ipv6Addr.isDocumentation()`.
+- Fixes internal typo to link references for `IPv6Addr.isLoopback()` and  `IPv6Addr.isMulticast()`.
+
 ## 0.2.0 (2024-11-18)
 
 ### Breaking changes
