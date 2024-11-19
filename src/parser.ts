@@ -37,7 +37,7 @@ export function parseIpv4Addr(s: string): ParseResult<Ipv4Addr> {
 		seenDots++
 	}
 
-	if(s[idx] === '.') {
+	if (s[idx] === '.') {
 		return [null, idx]
 	}
 
