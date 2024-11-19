@@ -35,7 +35,7 @@ export class SocketAddrV4 {
 	 * truncated to an unsigned 16-bit integer.
 	 */
 	public static tryNew(addr: Ipv4Addr, port: number): SocketAddrV4 | null {
-		if (Number.isInteger(port)) {
+		if (!Number.isInteger(port)) {
 			return null
 		}
 
@@ -98,7 +98,7 @@ export class SocketAddrV6 {
 	 * truncated to an unsigned 16-bit integer.
 	 */
 	public static tryNew(addr: Ipv6Addr, port: number): SocketAddrV6 | null {
-		if (Number.isInteger(port)) {
+		if (!Number.isInteger(port)) {
 			return null
 		}
 
