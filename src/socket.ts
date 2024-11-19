@@ -15,7 +15,7 @@ export class SocketAddrV4 {
 	/**
 	 * Creates a new socket address from an IPv4 address and a port number.
 	 *
-	 * **Note**: It is the caller's responsibility to check that the port
+	 * **NOTE**: It is the caller's responsibility to check that the port
 	 * number passed is an integer (not `NaN`, `Infinity`, or  `-Infinity`)
 	 * and is within the range of an unsigned 16-bit integer.
 	 *
@@ -78,7 +78,7 @@ export class SocketAddrV6 {
 	/**
 	 * Creates a new socket address from an IPv6 address and a port number.
 	 *
-	 * **Note**: It is the caller's responsibility to check that the port
+	 * **NOTE**: It is the caller's responsibility to check that the port
 	 * number passed is an integer (not `NaN`, `Infinity`, or  `-Infinity`)
 	 * and is within the range of an unsigned 16-bit integer.
 	 *
