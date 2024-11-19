@@ -3,6 +3,24 @@ import { SocketAddrV4 } from './mod.ts'
 import { takeAsciiDigits } from './utils.ts'
 
 /**
+ * This internal module has slightly "relaxed" parsers. What this means
+ * is that it will only parse as much input as is necessary, and will
+ * not validate the text that comes after that accepted input.
+ *
+ * This allows for combining parsers (e.g parsing IPv4 addresses
+ * AND port numbers).
+ *
+ * For example, calling `parseIpv4Addr('127.0.0.1...')` will:
+ *  - parse up to '127.0.0.1',
+ *  - accept that string and convert it to an `Ipv4Addr`,
+ *  - and return an index value of 13 (where the parser last left off at).
+ *
+ * NOTE, however, that the publicly exposed parser methods will NOT
+ * accept extra input.
+ * @module
+ */
+
+/**
  * - A tuple where:
  * - the first member is either the resulting type, or null
  * - the second member is the index where the parser finally left off at
@@ -35,10 +53,6 @@ export function parseIpv4Addr(s: string): ParseResult<Ipv4Addr> {
 			idx++
 		}
 		seenDots++
-	}
-
-	if (s[idx] === '.') {
-		return [null, idx]
 	}
 
 	return [Ipv4Addr.tryFromUint8Array(array), idx]

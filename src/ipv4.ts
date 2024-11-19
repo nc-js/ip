@@ -108,7 +108,11 @@ export class Ipv4Addr implements IpAddrValue {
 	 * return `null`.
 	 */
 	public static parse(s: string): Ipv4Addr | null {
-		const [result, _] = parseIpv4Addr(s)
+		const [result, afterResult] = parseIpv4Addr(s)
+		if (s[afterResult] === '.') {
+			return null
+		}
+
 		return result
 	}
 
