@@ -8,18 +8,38 @@ import { clampUint16 } from './utils.ts'
  */
 export class SocketAddrV4 {
 	/** The IPv4 address of the socket */
-	public addr: Ipv4Addr
+	public readonly addr: Ipv4Addr
 	/** The unsigned 16-bit port number of the address */
-	public port: number
+	public readonly port: number
 
 	/**
 	 * Creates a new socket address from an IPv4 address and a port number.
+	 *
+	 * **Note**: It is the caller's responsibility to check that the port
+	 * number passed is an integer (not `NaN`, `Infinity`, or  `-Infinity`)
+	 * and is within the range of an unsigned 16-bit integer.
+	 *
 	 * @param addr The IPv4 address of the socket
 	 * @param port The unsigned 16-bit port number of the address
 	 */
 	public constructor(addr: Ipv4Addr, port: number) {
 		this.addr = addr
 		this.port = port
+	}
+
+	/**
+	 * Attempts to create a new `SocketAddrV4`.
+	 *
+	 * If the port is not an integer (including `NaN`, `Infinity`, and `-Infinity`),
+	 * then this will return null. Otherwise, the port number will be clamped and
+	 * truncated to an unsigned 16-bit integer.
+	 */
+	public static tryNew(addr: Ipv4Addr, port: number): SocketAddrV4 | null {
+		if (Number.isInteger(port)) {
+			return null
+		}
+
+		return new SocketAddrV4(addr, clampUint16(port))
 	}
 
 	/**
@@ -51,12 +71,17 @@ export class SocketAddrV4 {
  */
 export class SocketAddrV6 {
 	/** The IPv6 address of the socket */
-	public addr: Ipv6Addr
+	public readonly addr: Ipv6Addr
 	/** The unsigned 16-bit port number of the address */
-	public port: number
+	public readonly port: number
 
 	/**
 	 * Creates a new socket address from an IPv6 address and a port number.
+	 *
+	 * **Note**: It is the caller's responsibility to check that the port
+	 * number passed is an integer (not `NaN`, `Infinity`, or  `-Infinity`)
+	 * and is within the range of an unsigned 16-bit integer.
+	 *
 	 * @param addr The IPv6 address of the socket
 	 * @param port The unsigned 16-bit port number of the address
 	 */
@@ -66,16 +91,28 @@ export class SocketAddrV6 {
 	}
 
 	/**
-	 * Parses a string in the format of `"[ipv6]:port"`,
-	 * where the port is an unsigned 16-bit integer.
+	 * Attempts to create a new `SocketAddrV6`.
 	 *
-	 * TODO: Finish this implementation
+	 * If the port is not an integer (including `NaN`, `Infinity`, and `-Infinity`),
+	 * then this will return null. Otherwise, the port number will be clamped and
+	 * truncated to an unsigned 16-bit integer.
 	 */
-	public static fromString(s: string): SocketAddrV6 | null {
-		if (s[0] !== '[') {
+	public static tryNew(addr: Ipv6Addr, port: number): SocketAddrV6 | null {
+		if (Number.isInteger(port)) {
 			return null
 		}
 
-		return null
+		return new SocketAddrV6(addr, clampUint16(port))
+	}
+
+	/**
+	 * Parses a string in the format of `"[ipv6]:port"`,
+	 * where the port is an unsigned 16-bit integer.
+	 *
+	 * TODO: Finish this implementation. This will currently
+	 * throw an error since it is not implemented yet.
+	 */
+	public static parse(_s: string): SocketAddrV6 | null {
+		throw new Error('Not implemented yet')
 	}
 }

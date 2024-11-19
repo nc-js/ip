@@ -29,20 +29,6 @@ export class Ipv6Addr implements IpAddrValue {
 	}
 
 	/**
-	 * A fixed-size array of 16 unsigned 8-bit integers
-	 */
-	public octets(): Uint8Array {
-		const uint8Array = new Uint8Array(16)
-		for (let i = 0; i < 8; i++) {
-			const idx = i * 2
-			const hextet = this._segments[i]
-			uint8Array[idx] = hextet & 0xff // Lower 8 bits
-			uint8Array[idx + 1] = (hextet >> 8) & 0xff // Upper 8 bits
-		}
-		return uint8Array
-	}
-
-	/**
 	 * A fixed-size array of 8 unsigned 16-bit integers.
 	 */
 	public segments(): Uint16Array {
@@ -210,6 +196,20 @@ export class Ipv6Addr implements IpAddrValue {
 			hextets.push(segment.toString(16).padStart(4, '0'))
 		}
 		return hextets.join(':')
+	}
+
+	/**
+	 * A fixed-size array of 16 unsigned 8-bit integers
+	 */
+	public octets(): Uint8Array {
+		const uint8Array = new Uint8Array(16)
+		for (let i = 0; i < 8; i++) {
+			const idx = i * 2
+			const hextet = this._segments[i]
+			uint8Array[idx] = hextet & 0xff // Lower 8 bits
+			uint8Array[idx + 1] = (hextet >> 8) & 0xff // Upper 8 bits
+		}
+		return uint8Array
 	}
 
 	/**

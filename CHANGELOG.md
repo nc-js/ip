@@ -2,8 +2,16 @@
 
 ## 0.2.0 (2024-11-18)
 
+### Breaking changes
+- The properties of `Ipv4Addr` and `Ipv6Addr` are now readonly.
+- The properties of `SocketAddrV4` and `SocketAddrV6` are now readonly.
+- `SocketAddrV6.fromString()` is renamed to `SocketAddrV6.parse()` to be consistent with `SocketAddrV4.parse()`. (**Note**: This method is not currently implemented yet, and will throw an error when called)
+
+### Features
 - The interface `IpAddrValue` now exposes an `octets()` method that returns a `Uint8Array`.
-- To prevent internal mutability of `IPv4Addr` and `IPv6Addr`, `IPv4Addr.octets` and `IPv6Addr.segments` are now readonly.
+- `SocketAddrV4` and `SocketAddrV6` now exposes a static `tryNew()` method. This method will check if the port number is a valid, unsigned 16-bit integer.
+- `SocketAddrV4` and `SocketAddrV6` now have a note on their constructors which states that the caller is responsible for checking that the port is a valid, unsigned 16-bit integer.
+
 
 ## 0.1.1 (2024-11-18)
 
