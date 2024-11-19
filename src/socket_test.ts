@@ -6,6 +6,22 @@ import { Ipv6Addr } from './ipv6.ts'
 import { SocketAddrV4 } from './socket.ts'
 import { SocketAddrV6 } from './socket.ts'
 
+Deno.test('socket address v4: constructor does not validate port number (too small)', () => {
+	const socket = new SocketAddrV4(
+		Ipv4Addr.newAddr(127, 0, 0, 1),
+		-1,
+	)
+	assertEquals(socket.port, -1)
+})
+
+Deno.test('socket address v4: constructor does not validate port number (too big)', () => {
+	const socket = new SocketAddrV4(
+		Ipv4Addr.newAddr(127, 0, 0, 1),
+		65536,
+	)
+	assertEquals(socket.port, 65536)
+})
+
 Deno.test('socket address v4: tryNew is ok', () => {
 	const socket = SocketAddrV4.tryNew(
 		Ipv4Addr.newAddr(127, 0, 0, 1),
@@ -94,6 +110,22 @@ Deno.test('socket address v4: parse is error, port is out of bounds', () => {
 Deno.test('socket address v4 to string', () => {
 	const socket = SocketAddrV4.parse('0.0.0.0:8080') as SocketAddrV4
 	assertEquals(socket.toString(), '0.0.0.0:8080')
+})
+
+Deno.test('socket address v6: constructor does not validate port number (too small)', () => {
+	const socket = new SocketAddrV6(
+		Ipv6Addr.newAddr(1, 2, 3, 4, 5, 6, 7, 8),
+		-1,
+	)
+	assertEquals(socket.port, -1)
+})
+
+Deno.test('socket address v6: constructor does not validate port number (too big)', () => {
+	const socket = new SocketAddrV6(
+		Ipv6Addr.newAddr(1, 2, 3, 4, 5, 6, 7, 8),
+		65536,
+	)
+	assertEquals(socket.port, 65536)
 })
 
 Deno.test('socket address v6: tryNew is ok', () => {
