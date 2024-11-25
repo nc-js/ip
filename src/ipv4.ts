@@ -82,7 +82,7 @@ export class Ipv4Addr implements IpAddrValue {
 	}
 
 	/**
-	 * Creates an IP address from an unsigned 32-bit integer.
+	 * Creates an IPv4 address from an unsigned 32-bit integer.
 	 *
 	 * If the given number is **not** within the range
 	 * (0 to 4,294,967,295), it will clamp it to be within the range.
@@ -192,19 +192,26 @@ export class Ipv4Addr implements IpAddrValue {
 	}
 
 	/**
-	 * Returns the IP address in dot decimal notation.
+	 * Returns the IPv4 address as an unsigned 32-bit integer.
+	 */
+	public toUint32(): number {
+		return uint8ArrayToUint32(this._octets)
+	}
+
+	/**
+	 * Returns the IPv4 address in dot decimal notation.
 	 */
 	public toString(): string {
 		return `${this.a}.${this.b}.${this.c}.${this.d}`
 	}
 
 	/**
-	 * Returns the address that occurs before this address.
+	 * Returns the IPv4 address that occurs before this address.
 	 *
 	 * If the current address is `0.0.0.0`, this returns null.
 	 */
 	public previous(): Ipv4Addr | null {
-		const n = uint8ArrayToUint32(this._octets) - 1
+		const n = this.toUint32() - 1
 		if (n < 0) {
 			return null
 		}
@@ -213,12 +220,12 @@ export class Ipv4Addr implements IpAddrValue {
 	}
 
 	/**
-	 * Returns the address that occurs after this address.
+	 * Returns the IPv4 address that occurs after this address.
 	 *
 	 * If the current address is `255.255.255.255`, this returns null.
 	 */
 	public next(): Ipv4Addr | null {
-		const n = uint8ArrayToUint32(this._octets) + 1
+		const n = this.toUint32() + 1
 		if (n > 65535) {
 			return null
 		}

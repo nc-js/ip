@@ -25,6 +25,14 @@ Deno.test('special address unspecified', () => {
 	assertEquals(localhost.h, 0)
 })
 
+Deno.test('segments', () => {
+	const addr = Ipv6Addr.newAddr(1, 2, 3, 4, 5, 6, 7, 8)
+	assertEquals(
+		addr.segments(),
+		new Uint16Array([1, 2, 3, 4, 5, 6, 7, 8]),
+	)
+})
+
 Deno.test('new address', () => {
 	const addr = Ipv6Addr.newAddr(1, 2, 3, 4, 5, 6, 7, 8)
 	assertEquals(addr.a, 1)
@@ -35,6 +43,30 @@ Deno.test('new address', () => {
 	assertEquals(addr.f, 6)
 	assertEquals(addr.g, 7)
 	assertEquals(addr.h, 8)
+})
+
+Deno.test('from uint128 clamps to min', () => {
+	const addr = Ipv6Addr.fromUint128(-1n)
+	assertEquals(addr.a, 0)
+	assertEquals(addr.b, 0)
+	assertEquals(addr.c, 0)
+	assertEquals(addr.d, 0)
+	assertEquals(addr.e, 0)
+	assertEquals(addr.f, 0)
+	assertEquals(addr.g, 0)
+	assertEquals(addr.h, 0)
+})
+
+Deno.test('from uint128 clamps to max', () => {
+	const addr = Ipv6Addr.fromUint128(2n ** 128n)
+	assertEquals(addr.a, 65_535)
+	assertEquals(addr.b, 65_535)
+	assertEquals(addr.c, 65_535)
+	assertEquals(addr.d, 65_535)
+	assertEquals(addr.e, 65_535)
+	assertEquals(addr.f, 65_535)
+	assertEquals(addr.g, 65_535)
+	assertEquals(addr.h, 65_535)
 })
 
 Deno.test('try from array is ok', () => {
@@ -87,6 +119,25 @@ Deno.test('try from dataview is error', () => {
 	assertEquals(addr, null)
 })
 
+Deno.test('to uint128 from ::', () => {
+	const addr = Ipv6Addr.newAddr(0, 0, 0, 0, 0, 0, 0, 0)
+	assertEquals(addr.toUint128(), 0n)
+})
+
+Deno.test('to uint128 from ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff', () => {
+	const addr = Ipv6Addr.newAddr(
+		0xffff,
+		0xffff,
+		0xffff,
+		0xffff,
+		0xffff,
+		0xffff,
+		0xffff,
+		0xffff,
+	)
+	assertEquals(addr.toUint128(), (2n ** 128n) - 1n)
+})
+
 Deno.test('localhost to full string', () => {
 	const localhost = Ipv6Addr.LOCALHOST
 	assertEquals(
@@ -107,6 +158,54 @@ Deno.test('address with hex characters to full string', () => {
 		0xdef0,
 	)
 	assertEquals(addr.toString(), '1234:5678:9abc:def0:1234:5678:9abc:def0')
+})
+
+Deno.test('previous: :: -> null', () => {
+	const addr = Ipv6Addr.newAddr(0, 0, 0, 0, 0, 0, 0, 0)
+	assertEquals(addr.previous(), null)
+})
+
+Deno.test('previous: before max segment', () => {
+	const addr = Ipv6Addr.newAddr(0, 0, 0, 0, 0, 0, 0, 65535)
+	assertEquals(
+		addr.previous(),
+		Ipv6Addr.newAddr(0, 0, 0, 0, 0, 0, 0, 65534),
+	)
+})
+
+Deno.test('previous: underflow to previous segment', () => {
+	const addr = Ipv6Addr.newAddr(0, 0, 0, 0, 0, 0, 1, 0)
+	assertEquals(addr.previous(), Ipv6Addr.newAddr(0, 0, 0, 0, 0, 0, 0, 65535))
+})
+
+Deno.test('next: max ipv6 address -> null', () => {
+	const addr = Ipv6Addr.newAddr(
+		0xffff,
+		0xffff,
+		0xffff,
+		0xffff,
+		0xffff,
+		0xffff,
+		0xffff,
+		0xffff,
+	)
+	assertEquals(addr.next(), null)
+})
+
+Deno.test('next: :: -> ::1', () => {
+	const addr = Ipv6Addr.newAddr(0, 0, 0, 0, 0, 0, 0, 0)
+	assertEquals(
+		addr.next(),
+		Ipv6Addr.newAddr(0, 0, 0, 0, 0, 0, 0, 1),
+	)
+})
+
+Deno.test('next: ::ffff -> ::1:0', () => {
+	const addr = Ipv6Addr.newAddr(0, 0, 0, 0, 0, 0, 0, 0xffff)
+	assertEquals(
+		addr.next(),
+		Ipv6Addr.newAddr(0, 0, 0, 0, 0, 0, 1, 0),
+	)
 })
 
 Deno.test('octets', () => {

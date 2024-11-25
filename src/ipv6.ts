@@ -8,17 +8,15 @@ export class Ipv6Addr implements IpAddrValue {
 	/**
 	 * A localhost address at `::1`, or `0:0:0:0:0:0:0:1`
 	 */
-	// deno-fmt-ignore
 	public static LOCALHOST: Ipv6Addr = new Ipv6Addr(
-		new Uint16Array([0, 0, 0, 0, 0, 0, 0, 1])
+		new Uint16Array([0, 0, 0, 0, 0, 0, 0, 1]),
 	)
 
 	/**
 	 * An unspecified address at `::`, or `0:0:0:0:0:0:0:0`
 	 */
-	// deno-fmt-ignore
 	public static UNSPECIFIED: Ipv6Addr = new Ipv6Addr(
-		new Uint16Array([0, 0, 0, 0, 0, 0, 0, 0])
+		new Uint16Array([0, 0, 0, 0, 0, 0, 0, 0]),
 	)
 
 	/** A fixed-size array of 8 unsigned 16-bit integers */
@@ -129,6 +127,28 @@ export class Ipv6Addr implements IpAddrValue {
 	}
 
 	/**
+	 * Creates an IPv6 address from an unsigned 128-bit integer
+	 * (via `bigint`).
+	 *
+	 * If the given number is **not** within the range
+	 * (0 to (2^128)-1), it will clamp it to be within the range.
+	 */
+	public static fromUint128(n: bigint): Ipv6Addr {
+		const u128max = (2n ** 128n) - 1n
+		const u128 = n < 0n ? 0n : n > u128max ? u128max : n
+		return Ipv6Addr.newAddr(
+			Number((u128 >> 112n) & 65_535n),
+			Number((u128 >> 96n) & 65_535n),
+			Number((u128 >> 80n) & 65_535n),
+			Number((u128 >> 64n) & 65_535n),
+			Number((u128 >> 48n) & 65_535n),
+			Number((u128 >> 32n) & 65_535n),
+			Number((u128 >> 16n) & 65_535n),
+			Number(u128 & 65_535n),
+		)
+	}
+
+	/**
 	 * Attempts to create an `Ipv6Addr` from an array of numbers.
 	 *
 	 * This returns `null` if the array length is not equal to 8,
@@ -184,6 +204,47 @@ export class Ipv6Addr implements IpAddrValue {
 				view.getUint16(7),
 			]),
 		)
+	}
+
+	/**
+	 * Returns this IPv6 address as an unsigned 128-bit integer
+	 * via a `BigInt`.
+	 */
+	public toUint128(): bigint {
+		return uint128FromArray(this._segments)
+	}
+
+	/**
+	 * Returns the IPv6 address that comes before this current
+	 * IPv6 address.
+	 *
+	 * If the current IPv6 address is `::`, this will return null.
+	 */
+	public previous(): Ipv6Addr | null {
+		const u128 = this.toUint128()
+		if (u128 === 0n) {
+			return null
+		}
+
+		return Ipv6Addr.fromUint128(u128 - 1n)
+	}
+
+	/**
+	 * Returns the IPv6 address that comes after this current
+	 * IPv6 address.
+	 *
+	 * If the current IPv6 address is
+	 * `ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff`,
+	 * this will return null.
+	 */
+	public next(): Ipv6Addr | null {
+		const u128 = this.toUint128()
+		const u128max = (2n ** 128n) - 1n
+		if (u128 === u128max) {
+			return null
+		}
+
+		return Ipv6Addr.fromUint128(u128 + 1n)
 	}
 
 	/**

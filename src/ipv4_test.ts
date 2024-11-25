@@ -115,6 +115,16 @@ Deno.test('try from dataview is error', () => {
 	assertEquals(Ipv4Addr.tryFromDataView(view), null)
 })
 
+Deno.test('to uint32 from 0.0.0.0', () => {
+	const ip = Ipv4Addr.newAddr(0, 0, 0, 0)
+	assertEquals(ip.toUint32(), 0)
+})
+
+Deno.test('to uint32 from 255.255.255.255', () => {
+	const ip = Ipv4Addr.newAddr(255, 255, 255, 255)
+	assertEquals(ip.toUint32(), Math.pow(2, 32) - 1)
+})
+
 Deno.test('to string', () => {
 	const localhost = Ipv4Addr.LOCALHOST
 	assertEquals(localhost.toString(), '127.0.0.1')
