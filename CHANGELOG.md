@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.4.0
+
+### Features
+
+- `Ipv4Addr` now exposes an instance method named `toUint32()`.
+- `Ipv6Addr` now exposes 4 new instance methods:
+  - `toUint128()`
+  - `fromUint128()`, for constructing a new `Ipv6Addr` from a `bigint`
+  - `previous()`, for getting the previous IPv6 address
+  - `next()`, for getting the next IPv6 address
+
 ## 0.3.0
 
 ### Breaking changes
