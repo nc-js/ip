@@ -208,7 +208,7 @@ export class Ipv6Addr implements IpAddrValue {
 
 	/**
 	 * Returns this IPv6 address as an unsigned 128-bit integer
-	 * via a `BigInt`.
+	 * (via `bigint`).
 	 */
 	public toUint128(): bigint {
 		return uint128FromArray(this._segments)
