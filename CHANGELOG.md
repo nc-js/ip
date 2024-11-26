@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.1
+
+### Documentation
+
+- This fixes a minor documentation issue for `Ipv6Addr.tryFromArray()`. This now correctly mentions that the method will return `null` if any of the numbers are not a valid unsigned 16-bit integer.
+
 ## 0.5.0
 
 This version focuses on making the library's behavior for handling numbers/integers more consistent.
