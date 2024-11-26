@@ -1,7 +1,3 @@
-import { Ipv4Addr } from './ipv4.ts'
-import { SocketAddrV4 } from './mod.ts'
-import { takeAsciiDigits } from './utils.ts'
-
 /**
  * This internal module has slightly "relaxed" parsers. What this means
  * is that it will only parse as much input as is necessary, and will
@@ -19,6 +15,10 @@ import { takeAsciiDigits } from './utils.ts'
  * accept extra input.
  * @module
  */
+
+import { Ipv4Addr } from './ipv4.ts'
+import { SocketAddrV4 } from './mod.ts'
+import { takeAsciiDigits } from './utils.ts'
 
 /**
  * - A tuple where:

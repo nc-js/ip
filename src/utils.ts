@@ -13,12 +13,20 @@ export function arrayStartsWith(
 	return true
 }
 
-export function clampUint8(n: number): number {
-	return Math.max(0, Math.min(255, Math.trunc(n)))
+export function isValidUint8(n: number): boolean {
+	return n >= 0 && n <= 255 && Number.isInteger(n)
 }
 
-export function clampUint16(n: number): number {
-	return Math.max(0, Math.min(65535, Math.trunc(n)))
+export function isValidUint16(n: number): boolean {
+	return n >= 0 && n <= 65_535 && Number.isInteger(n)
+}
+
+export function isValidUint32(n: number): boolean {
+	return n >= 0 && n <= 4_294_967_295 && Number.isInteger(n)
+}
+
+export function isValidUint128(n: bigint): boolean {
+	return n >= 0 && n <= ((2n ** 128n) - 1n)
 }
 
 function isCodePointBetween(

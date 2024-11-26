@@ -1,5 +1,5 @@
 import type { IpAddrValue } from './ip.ts'
-import { arrayStartsWith, clampUint8 } from './utils.ts'
+import { arrayStartsWith, isValidUint32, isValidUint8 } from './utils.ts'
 import { parseIpv4Addr } from './parser.ts'
 
 /**
@@ -61,22 +61,32 @@ export class Ipv4Addr implements IpAddrValue {
 	}
 
 	/**
-	 * Creates an IP address from 4 integers, where each integer
-	 * is implicitly clamped to be within the range of an unsigned
-	 * 8-bit integer (0 to 255).
+	 * Creates an IP address from 4 numbers.
+	 *
+	 * This returns `null` if any given number
+	 * is not an unsigned 8-bit integer.
 	 */
-	public static newAddr(
+	public static tryNew(
 		a: number,
 		b: number,
 		c: number,
 		d: number,
-	): Ipv4Addr {
+	): Ipv4Addr | null {
+		if (
+			!isValidUint8(a) ||
+			!isValidUint8(b) ||
+			!isValidUint8(c) ||
+			!isValidUint8(d)
+		) {
+			return null
+		}
+
 		return new Ipv4Addr(
 			new Uint8Array([
-				clampUint8(a),
-				clampUint8(b),
-				clampUint8(c),
-				clampUint8(d),
+				a,
+				b,
+				c,
+				d,
 			]),
 		)
 	}
@@ -84,16 +94,21 @@ export class Ipv4Addr implements IpAddrValue {
 	/**
 	 * Creates an IPv4 address from an unsigned 32-bit integer.
 	 *
-	 * If the given number is **not** within the range
-	 * (0 to 4,294,967,295), it will clamp it to be within the range.
+	 * This returns `null` if the given number is not a valid
+	 * unsigned 32-bit integer (0 to 4,294,967,295).
 	 */
-	public static fromUint32(n: number): Ipv4Addr {
-		const u32 = Math.max(0, Math.min(4_294_967_295, n))
-		return Ipv4Addr.newAddr(
-			(u32 >>> 24) & 255,
-			(u32 >>> 16) & 255,
-			(u32 >>> 8) & 255,
-			u32 & 255,
+	public static tryFromUint32(uint32: number): Ipv4Addr | null {
+		if (!isValidUint32(uint32)) {
+			return null
+		}
+
+		return new Ipv4Addr(
+			new Uint8Array([
+				(uint32 >>> 24) & 255,
+				(uint32 >>> 16) & 255,
+				(uint32 >>> 8) & 255,
+				uint32 & 255,
+			]),
 		)
 	}
 
@@ -104,8 +119,7 @@ export class Ipv4Addr implements IpAddrValue {
 	 * The string must have 4 octets (a number in the range
 	 * of an unsigned 8-bit integer, 0 to 255), each separated by a dot.
 	 *
-	 * If the string does not conform to the format, it will
-	 * return `null`.
+	 * This returns `null` if the string does not conform to the format.
 	 */
 	public static parse(s: string): Ipv4Addr | null {
 		const [result, afterResult] = parseIpv4Addr(s)
@@ -119,15 +133,16 @@ export class Ipv4Addr implements IpAddrValue {
 	/**
 	 * Attempts to create an `Ipv4Addr` from an array of numbers.
 	 *
-	 * This returns `null` if the array length is not equal to 4,
-	 * otherwise returns an `Ipv4Addr`.
+	 * This returns `null` if:
+	 *  - the array length is not equal to 4,
+	 *  - any of the numbers are not a valid unsigned 8-bit integer
 	 */
 	public static tryFromArray(array: number[]): Ipv4Addr | null {
 		if (array.length !== 4) {
 			return null
 		}
 
-		return Ipv4Addr.newAddr(
+		return Ipv4Addr.tryNew(
 			array[0],
 			array[1],
 			array[2],
@@ -211,12 +226,7 @@ export class Ipv4Addr implements IpAddrValue {
 	 * If the current address is `0.0.0.0`, this returns null.
 	 */
 	public previous(): Ipv4Addr | null {
-		const n = this.toUint32() - 1
-		if (n < 0) {
-			return null
-		}
-
-		return Ipv4Addr.fromUint32(n)
+		return Ipv4Addr.tryFromUint32(this.toUint32() - 1)
 	}
 
 	/**
@@ -225,12 +235,7 @@ export class Ipv4Addr implements IpAddrValue {
 	 * If the current address is `255.255.255.255`, this returns null.
 	 */
 	public next(): Ipv4Addr | null {
-		const n = this.toUint32() + 1
-		if (n > 65535) {
-			return null
-		}
-
-		return Ipv4Addr.fromUint32(n)
+		return Ipv4Addr.tryFromUint32(this.toUint32() + 1)
 	}
 
 	/**

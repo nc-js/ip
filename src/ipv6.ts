@@ -1,5 +1,5 @@
 import type { IpAddrValue } from './ip.ts'
-import { arrayStartsWith, clampUint16 } from './utils.ts'
+import { arrayStartsWith, isValidUint128, isValidUint16 } from './utils.ts'
 
 /**
  * A representation of an IPv6 address
@@ -98,11 +98,11 @@ export class Ipv6Addr implements IpAddrValue {
 	}
 
 	/**
-	 * Creates a new IPv6 address from 8 integers, where each integer
-	 * is implicitly clamped to the range of an unsigned 16-bit integer
-	 * (0 to 65535).
+	 * Creates a new IPv6 address from 8 numbers.
+	 *
+	 * This returns `null` if any given number is not an unsigned 16-bit integer.
 	 */
-	public static newAddr(
+	public static tryNew(
 		a: number,
 		b: number,
 		c: number,
@@ -111,17 +111,30 @@ export class Ipv6Addr implements IpAddrValue {
 		f: number,
 		g: number,
 		h: number,
-	): Ipv6Addr {
+	): Ipv6Addr | null {
+		if (
+			!isValidUint16(a) ||
+			!isValidUint16(b) ||
+			!isValidUint16(c) ||
+			!isValidUint16(d) ||
+			!isValidUint16(e) ||
+			!isValidUint16(f) ||
+			!isValidUint16(g) ||
+			!isValidUint16(h)
+		) {
+			return null
+		}
+
 		return new Ipv6Addr(
 			new Uint16Array([
-				clampUint16(a),
-				clampUint16(b),
-				clampUint16(c),
-				clampUint16(d),
-				clampUint16(e),
-				clampUint16(f),
-				clampUint16(g),
-				clampUint16(h),
+				a,
+				b,
+				c,
+				d,
+				e,
+				f,
+				g,
+				h,
 			]),
 		)
 	}
@@ -130,21 +143,25 @@ export class Ipv6Addr implements IpAddrValue {
 	 * Creates an IPv6 address from an unsigned 128-bit integer
 	 * (via `bigint`).
 	 *
-	 * If the given number is **not** within the range
-	 * (0 to (2^128)-1), it will clamp it to be within the range.
+	 * This returns `null` if the given number is not a valid
+	 * unsigned 128-bit integer (0 to (2^128)-1).
 	 */
-	public static fromUint128(n: bigint): Ipv6Addr {
-		const u128max = (2n ** 128n) - 1n
-		const u128 = n < 0n ? 0n : n > u128max ? u128max : n
-		return Ipv6Addr.newAddr(
-			Number((u128 >> 112n) & 65_535n),
-			Number((u128 >> 96n) & 65_535n),
-			Number((u128 >> 80n) & 65_535n),
-			Number((u128 >> 64n) & 65_535n),
-			Number((u128 >> 48n) & 65_535n),
-			Number((u128 >> 32n) & 65_535n),
-			Number((u128 >> 16n) & 65_535n),
-			Number(u128 & 65_535n),
+	public static tryFromUint128(u128: bigint): Ipv6Addr | null {
+		if (!isValidUint128(u128)) {
+			return null
+		}
+
+		return new Ipv6Addr(
+			new Uint16Array([
+				Number((u128 >> 112n) & 65_535n),
+				Number((u128 >> 96n) & 65_535n),
+				Number((u128 >> 80n) & 65_535n),
+				Number((u128 >> 64n) & 65_535n),
+				Number((u128 >> 48n) & 65_535n),
+				Number((u128 >> 32n) & 65_535n),
+				Number((u128 >> 16n) & 65_535n),
+				Number(u128 & 65_535n),
+			]),
 		)
 	}
 
@@ -159,7 +176,7 @@ export class Ipv6Addr implements IpAddrValue {
 			return null
 		}
 
-		return Ipv6Addr.newAddr(
+		return Ipv6Addr.tryNew(
 			array[0],
 			array[1],
 			array[2],
@@ -218,33 +235,21 @@ export class Ipv6Addr implements IpAddrValue {
 	 * Returns the IPv6 address that comes before this current
 	 * IPv6 address.
 	 *
-	 * If the current IPv6 address is `::`, this will return null.
+	 * This returns `null` f the current IPv6 address is `::`.
 	 */
 	public previous(): Ipv6Addr | null {
-		const u128 = this.toUint128()
-		if (u128 === 0n) {
-			return null
-		}
-
-		return Ipv6Addr.fromUint128(u128 - 1n)
+		return Ipv6Addr.tryFromUint128(this.toUint128() - 1n)
 	}
 
 	/**
 	 * Returns the IPv6 address that comes after this current
 	 * IPv6 address.
 	 *
-	 * If the current IPv6 address is
-	 * `ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff`,
-	 * this will return null.
+	 * This returns `null` if the current IPv6 address is
+	 * `ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff`.
 	 */
 	public next(): Ipv6Addr | null {
-		const u128 = this.toUint128()
-		const u128max = (2n ** 128n) - 1n
-		if (u128 === u128max) {
-			return null
-		}
-
-		return Ipv6Addr.fromUint128(u128 + 1n)
+		return Ipv6Addr.tryFromUint128(this.toUint128() + 1n)
 	}
 
 	/**

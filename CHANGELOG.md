@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.5.0
+
+This version focuses on making the library's behavior for handling numbers/integers more consistent.
+
+The API now consistenly returns `null` for invalid numbers passed as an argument (floats, NaN, Infinity, +Infinity, etc), instead of automatically clamping and/or truncating the number by default.
+
+### Breaking changes
+- `Ipv4Addr.fromUint32()` is now renamed to `Ipv4Addr.tryFromUint32()`. This now returns null if the number is not a valid unsigned 32-bit integer, instead of clamping to that range.
+- `Ipv6Addr.fromUint128()` is now renamed to `Ipv6Addr.tryFromUint128()`. This now returns null if the number is not a valid unsigned 128-bit integer, instead of clamping to that range.
+
+### Documentation
+- The writing style is now generally more consistent.
+
 ## 0.4.0
 
 ### Features
