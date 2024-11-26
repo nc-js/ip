@@ -235,7 +235,7 @@ export class Ipv6Addr implements IpAddrValue {
 	 * Returns the IPv6 address that comes before this current
 	 * IPv6 address.
 	 *
-	 * This returns `null` f the current IPv6 address is `::`.
+	 * This returns `null` if the current IPv6 address is `::`.
 	 */
 	public previous(): Ipv6Addr | null {
 		return Ipv6Addr.tryFromUint128(this.toUint128() - 1n)
