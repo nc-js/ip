@@ -16,7 +16,7 @@ const regex2 = new RegExp(`^${octet}\.${octet}\.${octet}\.${octet}$`)
 Deno.bench('parse+create ipv4 address with regex, loose', () => {
 	for (const addr of addresses) {
 		const result = addr.match(regex1) as RegExpMatchArray
-		Ipv4Addr.newAddr(
+		Ipv4Addr.tryNew(
 			Number.parseInt(result[1], 10),
 			Number.parseInt(result[2], 10),
 			Number.parseInt(result[3], 10),
