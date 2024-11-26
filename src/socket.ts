@@ -1,6 +1,7 @@
 import type { Ipv4Addr } from './ipv4.ts'
 import type { Ipv6Addr } from './ipv6.ts'
 import { parseSocketAddrV4 } from './parser.ts'
+import { isValidUint16 } from './utils.ts'
 
 /**
  * A socket address, containing an IPv4 address and a port number.
@@ -29,23 +30,21 @@ export class SocketAddrV4 {
 	/**
 	 * Attempts to create a new `SocketAddrV4`.
 	 *
-	 * If the port is not an integer (including `NaN`, `Infinity`, and `-Infinity`),
-	 * OR the port is an integer but not within the range of an unsigned 16-bit integer,
-	 * then this will return null.
+	 * This returns `null` if the port is not a valid unsigned 16-bit integer.
 	 */
 	public static tryNew(addr: Ipv4Addr, port: number): SocketAddrV4 | null {
-		if (Number.isInteger(port) && port >= 0 && port <= 65535) {
-			return new SocketAddrV4(addr, port)
+		if (!isValidUint16(port)) {
+			return null
 		}
 
-		return null
+		return new SocketAddrV4(addr, port)
 	}
 
 	/**
 	 * Parses a string in the format of `"ipv4:port"`,
 	 * where the port is an unsigned 16-bit integer.
 	 *
-	 * This will return null if:
+	 * This returns `null` if:
 	 * - The IPv4 address cannot be parsed.
 	 * - The IPV4 address can be parsed, but there's no `:` delimiter.
 	 * - The port number can't be parsed, or is out of bounds of an unsigned
@@ -92,16 +91,14 @@ export class SocketAddrV6 {
 	/**
 	 * Attempts to create a new `SocketAddrV6`.
 	 *
-	 * If the port is not an integer (including `NaN`, `Infinity`, and `-Infinity`),
-	 * then this will return null. Otherwise, the port number will be clamped and
-	 * truncated to an unsigned 16-bit integer.
+	 * This returns `null` if the port is not a valid unsigned 16-bit integer.
 	 */
 	public static tryNew(addr: Ipv6Addr, port: number): SocketAddrV6 | null {
-		if (Number.isInteger(port) && port >= 0 && port <= 65535) {
-			return new SocketAddrV6(addr, port)
+		if (!isValidUint16(port)) {
+			return null
 		}
 
-		return null
+		return new SocketAddrV6(addr, port)
 	}
 
 	/**

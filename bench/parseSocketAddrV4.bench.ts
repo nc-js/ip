@@ -22,12 +22,12 @@ const strictRegex = new RegExp(`^${octet}\.${octet}.${octet}.${octet}:${port}`)
 Deno.bench('parse+create socket address v4 with regex, loose', () => {
 	for (const socket of sockets) {
 		const result = socket.match(looseRegex) as RegExpMatchArray
-		const ip = Ipv4Addr.newAddr(
+		const ip = Ipv4Addr.tryNew(
 			Number.parseInt(result[1], 10),
 			Number.parseInt(result[2], 10),
 			Number.parseInt(result[3], 10),
 			Number.parseInt(result[4], 10),
-		)
+		) as Ipv4Addr
 		const port = Number.parseInt(result[5])
 		new SocketAddrV4(ip, port)
 	}
