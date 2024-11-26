@@ -168,8 +168,9 @@ export class Ipv6Addr implements IpAddrValue {
 	/**
 	 * Attempts to create an `Ipv6Addr` from an array of numbers.
 	 *
-	 * This returns `null` if the array length is not equal to 8,
-	 * otherwise returns an `Ipv6Addr`.
+	 * This returns `null` if:
+	 *  - the array length is not equal to 8,
+	 *  - any of the numbers are not a valid unsigned 16-bit integer.
 	 */
 	public static tryFromArray(array: number[]): Ipv6Addr | null {
 		if (array.length !== 8) {
