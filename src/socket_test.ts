@@ -38,6 +38,19 @@ Deno.test('port: create a reserved port', () => {
 	assertFalse(new Port(5).isReserved)
 })
 
+Deno.test('port: create a selectable ephemeral port', () => {
+	const port = Port.tryNew(randomIntegerBetween(1024, 65535))
+	assertInstanceOf(port, Port)
+	assert(port.isSelectableEphemeral)
+
+	// to be safe, check min and max
+	const minPort = new Port(1024)
+	assert(minPort.isSelectableEphemeral)
+
+	const maxPort = new Port(65535)
+	assert(maxPort.isSelectableEphemeral)
+})
+
 Deno.test('socket address v4: constructor does not validate port number (too small)', () => {
 	const socket = new SocketAddrV4(
 		Ipv4Addr.tryNew(127, 0, 0, 1) as Ipv4Addr,

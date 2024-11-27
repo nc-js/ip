@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.1
+
+### Features
+
+- The `Port` class now exposes a getter, `isSelectableEphemeral`. This matches the definition of [IETF RFC 6056](https://datatracker.ietf.org/doc/html/rfc6056) for what can be considered an okay port number that's suitable for selection algorithms.
+
 ## 0.6.0
 
 ### Breaking changes
