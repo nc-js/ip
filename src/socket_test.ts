@@ -1,5 +1,6 @@
 import { assert } from '@std/assert/assert'
 import { assertEquals } from '@std/assert/equals'
+import { assertFalse } from '@std/assert/false'
 import { assertInstanceOf } from '@std/assert/instance-of'
 import { randomIntegerBetween } from '@std/random/integer-between'
 import { Ipv4Addr } from './ipv4.ts'
@@ -27,11 +28,14 @@ Deno.test('port: create a dynamic port', () => {
 })
 
 Deno.test('port: create a reserved port', () => {
-	const reserved = [0, 1023, 1024, 49151, 49152, 65535]
-	const number = reserved[randomIntegerBetween(0, reserved.length - 1)]
-	const port = Port.tryNew(number)
-	assertInstanceOf(port, Port)
-	assert(port.isReserved)
+	assert(new Port(0).isReserved)
+	assert(new Port(1023).isReserved)
+	assert(new Port(1024).isReserved)
+	assert(new Port(1023).isReserved)
+	assert(new Port(49151).isReserved)
+	assert(new Port(49152).isReserved)
+	assert(new Port(65535).isReserved)
+	assertFalse(new Port(5).isReserved)
 })
 
 Deno.test('socket address v4: constructor does not validate port number (too small)', () => {

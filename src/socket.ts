@@ -61,7 +61,7 @@ export class Port {
 			this.value === 1024 ||
 			this.value === 49151 ||
 			this.value === 49152 ||
-			this.value === 55535
+			this.value === 65535
 	}
 
 	/**
