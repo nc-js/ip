@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.6.2
+
+### Features
+- Introduced a new `SocketAddrValue` interface, which defines an `addr` getter, a `port` getter, and a `toString()` method.
+- Introduced a new `SocketAddr` class, which implements `SocketAddrValue`.
+- `SocketAddrV4` class now implements the `SocketAddrValue` interface.
+- `SocketddrV6` class now implemens the `SocketAddrValue` interface.
+
+### Bug fixes
+- `SocketAddrV6` now correctly also contains a `flowInfo` property and `scopeId` property. (**NOTE**: This is technically considered a breaking change, but is classified as a bugfix instead since the original implementation before this version was incorrect.)
+- The constructor of `SocketAddrV6` is now considered "unchecked"; library users must take to check that all given numbers are within their valid range.
+
 ## 0.6.1
 
 ### Features

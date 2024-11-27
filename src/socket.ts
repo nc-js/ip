@@ -1,7 +1,8 @@
+import type { IpAddrValue } from './ip.ts'
 import type { Ipv4Addr } from './ipv4.ts'
 import type { Ipv6Addr } from './ipv6.ts'
 import { parseSocketAddrV4 } from './parser.ts'
-import { isValidUint16 } from './utils.ts'
+import { isValidUint16, isValidUint32 } from './utils.ts'
 
 /**
  * An unsigned 16-bit integer which represents
@@ -141,9 +142,48 @@ export class Port {
 }
 
 /**
+ * A representation of a socket address.
+ */
+export interface SocketAddrValue {
+	/** The IP address associated with this socket address */
+	get addr(): IpAddrValue
+	/** The port number associated with this socket address */
+	get port(): Port
+	/** The socket representation of the socket address */
+	toString(): string
+}
+
+/**
+ * A concrete representation of a socket address,
+ * which can either contain a `SocketAddrV4` or `SocketAddrV6`.
+ */
+export class SocketAddr implements SocketAddrValue {
+	/** The socket address */
+	public socket: SocketAddrValue
+	public constructor(socket: SocketAddrValue) {
+		this.socket = socket
+	}
+
+	/** The IP address associated with this socket address */
+	public get addr(): IpAddrValue {
+		return this.socket.addr
+	}
+
+	/** The port number associated with this socket address */
+	public get port(): Port {
+		return this.socket.port
+	}
+
+	/** The string representation of the socket address */
+	public toString(): string {
+		return this.socket.toString()
+	}
+}
+
+/**
  * A socket address, containing an IPv4 address and a port number.
  */
-export class SocketAddrV4 {
+export class SocketAddrV4 implements SocketAddrValue {
 	/** The IPv4 address of the socket */
 	public readonly addr: Ipv4Addr
 	/** The unsigned 16-bit port number of the address */
@@ -201,35 +241,61 @@ export class SocketAddrV4 {
 /**
  * A socket address, containing an IPv6 address and a port number.
  */
-export class SocketAddrV6 {
+export class SocketAddrV6 implements SocketAddrValue {
 	/** The IPv6 address of the socket */
 	public readonly addr: Ipv6Addr
-	/** The unsigned 16-bit port number of the address */
+	/** The port number associated with the address as an unsigned 16-bit integer */
 	public readonly port: Port
+	/** The flow info associated with this address as an unsigned 32-bit integer */
+	public readonly flowInfo: number
+	/** The scope ID associated with this address as an unsigned 32-bit integer */
+	public readonly scopeId: number
 
 	/**
-	 * Creates a new socket address from an IPv6 address and a port number.
+	 * Creates a new socket address from an IPv6 address, port number,
+	 * flow info, and scope ID.
 	 *
-	 * @param addr The IPv6 address of the socket
-	 * @param port The unsigned 16-bit port number of the address
+	 * **NOTE**: It is the caller's responsibility to validate the following:
+	 * 	- the port is a valid unsigned 16-bit integer.
+	 *  - the flow info is a valid unsigned 32-bit integer.
+	 *  - the scope ID is a valid unsigned 32-bit integer.
 	 */
-	public constructor(addr: Ipv6Addr, port: Port) {
+	public constructor(
+		addr: Ipv6Addr,
+		port: Port,
+		flowInfo: number,
+		scopeId: number,
+	) {
 		this.addr = addr
 		this.port = port
+		this.flowInfo = flowInfo
+		this.scopeId = scopeId
 	}
 
 	/**
 	 * Attempts to create a new `SocketAddrV6`.
 	 *
-	 * This returns `null` if the port is not a valid unsigned 16-bit integer.
+	 * This returns `null` if:
+	 *  - the port is not a valid unsigned 16-bit integer.
+	 *  - the flow info is not a valid unsigned 32-bit integer.
+	 *  - the scope ID is not a valid unsigned 32-bit integer.
 	 */
-	public static tryNew(addr: Ipv6Addr, portNum: number): SocketAddrV6 | null {
+	public static tryNew(
+		addr: Ipv6Addr,
+		portNum: number,
+		flowInfo: number,
+		scopeId: number,
+	): SocketAddrV6 | null {
 		const port = Port.tryNew(portNum)
-		if (port === null) {
+		if (
+			port === null ||
+			!isValidUint32(flowInfo) ||
+			!isValidUint32(scopeId)
+		) {
 			return null
 		}
 
-		return new SocketAddrV6(addr, port)
+		return new SocketAddrV6(addr, port, flowInfo, scopeId)
 	}
 
 	/**
@@ -241,5 +307,18 @@ export class SocketAddrV6 {
 	 */
 	public static parse(_s: string): SocketAddrV6 | null {
 		throw new Error('Not implemented yet')
+	}
+
+	/**
+	 * Returns the socket address as a string, in the format of either:
+	 *  - `[<ipv6addr>]:<port>`, if the scope ID is 0
+	 *  - `[<ipv6addr>%<scopeid>]:<port>`, if the scope ID is not 0
+	 */
+	public toString(): string {
+		if (this.scopeId === 0) {
+			return `[${this.addr}]:${this.port}`
+		} else {
+			return `[${this.addr}%${this.scopeId}]:${this.port}`
+		}
 	}
 }
