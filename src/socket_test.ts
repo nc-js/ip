@@ -271,3 +271,31 @@ Deno.test('socket address v6: tryNew errors if port is greater than 65,535', () 
 	)
 	assertEquals(socket, null)
 })
+
+Deno.test('socket address v6: to string when scope id is 0', () => {
+	const socket = SocketAddrV6.tryNew(
+		Ipv6Addr.LOCALHOST,
+		3000,
+		0,
+		0,
+	)
+	assertInstanceOf(socket, SocketAddrV6)
+	assertEquals(
+		socket.toString(),
+		'[0000:0000:0000:0000:0000:0000:0000:0001]:3000',
+	)
+})
+
+Deno.test('socket address v6: to string when scope id is not 0', () => {
+	const socket = SocketAddrV6.tryNew(
+		Ipv6Addr.LOCALHOST,
+		3000,
+		0,
+		1,
+	)
+	assertInstanceOf(socket, SocketAddrV6)
+	assertEquals(
+		socket.toString(),
+		'[0000:0000:0000:0000:0000:0000:0000:0001%1]:3000',
+	)
+})
