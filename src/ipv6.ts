@@ -488,22 +488,22 @@ export class Ipv6Addr implements IpAddrValue {
 
 	public toIpv4(): Ipv4Addr | null {
 		const segments = this.segments()
-		if(!(
+		if (
 			arrayStartsWith(segments, [0, 0, 0, 0, 0]) &&
 			(segments[5] === 0 || segments[5] === 0xffff)
-		)) {
-			return null
+		) {
+			const [a, b] = uint16ToUint8Array(segments[6])
+			const [c, d] = uint16ToUint8Array(segments[7])
+			return Ipv4Addr.tryFromUint8Array(new Uint8Array([a, b, c, d]))
 		}
 
-		const [a, b] = uint16ToUint8Array(segments[6])
-		const [c, d] = uint16ToUint8Array(segments[7])
-		return Ipv4Addr.tryFromUint8Array(new Uint8Array([a, b, c, d]))
+		return null
 	}
 
 	public toIpv4Mapped(): Ipv4Addr | null {
 		const octets = this.octets()
 		const mapped = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xff, 0xff]
-		if(!arrayStartsWith(octets, mapped)) {
+		if (!arrayStartsWith(octets, mapped)) {
 			return null
 		}
 
@@ -536,7 +536,7 @@ function uint16ArrayToUint128(array: Uint16Array): bigint {
 }
 
 function uint16ToUint8Array(value: number): Uint8Array {
-    const lowByte = value & 0xFF
-    const highByte = (value >> 8) & 0xFF
-    return new Uint8Array([lowByte, highByte])
+	const lowByte = value & 0xff
+	const highByte = (value >> 8) & 0xff
+	return new Uint8Array([lowByte, highByte])
 }
