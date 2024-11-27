@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.6.2
+
+### Features
+- Introduced a new `SocketAddrValue` interface, which defines an `addr` getter, a `port` getter, and a `toString()` method.
+  - Note that `Ipv6Addr` does not yet have a way of converting to a string in its most compressed format. This means that `SocketAddrV6.toString()` will write out the inner IPv6 address in its uncompressed format, and the same goes the same for a `SocketAddr` if it contains a `SocketAddrV6`. Both issues will be addressed in an upcoming version.
+- Introduced a new `SocketAddr` class, which implements `SocketAddrValue`.
+- `SocketAddrV4` class now implements the `SocketAddrValue` interface.
+- `SocketddrV6` class now implemens the `SocketAddrValue` interface.
+
+### Bug fixes
+- `SocketAddrV6` now correctly also contains a `flowInfo` property and `scopeId` property. (**NOTE**: This is technically considered a breaking change, but is classified as a bugfix instead since the original implementation before this version was incorrect.)
+- The constructor of `SocketAddrV6` is now considered "unchecked"; library users must take to check that all given numbers are within their valid range.
+
 ## 0.6.1
 
 ### Features
