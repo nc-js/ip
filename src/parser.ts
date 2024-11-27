@@ -17,7 +17,7 @@
  */
 
 import { Ipv4Addr } from './ipv4.ts'
-import { SocketAddrV4 } from './mod.ts'
+import { Port, SocketAddrV4 } from './mod.ts'
 import { takeAsciiDigits } from './utils.ts'
 
 /**
@@ -69,6 +69,10 @@ export function parseSocketAddrV4(s: string): ParseResult<SocketAddrV4> {
 	}
 
 	const [portStr, afterPort] = takeAsciiDigits(s, afterAddr + 1, 1, 5)
-	const portNum = Number.parseInt(portStr, 10)
-	return [SocketAddrV4.tryNew(addr, portNum), afterPort]
+	const socketPort = Port.parse(portStr)
+	if (socketPort === null) {
+		return [null, afterPort]
+	}
+
+	return [new SocketAddrV4(addr, socketPort), afterPort]
 }

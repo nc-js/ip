@@ -4,25 +4,144 @@ import { parseSocketAddrV4 } from './parser.ts'
 import { isValidUint16 } from './utils.ts'
 
 /**
+ * An unsigned 16-bit integer which represents
+ * a unique identifier for a network connection.
+ */
+export class Port {
+	/** An unsigned 16-bit integer */
+	public readonly value: number
+
+	/** The smallest possible system port number */
+	public static SYSTEM_MIN: number = 0
+	/** The largest possible system port number */
+	public static SYSTEM_MAX: number = 1023
+
+	/** The smallest possible user port number */
+	public static USER_MIN: number = 1024
+	/** The largest possible user port number */
+	public static USER_MAX: number = 49151
+
+	/** The smallest possible user port number */
+	public static DYNAMIC_MIN: number = 49152
+	/** The largest possible user port number */
+	public static DYNAMIC_MAX: number = 65535
+
+	/**
+	 * Creates a new `Port` from an unsigned 16-bit integer.
+	 *
+	 * **NOTE**: It is the caller's responsibility to check
+	 * that the port number is;
+	 *  - an integer (not `NaN`, `Infinity`, or `-Infinity`)
+	 *  - within the range of an unsigned 16-bit integer
+	 */
+	public constructor(value: number) {
+		this.value = value
+	}
+
+	/**
+	 * Attempts to create a new `Port` from a number.
+	 *
+	 * This returns `null` if the number is not a valid
+	 * unsigned 16-bit integer.
+	 */
+	public static tryNew(value: number): Port | null {
+		return !isValidUint16(value) ? null : new Port(value)
+	}
+
+	/**
+	 * Parse a port number given a string.
+	 *
+	 * This returns `null` if:
+	 *  - the given string is not a number,
+	 *  - the given string is a number, but not a valid
+	 *    unsigned 16-bit integer
+	 */
+	public static parse(s: string): Port | null {
+		return Port.tryNew(Number.parseInt(s, 10))
+	}
+
+	/**
+	 * Checks if the port number is a reserved port.
+	 *
+	 * This range is defined  in [IETF RFC 6535][rfc6535]
+	 * as values at the edge of each range (user port,
+	 * system port, and dynamic port), which must be
+	 * either 0, 1023, 1024, 49151, 49152, or 65535.
+	 *
+	 * [rfc6535]: https://datatracker.ietf.org/doc/html/rfc6335
+	 */
+	public get isReserved(): boolean {
+		return this.value === Port.SYSTEM_MIN ||
+			this.value === Port.SYSTEM_MAX ||
+			this.value === Port.USER_MIN ||
+			this.value === Port.USER_MAX ||
+			this.value === Port.DYNAMIC_MIN ||
+			this.value === Port.DYNAMIC_MAX
+	}
+
+	/**
+	 * Checks if the port number is a system port, also known
+	 * as a "well-known" port.
+	 *
+	 * This range is defined by [IETF RFC 6535][rfc6535]
+	 * as between 0 and 1023, inclusively.
+	 *
+	 * [rfc6535]: https://datatracker.ietf.org/doc/html/rfc6335
+	 */
+	public get isSystem(): boolean {
+		return this.value >= Port.SYSTEM_MIN && this.value <= Port.SYSTEM_MAX
+	}
+
+	/**
+	 * Checks if the port number is a user port, also known
+	 * as a "registered" port.
+	 *
+	 * This range is defined by [IETF RFC 6535][rfc6535]
+	 * as between 1024 and 49151, inclusively.
+	 *
+	 * [rfc6535]: https://datatracker.ietf.org/doc/html/rfc6335
+	 */
+	public get isUser(): boolean {
+		return this.value >= Port.USER_MIN && this.value <= Port.USER_MAX
+	}
+
+	/**
+	 * Checks if the port number is a dynamic port, also known
+	 * as a "private" or "ephemeral" port.
+	 *
+	 * This range is defined by [IETF RFC 6535][rfc6535]
+	 * as between 49152 and 65535, inclusively.
+	 *
+	 * [rfc6535]: https://datatracker.ietf.org/doc/html/rfc6335
+	 */
+	public get isDyanmic(): boolean {
+		return this.value >= Port.DYNAMIC_MIN && this.value <= Port.DYNAMIC_MAX
+	}
+
+	/**
+	 * Returns the port number as a string
+	 */
+	public toString(): string {
+		return this.value.toString()
+	}
+}
+
+/**
  * A socket address, containing an IPv4 address and a port number.
  */
 export class SocketAddrV4 {
 	/** The IPv4 address of the socket */
 	public readonly addr: Ipv4Addr
 	/** The unsigned 16-bit port number of the address */
-	public readonly port: number
+	public readonly port: Port
 
 	/**
 	 * Creates a new socket address from an IPv4 address and a port number.
 	 *
-	 * **NOTE**: It is the caller's responsibility to check that the port
-	 * number passed is an integer (not `NaN`, `Infinity`, or  `-Infinity`)
-	 * and is within the range of an unsigned 16-bit integer.
-	 *
 	 * @param addr The IPv4 address of the socket
 	 * @param port The unsigned 16-bit port number of the address
 	 */
-	public constructor(addr: Ipv4Addr, port: number) {
+	public constructor(addr: Ipv4Addr, port: Port) {
 		this.addr = addr
 		this.port = port
 	}
@@ -32,8 +151,9 @@ export class SocketAddrV4 {
 	 *
 	 * This returns `null` if the port is not a valid unsigned 16-bit integer.
 	 */
-	public static tryNew(addr: Ipv4Addr, port: number): SocketAddrV4 | null {
-		if (!isValidUint16(port)) {
+	public static tryNew(addr: Ipv4Addr, portNum: number): SocketAddrV4 | null {
+		const port = Port.tryNew(portNum)
+		if (port === null) {
 			return null
 		}
 
@@ -71,19 +191,15 @@ export class SocketAddrV6 {
 	/** The IPv6 address of the socket */
 	public readonly addr: Ipv6Addr
 	/** The unsigned 16-bit port number of the address */
-	public readonly port: number
+	public readonly port: Port
 
 	/**
 	 * Creates a new socket address from an IPv6 address and a port number.
 	 *
-	 * **NOTE**: It is the caller's responsibility to check that the port
-	 * number passed is an integer (not `NaN`, `Infinity`, or  `-Infinity`)
-	 * and is within the range of an unsigned 16-bit integer.
-	 *
 	 * @param addr The IPv6 address of the socket
 	 * @param port The unsigned 16-bit port number of the address
 	 */
-	public constructor(addr: Ipv6Addr, port: number) {
+	public constructor(addr: Ipv6Addr, port: Port) {
 		this.addr = addr
 		this.port = port
 	}
@@ -93,8 +209,9 @@ export class SocketAddrV6 {
 	 *
 	 * This returns `null` if the port is not a valid unsigned 16-bit integer.
 	 */
-	public static tryNew(addr: Ipv6Addr, port: number): SocketAddrV6 | null {
-		if (!isValidUint16(port)) {
+	public static tryNew(addr: Ipv6Addr, portNum: number): SocketAddrV6 | null {
+		const port = Port.tryNew(portNum)
+		if (port === null) {
 			return null
 		}
 

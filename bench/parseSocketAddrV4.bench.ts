@@ -1,4 +1,4 @@
-import { Ipv4Addr, SocketAddrV4 } from '../src/mod.ts'
+import { Ipv4Addr, Port, SocketAddrV4 } from '../src/mod.ts'
 import {
 	randomAddress,
 	randomPort,
@@ -28,7 +28,7 @@ Deno.bench('parse+create socket address v4 with regex, loose', () => {
 			Number.parseInt(result[3], 10),
 			Number.parseInt(result[4], 10),
 		) as Ipv4Addr
-		const port = Number.parseInt(result[5])
+		const port = Port.parse(result[5]) as Port
 		new SocketAddrV4(ip, port)
 	}
 })
@@ -44,7 +44,7 @@ Deno.bench('parse+create socket address v4 with regex, strict', () => {
 				Number.parseInt(result[4], 10),
 			]),
 		) as Ipv4Addr
-		const port = Number.parseInt(result[5])
+		const port = Port.parse(result[5]) as Port
 		new SocketAddrV4(ip, port)
 	}
 })
