@@ -5,12 +5,13 @@
 ### Breaking changes
 
 - The `port` property of `SocketAddrV4` and `SocketAddrV6` is now `Port` (instead of `number`).
-- The constructors of `SocketAddrV4` and `SocketAddrV6` are now generally considered "safe" to call; the responsibility of validating a port number is now up to the `Port` class.
-  - Note that it is still possible to create a new `Port` instance with its public constructor, which is documented as unchecked. To ensure that a port number is valid (an unsigned 16-bit integer), library users can call `Port.tryNew()` instead.
 
 ### Features
 
 - There is a new class representing a port, conveniently called `Port`. This comes with a few getters that checks for special properties of the port number (checking if it is a user port, system port, dynamic port, and/or a reserved port).
+- The constructors of `SocketAddrV4` and `SocketAddrV6` are now generally considered "safe" to call; the responsibility of validating a port number is now up to the `Port` class.
+  - Note that it is still possible to create a new `Port` instance with its public constructor, which is documented as unchecked. To ensure that a port number is valid (an unsigned 16-bit integer), library users can call `Port.tryNew()` instead.
+
 
 ## 0.5.1
 
