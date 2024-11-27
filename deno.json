@@ -1,6 +1,6 @@
 {
 	"name": "@nc/net-addr",
-	"version": "0.6.0",
+	"version": "0.6.1",
 	"license": "MIT",
 	"tasks": {
 		"dev": "deno test --watch src/mod.ts"

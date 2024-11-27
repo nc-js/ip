@@ -119,6 +119,20 @@ export class Port {
 	}
 
 	/**
+	 * Checks if the port can be considered as an ephemeral port
+	 * that's suitable for selection algorithms.
+	 *
+	 * This range is defined by [IETF RFC 6056][rfc6056] as
+	 * between 1024 and 65535, inclusively. This is equivalent
+	 * to checking if this is either a user port or dynamic port.
+	 *
+	 * [rfc6056]: https://datatracker.ietf.org/doc/html/rfc6056
+	 */
+	public get isSelectableEphemeral(): boolean {
+		return this.value >= Port.USER_MIN && this.value <= Port.DYNAMIC_MAX
+	}
+
+	/**
 	 * Returns the port number as a string
 	 */
 	public toString(): string {
