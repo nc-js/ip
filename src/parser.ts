@@ -16,8 +16,8 @@
  * @module
  */
 
-import { Ipv4Addr } from './ipv4.ts'
-import { Port, SocketAddrV4 } from './mod.ts'
+import { Ipv4Addr } from './ip/ipv4.ts'
+import { Port, SocketAddrV4 } from './socket.ts'
 import { takeAsciiDigits } from './utils.ts'
 
 /**

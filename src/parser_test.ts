@@ -1,6 +1,6 @@
 import { assertEquals } from '@std/assert'
 import { parseIpv4Addr } from './parser.ts'
-import { Ipv4Addr } from './ipv4.ts'
+import { Ipv4Addr } from './ip/ipv4.ts'
 
 Deno.test('parseIpv4Addr is relaxed, only parses up to valid input', () => {
 	const s = '127.0.0.1...'
