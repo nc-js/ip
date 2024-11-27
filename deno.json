@@ -1,6 +1,6 @@
 {
 	"name": "@nc/net-addr",
-	"version": "0.6.2",
+	"version": "0.7.0",
 	"license": "MIT",
 	"tasks": {
 		"dev": "deno test --watch src/mod.ts"
@@ -15,8 +15,7 @@
 	},
 	"exports": {
 		".": "./src/mod.ts",
-		"./ipv4": "./src/ipv4.ts",
-		"./ipv6": "./src/ipv6.ts",
+		"./ip": "./src/ip/mod.ts",
 		"./socket": "./src/socket.ts"
 	},
 	"imports": {

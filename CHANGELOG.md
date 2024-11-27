@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.7.0
+
+### Breaking changes
+- Exports `/ipv4` and `/ipv6` were removed in favor of a new export, `/ip`. This exports all currently existing IP-related types: `Ipv4Addr`, `Ipv6Addr`, `IpAddr`, `IpAddrValue`, and `MulticastScope`.
+
 ## 0.6.2
 
 ### Features

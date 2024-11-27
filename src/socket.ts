@@ -1,6 +1,6 @@
-import type { IpAddrValue } from './ip.ts'
-import type { Ipv4Addr } from './ipv4.ts'
-import type { Ipv6Addr } from './ipv6.ts'
+import type { IpAddrValue } from './ip/ip.ts'
+import type { Ipv4Addr } from './ip/ipv4.ts'
+import type { Ipv6Addr } from './ip/ipv6.ts'
 import { parseSocketAddrV4 } from './parser.ts'
 import { isValidUint16, isValidUint32 } from './utils.ts'
 

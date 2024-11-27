@@ -1,5 +1,5 @@
 import { Ipv4Addr } from './ipv4.ts'
-import { Ipv6Addr } from './mod.ts'
+import { Ipv6Addr } from './ipv6.ts'
 
 /**
  * A representation of an IP address

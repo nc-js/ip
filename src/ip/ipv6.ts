@@ -1,5 +1,5 @@
 import type { IpAddrValue } from './ip.ts'
-import { arrayStartsWith, isValidUint128, isValidUint16 } from './utils.ts'
+import { arrayStartsWith, isValidUint128, isValidUint16 } from '../utils.ts'
 
 /**
  * A representation of an IPv6 address
