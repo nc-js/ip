@@ -160,6 +160,8 @@ export interface SocketAddrValue {
 export class SocketAddr implements SocketAddrValue {
 	/** The socket address */
 	public socket: SocketAddrValue
+
+	/** Creates a new socket address */
 	public constructor(socket: SocketAddrValue) {
 		this.socket = socket
 	}
