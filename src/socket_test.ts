@@ -272,6 +272,26 @@ Deno.test('socket address v6: tryNew errors if port is greater than 65,535', () 
 	assertEquals(socket, null)
 })
 
+Deno.test('socket address v6: tryNew errors if flow info is not a uint32', () => {
+	const socket = SocketAddrV6.tryNew(
+		Ipv6Addr.LOCALHOST,
+		3000,
+		2 ** 32,
+		0,
+	)
+	assertEquals(socket, null)
+})
+
+Deno.test('socket address v6: tryNew errors if scope id is not a uint32', () => {
+	const socket = SocketAddrV6.tryNew(
+		Ipv6Addr.LOCALHOST,
+		3000,
+		0,
+		2 ** 32,
+	)
+	assertEquals(socket, null)
+})
+
 Deno.test('socket address v6: to string when scope id is 0', () => {
 	const socket = SocketAddrV6.tryNew(
 		Ipv6Addr.LOCALHOST,
