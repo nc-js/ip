@@ -4,6 +4,7 @@
 
 ### Features
 - Introduced a new `SocketAddrValue` interface, which defines an `addr` getter, a `port` getter, and a `toString()` method.
+  - Note that `Ipv6Addr` does not yet have a way of converting to a string in its most compressed format. This means that `SocketAddrV6.toString()` will write out the inner IPv6 address in its uncompressed format, and the same goes the same for a `SocketAddr` if it contains a `SocketAddrV6`. Both issues will be addressed in an upcoming version.
 - Introduced a new `SocketAddr` class, which implements `SocketAddrValue`.
 - `SocketAddrV4` class now implements the `SocketAddrValue` interface.
 - `SocketddrV6` class now implemens the `SocketAddrValue` interface.
