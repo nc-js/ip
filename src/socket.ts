@@ -11,6 +11,21 @@ export class Port {
 	/** An unsigned 16-bit integer */
 	public readonly value: number
 
+	/** The smallest possible system port number */
+	public static SYSTEM_MIN: number = 0
+	/** The largest possible system port number */
+	public static SYSTEM_MAX: number = 1023
+
+	/** The smallest possible user port number */
+	public static USER_MIN: number = 1024
+	/** The largest possible user port number */
+	public static USER_MAX: number = 49151
+
+	/** The smallest possible user port number */
+	public static DYNAMIC_MIN: number = 49152
+	/** The largest possible user port number */
+	public static DYNAMIC_MAX: number = 65535
+
 	/**
 	 * Creates a new `Port` from an unsigned 16-bit integer.
 	 *
@@ -56,12 +71,12 @@ export class Port {
 	 * [rfc6535]: https://datatracker.ietf.org/doc/html/rfc6335
 	 */
 	public get isReserved(): boolean {
-		return this.value === 0 ||
-			this.value === 1023 ||
-			this.value === 1024 ||
-			this.value === 49151 ||
-			this.value === 49152 ||
-			this.value === 65535
+		return this.value === Port.SYSTEM_MIN ||
+			this.value === Port.SYSTEM_MAX ||
+			this.value === Port.USER_MIN ||
+			this.value === Port.USER_MAX ||
+			this.value === Port.DYNAMIC_MIN ||
+			this.value === Port.DYNAMIC_MAX
 	}
 
 	/**
@@ -74,7 +89,7 @@ export class Port {
 	 * [rfc6535]: https://datatracker.ietf.org/doc/html/rfc6335
 	 */
 	public get isSystem(): boolean {
-		return this.value >= 0 && this.value <= 1023
+		return this.value >= Port.SYSTEM_MIN && this.value <= Port.SYSTEM_MAX
 	}
 
 	/**
@@ -87,7 +102,7 @@ export class Port {
 	 * [rfc6535]: https://datatracker.ietf.org/doc/html/rfc6335
 	 */
 	public get isUser(): boolean {
-		return this.value >= 1024 && this.value <= 49151
+		return this.value >= Port.USER_MIN && this.value <= Port.USER_MAX
 	}
 
 	/**
@@ -100,7 +115,7 @@ export class Port {
 	 * [rfc6535]: https://datatracker.ietf.org/doc/html/rfc6335
 	 */
 	public get isDyanmic(): boolean {
-		return this.value >= 49152 && this.value <= 65535
+		return this.value >= Port.DYNAMIC_MIN && this.value <= Port.DYNAMIC_MAX
 	}
 
 	/**
