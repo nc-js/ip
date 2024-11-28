@@ -3,7 +3,7 @@
 This library is a TypeScript port of Rust's network address types from the `std::net` module.
 
 ## Install
-```shell
+```sh
 deno add jsr:@nc/net-addr  # deno
 npx jsr add @nc/net-addr   # npm
 ```

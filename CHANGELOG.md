@@ -7,10 +7,13 @@
 
 ### Documentation
 - The documentation for the `Ipv6Addr.isIpv4Mapped()` method now mentions its relevant RFC (RFC 4291).
+- The code example in `README.md` is now fixed.
+- The syntax highlighting in the install section is now fixed.
 
 ### Internal
 - This also adds some unit tests for pre-existing methods, `Ipv6Addr.tryNew()` and `Ipv6Addr.isIpv4Mapped()`.
 - `.git-blame-ignore-revs` file is now setup.
+- The CI workflow will now also run tests for any code examples set in `README.md`.
 
 ## 0.7.0
 
