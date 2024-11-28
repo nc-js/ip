@@ -8,6 +8,9 @@
 ### Documentation
 - The documentation for the `Ipv6Addr.isIpv4Mapped()` method now mentions its relevant RFC (RFC 4291).
 
+### Internal
+- This also adds some unit tests for pre-existing methods, `Ipv6Addr.tryNew()` and `Ipv6Addr.isIpv4Mapped()`.
+
 ## 0.7.0
 
 ### Breaking changes
