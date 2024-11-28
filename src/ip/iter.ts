@@ -9,7 +9,7 @@ import { Ipv4Addr, Ipv6Addr } from '../mod.ts'
  *
  * const iter = new Ipv4AddrIterator(
  *     Ipv4Addr.tryNew(0, 0, 0, 250) as Ipv4Addr,
- *     Ipv4Addr.tryNew(0, 0, 1, 0) as Ipv4Addr,
+ *     Ipv4Addr.tryNew(0, 0, 1, 0) as Ipv4Addr
  * )
  *
  * for(const addr of iter) {
