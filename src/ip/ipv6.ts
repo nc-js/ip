@@ -1,6 +1,6 @@
 import type { IpAddrValue } from './ip.ts'
 import { Ipv4Addr } from './ipv4.ts'
-import { arrayStartsWith, isValidUint128, isValidUint16 } from './utils.ts'
+import { arrayStartsWith, isValidUint128, isValidUint16 } from '../utils.ts'
 
 /**
  * A representation of an IPv6 address
@@ -321,6 +321,21 @@ export class Ipv6Addr implements IpAddrValue {
 	}
 
 	/**
+	 * Checks if this IPv6 address is a discard-only address.
+	 *
+	 * This range is defined in [IETF RFC 6666][rfc6666] as
+	 * `100::/64`.
+	 *
+	 * [rfc6666]: https://datatracker.ietf.org/doc/html/rfc6666
+	 */
+	public isDiscardOnly(): boolean {
+		return arrayStartsWith(
+			this._segments,
+			new Uint16Array([0x100, 0, 0, 0]),
+		)
+	}
+
+	/**
 	 * Checks if this IPv6 address is a global address as specified
 	 * by the [IANA IPv6 Special-Purpose Address Registry][registry].
 	 *
@@ -328,15 +343,11 @@ export class Ipv6Addr implements IpAddrValue {
 	 */
 	// deno-fmt-ignore
 	public isGlobal(): boolean {
-		const ipv4Mapped = new Uint16Array([0, 0, 0, 0, 0, 0xffff])
-		const ipv4Translated = new Uint16Array([0x64, 0xff9b, 1])
-		const discardOnly = new Uint16Array([0x100, 0, 0, 0])
-
 		return !(this.isUnspecified()
 			|| this.isLoopback()
-			|| arrayStartsWith(this._segments, ipv4Mapped)
-			|| arrayStartsWith(this._segments, ipv4Translated)
-			|| arrayStartsWith(this._segments, discardOnly)
+			|| this.isIpv4Mapped()
+			|| this.isIpv4Translated()
+			|| this.isDiscardOnly()
 			|| (
 				(this.a === 0x2001 && this.b < 0x200) && !(
 					uint16ArrayToUint128(this._segments) === BigInt("0x20010001000000000000000000000001")
@@ -353,13 +364,31 @@ export class Ipv6Addr implements IpAddrValue {
 	}
 
 	/**
-	 * Checks if this IPv6 address is an IPv4-mapped address,
-	 * aka `::ffff:0:0/96`.
+	 * Checks if this IPv6 address is an IPv4-mapped address.
+	 *
+	 * This is defined in [IETF RFC 4291][rfc4291] as
+	 * `::ffff:0:0/96`.
+	 *
+	 * [rfc4291]: https://datatracker.ietf.org/doc/html/rfc4291
 	 */
 	public isIpv4Mapped(): boolean {
 		return arrayStartsWith(
 			this._segments,
 			new Uint16Array([0, 0, 0, 0, 0, 0xffff]),
+		)
+	}
+
+	/**
+	 * Checks if this IPv6 address is an IPv4-translated address.
+	 *
+	 * This is defined in [IETF RFC 8215][rfc8215] as`64:ff9b:1::/48`.
+	 *
+	 * [rfc8215]: https://datatracker.ietf.org/doc/html/rfc8215
+	 */
+	public isIpv4Translated(): boolean {
+		return arrayStartsWith(
+			this._segments,
+			new Uint16Array([0x64, 0xff9b, 1]),
 		)
 	}
 

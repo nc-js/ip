@@ -1,6 +1,6 @@
 import type { IpAddrValue } from './ip.ts'
-import { arrayStartsWith, isValidUint32, isValidUint8 } from './utils.ts'
-import { parseIpv4Addr } from './parser.ts'
+import { arrayStartsWith, isValidUint32, isValidUint8 } from '../utils.ts'
+import { parseIpv4Addr } from '../parser.ts'
 
 /**
  * A representation of an IPv4 address
