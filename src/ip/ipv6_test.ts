@@ -34,7 +34,7 @@ Deno.test('segments', () => {
 	)
 })
 
-Deno.test('new address', () => {
+Deno.test('try new address is ok', () => {
 	const addr = Ipv6Addr.tryNew(1, 2, 3, 4, 5, 6, 7, 8)
 	assert(addr instanceof Ipv6Addr)
 	assertEquals(addr.a, 1)
@@ -45,6 +45,18 @@ Deno.test('new address', () => {
 	assertEquals(addr.f, 6)
 	assertEquals(addr.g, 7)
 	assertEquals(addr.h, 8)
+})
+
+Deno.test('try new address errors if any number is not a u16', () => {
+	const notU16 = 2 ** 16
+	assertEquals(Ipv6Addr.tryNew(notU16, 2, 3, 4, 5, 6, 7, 8), null)
+	assertEquals(Ipv6Addr.tryNew(1, notU16, 3, 4, 5, 6, 7, 8), null)
+	assertEquals(Ipv6Addr.tryNew(1, 2, notU16, 4, 5, 6, 7, 8), null)
+	assertEquals(Ipv6Addr.tryNew(1, 2, 3, notU16, 5, 6, 7, 8), null)
+	assertEquals(Ipv6Addr.tryNew(1, 2, 3, 4, notU16, 6, 7, 8), null)
+	assertEquals(Ipv6Addr.tryNew(1, 2, 3, 4, 5, notU16, 7, 8), null)
+	assertEquals(Ipv6Addr.tryNew(1, 2, 3, 4, 5, 6, notU16, 8), null)
+	assertEquals(Ipv6Addr.tryNew(1, 2, 3, 4, 5, 6, 7, notU16), null)
 })
 
 Deno.test('from below range of uint128 returns null', () => {
