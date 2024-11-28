@@ -26,7 +26,7 @@ jobs:
       - name: Check types
         run: deno check $ENTRYPOINT
       - name: Run tests
-        run: deno test -A
+        run: deno test -A ./src --doc README.md
 
   codequality:
     name: codequality (${{ matrix.job-name }})

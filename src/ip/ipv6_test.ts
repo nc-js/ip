@@ -34,7 +34,7 @@ Deno.test('segments', () => {
 	)
 })
 
-Deno.test('new address', () => {
+Deno.test('try new address is ok', () => {
 	const addr = Ipv6Addr.tryNew(1, 2, 3, 4, 5, 6, 7, 8)
 	assert(addr instanceof Ipv6Addr)
 	assertEquals(addr.a, 1)
@@ -45,6 +45,18 @@ Deno.test('new address', () => {
 	assertEquals(addr.f, 6)
 	assertEquals(addr.g, 7)
 	assertEquals(addr.h, 8)
+})
+
+Deno.test('try new address errors if any number is not a u16', () => {
+	const notU16 = 2 ** 16
+	assertEquals(Ipv6Addr.tryNew(notU16, 2, 3, 4, 5, 6, 7, 8), null)
+	assertEquals(Ipv6Addr.tryNew(1, notU16, 3, 4, 5, 6, 7, 8), null)
+	assertEquals(Ipv6Addr.tryNew(1, 2, notU16, 4, 5, 6, 7, 8), null)
+	assertEquals(Ipv6Addr.tryNew(1, 2, 3, notU16, 5, 6, 7, 8), null)
+	assertEquals(Ipv6Addr.tryNew(1, 2, 3, 4, notU16, 6, 7, 8), null)
+	assertEquals(Ipv6Addr.tryNew(1, 2, 3, 4, 5, notU16, 7, 8), null)
+	assertEquals(Ipv6Addr.tryNew(1, 2, 3, 4, 5, 6, notU16, 8), null)
+	assertEquals(Ipv6Addr.tryNew(1, 2, 3, 4, 5, 6, 7, notU16), null)
 })
 
 Deno.test('from below range of uint128 returns null', () => {
@@ -223,6 +235,11 @@ Deno.test('is documentation', () => {
 	assert(Ipv6Addr.tryNew(0x2001, 0xdb8, 0, 0, 0, 0, 0, 0)?.isDocumentation())
 })
 
+Deno.test('is discard-only', () => {
+	assertFalse(Ipv6Addr.tryNew(0x1001, 0, 0, 0, 1, 2, 3, 4)?.isDiscardOnly())
+	assert(Ipv6Addr.tryNew(0x100, 0, 0, 0, 1, 2, 3, 4)?.isDiscardOnly())
+})
+
 // deno-fmt-ignore
 Deno.test('is global: unspecified is not', () => {
 	assertFalse(Ipv6Addr.UNSPECIFIED.isGlobal())
@@ -251,7 +268,7 @@ Deno.test('is global: yes', () => {
 	assert(Ipv6Addr.tryNew(0x26, 0, 0x1c9, 0, 0, 0xafc8, 0x10, 0x1)?.isGlobal())
 })
 
-Deno.test('is global: unicast address with link-local scope', () => {
+Deno.test('is global: unicast address with link-local scope is not', () => {
 	assertFalse(Ipv6Addr.tryNew(0xfe80, 0, 0, 0, 0, 0, 0, 0)?.isGlobal())
 	assertFalse(Ipv6Addr.tryNew(0xfe81, 0, 0, 0, 0, 0, 0, 1)?.isGlobal())
 })
@@ -263,6 +280,16 @@ Deno.test('is global: unique local address is not', () => {
 
 Deno.test('is global: 1st hextet as 0x2002 is not', () => {
 	assertFalse(Ipv6Addr.tryNew(0x2002, 0, 0, 0, 0, 0, 0, 0)?.isGlobal())
+})
+
+Deno.test('is ipv4-mapped', () => {
+	assert(Ipv6Addr.tryNew(0, 0, 0, 0, 0, 0xffff, 1, 2)?.isIpv4Mapped())
+	assertFalse(Ipv6Addr.tryNew(0, 0, 0, 0, 0, 0xfffe, 1, 2)?.isIpv4Mapped())
+})
+
+Deno.test('is ipv4-translated', () => {
+	assert(Ipv6Addr.tryNew(0x64, 0xff9b, 1, 2, 3, 4, 5, 6)?.isIpv4Translated())
+	assertFalse(Ipv6Addr.tryNew(0x64, 0, 1, 2, 3, 4, 5, 6)?.isIpv4Translated())
 })
 
 Deno.test('is loopback', () => {
