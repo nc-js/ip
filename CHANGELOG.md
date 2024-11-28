@@ -3,7 +3,7 @@
 ## 0.7.2
 
 ### Features
-- It is now possible to iterate through a range of IP addresses via `Ipv4AddrIterator` and `Ipv6AddrIterator`. This provides a slightly more optimized way of iterating versus calling `Ipv4Addr.next()`/`Ipv6Addr.next()`. Instead of having to constantly convert to/from a single integer to create a new IP address, the iterator holds that integer internally as a mutable state.
+- It is now possible to iterate through a range of IP addresses via `Ipv4AddrIterator` and `Ipv6AddrIterator`. This provides a slightly more optimized way of iterating versus calling `Ipv4Addr.next()`/`Ipv6Addr.next()`. Instead of having to constantly convert to/from a single integer to create a new IP address, the iterator stores that integer internally as a mutable state.
 
 ## 0.7.1
 
