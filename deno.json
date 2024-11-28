@@ -1,9 +1,9 @@
 {
 	"name": "@nc/net-addr",
-	"version": "0.7.1",
+	"version": "0.7.2",
 	"license": "MIT",
 	"tasks": {
-		"dev": "deno test --watch src/mod.ts"
+		"test": "deno test -A src/ --doc README.md"
 	},
 	"publish": {
 		"include": [

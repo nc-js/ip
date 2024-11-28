@@ -223,7 +223,7 @@ export class Ipv4Addr implements IpAddrValue {
 	/**
 	 * Returns the IPv4 address that occurs before this address.
 	 *
-	 * If the current address is `0.0.0.0`, this returns null.
+	 * This returns `null` if the current address is `0.0.0.0`.
 	 */
 	public previous(): Ipv4Addr | null {
 		return Ipv4Addr.tryFromUint32(this.toUint32() - 1)
@@ -232,7 +232,10 @@ export class Ipv4Addr implements IpAddrValue {
 	/**
 	 * Returns the IPv4 address that occurs after this address.
 	 *
-	 * If the current address is `255.255.255.255`, this returns null.
+	 * This returns `null` if the current address is `255.255.255.255`.
+	 *
+	 * To iterate over multiple IPv4 addresses in a way
+	 * that is more optimized, use {@linkcode Ipv4AddrIterator}.
 	 */
 	public next(): Ipv4Addr | null {
 		return Ipv4Addr.tryFromUint32(this.toUint32() + 1)

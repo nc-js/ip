@@ -248,6 +248,9 @@ export class Ipv6Addr implements IpAddrValue {
 	 *
 	 * This returns `null` if the current IPv6 address is
 	 * `ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff`.
+	 *
+	 * To iterate over multiple IPv6 addresses in a way
+	 * that is more optimized, use {@linkcode Ipv6AddrIterator}.
 	 */
 	public next(): Ipv6Addr | null {
 		return Ipv6Addr.tryFromUint128(this.toUint128() + 1n)
