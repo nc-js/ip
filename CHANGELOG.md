@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.7.1
+
+### Features
+- The `Ipv6Addr` class now exposes 2 instance methods, `isDiscardOnly()` and `isIpv4Translated()`.
+
 ## 0.7.0
 
 ### Breaking changes
