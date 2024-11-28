@@ -5,6 +5,9 @@
 ### Features
 - The `Ipv6Addr` class now exposes 2 instance methods, `isDiscardOnly()` and `isIpv4Translated()`.
 
+### Documentation
+- The documentation for the `Ipv6Addr.isIpv4Mapped()` method now mentions its relevant RFC (RFC 4291).
+
 ## 0.7.0
 
 ### Breaking changes
