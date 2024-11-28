@@ -10,6 +10,7 @@
 
 ### Internal
 - This also adds some unit tests for pre-existing methods, `Ipv6Addr.tryNew()` and `Ipv6Addr.isIpv4Mapped()`.
+- `.git-blame-ignore-revs` file is now setup.
 
 ## 0.7.0
 

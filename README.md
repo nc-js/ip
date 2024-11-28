@@ -11,13 +11,19 @@ npx jsr add @nc/net-addr   # npm
 ## Usage
 ### IPv4 addresses
 ```ts
-import { assert, assertEquals } from '@std/assert'
-import { IPv4Addr } from '@nc/net-addr/v4'
+import { assertEquals } from '@std/assert'
+import { Ipv4Addr } from '@nc/net-addr/ip'
 
-const ip1 = IPv4Addr.newAddr(127, 0, 0, 1)
-const ip2 = IPv4Addr.tryFromUint8Array(new Uint8Array([127, 0, 0, 0, 1]))
+const ip0 = Ipv4Addr.parse('127.0.0.1')
+const ip1 = Ipv4Addr.tryNew(127, 0, 0, 1)
+const ip2 = Ipv4Addr.tryFromArray([127, 0, 0, 1])
+const ip3 = Ipv4Addr.tryFromUint32(2_130_706_433)
+const ip4 = Ipv4Addr.tryFromUint8Array(new Uint8Array([127, 0, 0, 1]))
 
-assert(ip1.equals(ip2))
+assertEquals(ip0, ip1)
+assertEquals(ip0, ip2)
+assertEquals(ip0, ip3)
+assertEquals(ip0, ip4)
 ```
 
 ## License
