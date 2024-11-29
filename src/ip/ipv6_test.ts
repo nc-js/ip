@@ -1,5 +1,6 @@
 import { assert, assertEquals, assertFalse, assertNotEquals } from '@std/assert'
 import { Ipv6Addr } from './ipv6.ts'
+import { Ipv4Addr } from '../mod.ts'
 
 Deno.test('special address localhost', () => {
 	const localhost = Ipv6Addr.LOCALHOST
@@ -478,6 +479,33 @@ Deno.test('multicast scope: unknown', () => {
 	)
 	assertEquals(
 		Ipv6Addr.tryNew(0xffff, 0, 0, 0, 0, 0, 0, 0)?.multicastScope(),
+		null,
+	)
+})
+
+Deno.test('to ipv4 address', () => {
+	assertEquals(Ipv6Addr.tryNew(0xff00, 0, 0, 0, 0, 0, 0, 0)?.toIpv4(), null)
+	assertEquals(
+		Ipv6Addr.tryNew(0, 0, 0, 0, 0, 0xffff, 0xc00a, 0x2ff)?.toIpv4(),
+		Ipv4Addr.tryNew(192, 10, 2, 255) as Ipv4Addr,
+	)
+	assertEquals(
+		Ipv6Addr.tryNew(0, 0, 0, 0, 0, 0, 0, 1)?.toIpv4(),
+		Ipv4Addr.tryNew(0, 0, 0, 1) as Ipv4Addr,
+	)
+})
+
+Deno.test('to ipv4 mapped address', () => {
+	assertEquals(
+		Ipv6Addr.tryNew(0xff00, 0, 0, 0, 0, 0, 0, 0)?.toIpv4Mapped(),
+		null,
+	)
+	assertEquals(
+		Ipv6Addr.tryNew(0, 0, 0, 0, 0, 0xffff, 0xc00a, 0x2ff)?.toIpv4Mapped(),
+		Ipv4Addr.tryNew(192, 10, 2, 255) as Ipv4Addr,
+	)
+	assertEquals(
+		Ipv6Addr.tryNew(0, 0, 0, 0, 0, 0, 0, 1)?.toIpv4Mapped(),
 		null,
 	)
 })

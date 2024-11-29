@@ -204,11 +204,6 @@ export class Ipv6Addr implements IpAddrValue {
 	 * This returns `null` if:
 	 *  - the array length is not equal to 8,
 	 *  - any of the numbers are not a valid unsigned 16-bit integer.
-	 *
-	 * @example Usage
-	 * ```ts
-	 *
-	 * ```
 	 */
 	public static tryFromArray(array: number[]): Ipv6Addr | null {
 		if (array.length !== 8) {
@@ -555,6 +550,22 @@ export class Ipv6Addr implements IpAddrValue {
 		}
 	}
 
+	/**
+	 * Converts this IPv6 address to an IPv4 address if it is either an:
+	 *   - IPv4-compatible address as defined in [IETF RFC 4291 section 2.5.5.1][s2551],
+	 *   - or an IPv4-mapped address as defined in [IETF RFC 4291 section 2.5.5.2][s2552].
+	 * Otherwise, this returns `null`.
+	 *
+	 * Note that this will return an IPv4 address for the IPv6 loopback address `::1`.
+	 * Use {@linkcode toIpv4Mapped} to avoid this.
+	 *
+	 * - `::a.b.c.d` and `::ffff:a.b.c.d` become `a.b.c.d`.
+	 * -`::1` becomes 0.0.0.1`.
+	 * - All addresses not starting with either all zeroes or `::ffff` will return `null`.
+	 *
+	 * [s2551]: https://datatracker.ietf.org/doc/html/rfc4291#section-2.5.5.1
+	 * [s2552]: https://datatracker.ietf.org/doc/html/rfc4291#section-2.5.5.2
+	 */
 	public toIpv4(): Ipv4Addr | null {
 		const segments = this.segments()
 		if (
@@ -569,6 +580,15 @@ export class Ipv6Addr implements IpAddrValue {
 		return null
 	}
 
+	/**
+	 * Converts this address to an IPv4 address if it’s an IPv4-mapped address,
+	 * as defined in [IETF RFC 4291 section 2.5.5.2][s2551], otherwise returns `null`.
+	 *
+	 *  - `::ffff:a.b.c.d` becomes `a.b.c.d`.
+	 *  - All addresses not starting with `::ffff` will return `null`.
+	 *
+	 * [s2551]: https://datatracker.ietf.org/doc/html/rfc4291#section-2.5.5.1
+	 */
 	public toIpv4Mapped(): Ipv4Addr | null {
 		const octets = this.octets()
 		const mapped = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xff, 0xff]
@@ -607,5 +627,5 @@ function uint16ArrayToUint128(array: Uint16Array): bigint {
 function uint16ToUint8Array(value: number): Uint8Array {
 	const lowByte = value & 0xff
 	const highByte = (value >> 8) & 0xff
-	return new Uint8Array([lowByte, highByte])
+	return new Uint8Array([highByte, lowByte])
 }
