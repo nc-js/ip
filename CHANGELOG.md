@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.7.4
+
+### Documentation
+- Hack-fix links to method names referenced in `IpAddr` and `IpAddrValue`.
+
+### Internal changes
+- CI: The commands in the main CI workflow no longer has to be manually synced. They now use custom command aliases under `deno task`, including:
+  - `deno task check`
+  - `deno task test`
+  - `deno task htmldocs`
+  - `deno task lintdocs`
+
 ## 0.7.3
 
 ### Bug fixes
