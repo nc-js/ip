@@ -3,7 +3,8 @@
 ## 0.7.6
 
 ### Features
-- `Ipv6Addr` now has 2 new instance methods, `toIpv4()` and `toIpv4Mapped()`. Their implementation and documentation are also ported from Rust's `std::net` module to TypeScript.
+- `Ipv6Addr` now has 3 new instance methods, `tryFromUint8Array()`, `toIpv4()` and `toIpv4Mapped()`. Their implementation and documentation are also ported from Rust's `std::net` module to TypeScript.
+- `Ipv4Addr` now has 2 new instance methods, `toIpv6Compatible()` and `toIpv6Mapped()`. Like above, these implementations are also ported from Rust's standard library.
 
 ## 0.7.5
 

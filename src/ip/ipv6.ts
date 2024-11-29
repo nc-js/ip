@@ -223,6 +223,17 @@ export class Ipv6Addr implements IpAddrValue {
 	}
 
 	/**
+	 * Attempts to create an `Ipv6Addr` from a `Uint8Array`.
+	 *
+	 * This returns `null` if the array given is not of length 16.
+	 */
+	public static tryFromUint8Array(array: Uint8Array): Ipv6Addr | null {
+		return (array.length === 16)
+			? new Ipv6Addr(uint8ArrayToUint16Array(array))
+			: null
+	}
+
+	/**
 	 * Attempts to create an `Ipv6Addr` from a `Uint16Array`.
 	 *
 	 * This returns `null` if the array length is not equal to 8,
@@ -616,6 +627,16 @@ export type Ipv6MulticastScope =
 	| 'OrganizationLocal'
 	| 'Global'
 
+function uint8ArrayToUint16Array(array: Uint8Array): Uint16Array {
+	const uint16Array = new Uint16Array(8)
+	for (let i = 0; i < 8; i++) {
+		const hiByte = array[i * 2]
+		const loByte = array[i * 2 + 1]
+		uint16Array[i] = (hiByte << 8) | loByte
+	}
+	return uint16Array
+}
+
 function uint16ArrayToUint128(array: Uint16Array): bigint {
 	let result = BigInt(0)
 	for (let i = 0; i < array.length; i++) {
@@ -625,7 +646,7 @@ function uint16ArrayToUint128(array: Uint16Array): bigint {
 }
 
 function uint16ToUint8Array(value: number): Uint8Array {
-	const lowByte = value & 0xff
-	const highByte = (value >> 8) & 0xff
-	return new Uint8Array([highByte, lowByte])
+	const hiByte = (value >> 8) & 0xff
+	const loByte = value & 0xff
+	return new Uint8Array([hiByte, loByte])
 }

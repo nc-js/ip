@@ -1,5 +1,6 @@
 import { assert, assertEquals, assertFalse } from '@std/assert'
 import { Ipv4Addr } from './ipv4.ts'
+import { Ipv6Addr } from './ipv6.ts'
 
 Deno.test('special address broadcast', () => {
 	const localhost = Ipv4Addr.BROADCAST
@@ -270,6 +271,26 @@ Deno.test('is shared', () => {
 
 Deno.test('is unspecified', () => {
 	assert(Ipv4Addr.tryNew(0, 0, 0, 0)?.isUnspecified())
+})
+
+Deno.test('to ivp6-compatible address', () => {
+	const ipv4 = Ipv4Addr.tryNew(192, 0, 2, 255)
+
+	assert(ipv4 instanceof Ipv4Addr)
+	assertEquals(
+		ipv4.toIpv6Compatible(),
+		Ipv6Addr.tryNew(0, 0, 0, 0, 0, 0, 0xc000, 0x2ff) as Ipv6Addr,
+	)
+})
+
+Deno.test('to ivp6-mapped address', () => {
+	const ipv4 = Ipv4Addr.tryNew(192, 0, 2, 255)
+
+	assert(ipv4 instanceof Ipv4Addr)
+	assertEquals(
+		ipv4.toIpv6Mapped(),
+		Ipv6Addr.tryNew(0, 0, 0, 0, 0, 0xffff, 0xc000, 0x2ff) as Ipv6Addr,
+	)
 })
 
 Deno.test('parse 127.0.0.1 is ok', () => {

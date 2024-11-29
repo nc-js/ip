@@ -1,6 +1,6 @@
 import { assert, assertEquals, assertFalse, assertNotEquals } from '@std/assert'
+import { Ipv4Addr } from './ipv4.ts'
 import { Ipv6Addr } from './ipv6.ts'
-import { Ipv4Addr } from '../mod.ts'
 
 Deno.test('special address localhost', () => {
 	const localhost = Ipv6Addr.LOCALHOST
@@ -85,6 +85,25 @@ Deno.test('try from array is ok', () => {
 
 Deno.test('try from array is error', () => {
 	const addr = Ipv6Addr.tryFromArray([1, 2, 3, 4, 5, 6, 7, 8, 9])
+	assertEquals(addr, null)
+})
+
+// deno-fmt-ignore
+Deno.test('try from uint8array is ok', () => {
+	const addr = Ipv6Addr.tryFromUint8Array(new Uint8Array([
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xff, 0xff
+	])) as Ipv6Addr
+	assertEquals(
+		addr,
+		Ipv6Addr.tryNew(0, 0, 0, 0, 0, 0, 0, 0xffff)
+	)
+})
+
+// deno-fmt-ignore
+Deno.test('try from uint8array is error', () => {
+	const addr = Ipv6Addr.tryFromUint8Array(new Uint8Array([
+		1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17
+	]))
 	assertEquals(addr, null)
 })
 
