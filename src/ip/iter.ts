@@ -13,7 +13,7 @@ import { Ipv4Addr, Ipv6Addr } from '../mod.ts'
  * )
  *
  * for(const addr of iter) {
- *     console.log(addr)
+ *     console.log(addr.toString())
  * }
  * ```
  */
@@ -58,7 +58,7 @@ export class Ipv4AddrIterator implements IterableIterator<Ipv4Addr> {
  * )
  *
  * for(const addr of iter) {
- *     console.log(addr)
+ *     console.log(addr.toString())
  * }
  * ```
  */

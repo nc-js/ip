@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.7.3
+
+### Bug fixes
+- Renames a typo in a Port method name, changing `Port.isDyanmic()` to `Port.isDynamic()`.
+- Renames the current `MulticastScope` type to `Ipv6MulticastScope`, since it only describes IPv6 addresses.
+
+### Documentation
+- Classes now have top-level code block examples of how they work.
+- Modules now have some brief, top-level documentation describing what they contain.
+- Symbols now have more internal links between each other, which should make it easier to navigate.
+- Documentation style and formatting is generally more consistent.
+
 ## 0.7.2
 
 ### Features
@@ -41,17 +53,14 @@
 ## 0.6.1
 
 ### Features
-
 - The `Port` class now exposes a getter, `isSelectableEphemeral`. This matches the definition of [IETF RFC 6056](https://datatracker.ietf.org/doc/html/rfc6056) for what can be considered an okay port number that's suitable for selection algorithms.
 
 ## 0.6.0
 
 ### Breaking changes
-
 - The `port` property of `SocketAddrV4` and `SocketAddrV6` is now `Port` (instead of `number`).
 
 ### Features
-
 - There is a new class representing a port, conveniently called `Port`. This comes with a few getters that checks for special properties of the port number (checking if it is a user port, system port, dynamic port, and/or a reserved port).
 - The constructors of `SocketAddrV4` and `SocketAddrV6` are now generally considered "safe" to call; the responsibility of validating a port number is now up to the `Port` class.
   - Note that it is still possible to create a new `Port` instance with its public constructor, which is documented as unchecked. To ensure that a port number is valid (an unsigned 16-bit integer), library users can call `Port.tryNew()` instead.
@@ -60,28 +69,23 @@
 ## 0.5.1
 
 ### Documentation
-
 - This fixes a minor documentation issue for `Ipv6Addr.tryFromArray()`. This now correctly mentions that the method will return `null` if any of the numbers are not a valid unsigned 16-bit integer.
 
 ## 0.5.0
-
 This version focuses on making the library's behavior for handling numbers/integers more consistent.
 
 The API now consistenly returns `null` for invalid numbers passed as an argument (floats, NaN, Infinity, +Infinity, etc), instead of automatically clamping and/or truncating the number by default.
 
 ### Breaking changes
-
 - `Ipv4Addr.fromUint32()` is now renamed to `Ipv4Addr.tryFromUint32()`. This now returns null if the number is not a valid unsigned 32-bit integer, instead of clamping to that range.
 - `Ipv6Addr.fromUint128()` is now renamed to `Ipv6Addr.tryFromUint128()`. This now returns null if the number is not a valid unsigned 128-bit integer, instead of clamping to that range.
 
 ### Documentation
-
 - The writing style is now generally more consistent.
 
 ## 0.4.0
 
 ### Features
-
 - `Ipv4Addr` now exposes an instance method named `toUint32()`.
 - `Ipv6Addr` now exposes 4 new instance methods:
   - `toUint128()`
@@ -114,23 +118,19 @@ The API now consistenly returns `null` for invalid numbers passed as an argument
 ## 0.2.0 (2024-11-18)
 
 ### Breaking changes
-
 - The interface `IpAddrValue` now exposes an `octets()` method that returns a `Uint8Array`.
 - The properties of `Ipv4Addr` and `Ipv6Addr` are now readonly.
 - The properties of `SocketAddrV4` and `SocketAddrV6` are now readonly.
 - `SocketAddrV6.fromString()` is renamed to `SocketAddrV6.parse()` to be consistent with `SocketAddrV4.parse()`. (**Note**: This method is not currently implemented yet, and will throw an error when called)
 
 ### Features
-
 - `SocketAddrV4` and `SocketAddrV6` now exposes a static `tryNew()` method. This method will check if the port number is a valid, unsigned 16-bit integer.
 - `SocketAddrV4` and `SocketAddrV6` now have a note on their constructors which states that the caller is responsible for checking that the port is a valid, unsigned 16-bit integer.
 
 ## 0.1.1 (2024-11-18)
-
 - The parser for IPv4 addresses and socket addresses no longer takes as many ASCII digits as possible.
   - IPv4Addr: the parser will now only take 1 to 3 digits for each octet
   - SocketAddrV4: the parser will now only take 1 to 5 digits for the port number
 
 ## 0.1.0 (2024-11-17)
-
 - Initial unstable release of library
