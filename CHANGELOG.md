@@ -12,6 +12,9 @@
 - Symbols now have more internal links between each other, which should make it easier to navigate.
 - Documentation style and formatting is generally more consistent.
 
+### Internal changes
+- Fixes a minor typo in a step name of a GitHub Actions CI workflow.
+
 ## 0.7.2
 
 ### Features
