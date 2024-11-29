@@ -14,7 +14,7 @@ export interface IpAddrValue {
 	 *
 	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.octets
 	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.octets
-	*/
+	 */
 	octets(): Uint8Array
 	/**
 	 * Checks if this address equals another IP address.
@@ -25,7 +25,7 @@ export interface IpAddrValue {
 	 *
 	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.equals
 	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.equals
-	*/
+	 */
 	equals(other: this): boolean
 	/**
 	 * Checks if this address is a benchmarking address.
@@ -36,7 +36,7 @@ export interface IpAddrValue {
 	 *
 	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.isBenchmarking
 	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.isBenchmarking
-	*/
+	 */
 	isBenchmarking(): boolean
 	/**
 	 * Checks if this address is a documentation address.
@@ -47,7 +47,7 @@ export interface IpAddrValue {
 	 *
 	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.isDocumentation
 	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.isDocumentation
-	*/
+	 */
 	isDocumentation(): boolean
 	/**
 	 * Checks if this address is a loopback address.
@@ -66,7 +66,7 @@ export interface IpAddrValue {
 	 * See [`Ipv4Addr.isMulticast()`][v4]
 	 * and [`Ipv4Addr.isMulticast()`][v6]
 	 * for more information.
-	 * 
+	 *
 	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.isMulticast
 	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.isMulticast
 	 */
@@ -123,7 +123,7 @@ export class IpAddr implements IpAddrValue {
 	 *
 	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.octets
 	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.octets
-	*/
+	 */
 	octets(): Uint8Array {
 		return this.addr.octets()
 	}
@@ -137,7 +137,7 @@ export class IpAddr implements IpAddrValue {
 	 *
 	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.equals
 	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.equals
-	*/
+	 */
 	equals(other: IpAddr): boolean {
 		return this.addr.equals(other)
 	}
@@ -151,7 +151,7 @@ export class IpAddr implements IpAddrValue {
 	 *
 	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.isBenchmarking
 	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.isBenchmarking
-	*/
+	 */
 	isBenchmarking(): boolean {
 		return this.addr.isBenchmarking()
 	}
@@ -165,7 +165,7 @@ export class IpAddr implements IpAddrValue {
 	 *
 	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.isDocumentation
 	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.isDocumentation
-	*/
+	 */
 	isDocumentation(): boolean {
 		return this.addr.isDocumentation()
 	}
@@ -190,7 +190,7 @@ export class IpAddr implements IpAddrValue {
 	 * See [`Ipv4Addr.isMulticast()`][v4]
 	 * and [`Ipv6Addr.isMulticast()`][v6]
 	 * for more information.
-	 * 
+	 *
 	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.isMulticast
 	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.isMulticast
 	 */
