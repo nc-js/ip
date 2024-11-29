@@ -2,42 +2,62 @@ import { Ipv4Addr } from './ipv4.ts'
 import { Ipv6Addr } from './ipv6.ts'
 
 /**
- * A representation of an IP address
+ * An interface for an IP address.
  */
 export interface IpAddrValue {
 	/**
 	 * The array of unsigned 8-bit integers that make up this address.
+	 *
+	 * See {@linkcode Ipv4Addr.octets()} and
+	 * {@linkcode Ipv6Addr.octets()} for more information.
 	 */
 	octets(): Uint8Array
 	/**
 	 * Checks if this address equals another IP address.
+	 *
+	 * See {@linkcode Ipv4Addr.equals()} and
+	 * {@linkcode Ipv6Addr.equals()} for more information.
 	 */
 	equals(other: this): boolean
 	/**
 	 * Checks if this address is a benchmarking address.
+	 *
+	 * See {@linkcode Ipv4Addr.isBenchmarking()} and
+	 * {@linkcode Ipv6Addr.isBenchmarking()} for more information.
 	 */
 	isBenchmarking(): boolean
 	/**
 	 * Checks if this address is a documentation address.
+	 *
+	 * See {@linkcode Ipv4Addr.isDocumentation()} and
+	 * {@linkcode Ipv6Addr.isDocumentation()} for more information.
 	 */
 	isDocumentation(): boolean
 	/**
 	 * Checks if this address is a loopback address.
+	 *
+	 * See {@linkcode Ipv4Addr.isLoopback()} and
+	 * {@linkcode Ipv6Addr.isLoopback()} for more information.
 	 */
 	isLoopback(): boolean
 	/**
 	 * Checks if this address is a multicast address.
+	 *
+	 * See {@linkcode Ipv4Addr.isMulticast()} and
+	 * {@linkcode Ipv6Addr.isMulticast()} for more information.
 	 */
 	isMulticast(): boolean
 	/**
 	 * Checks if this address is an unspecified address.
+	 *
+	 * See {@linkcode Ipv4Addr.isUnspecified()} and
+	 * {@linkcode Ipv6Addr.isUnspecified()} for more information.
 	 */
 	isUnspecified(): boolean
 }
 
 /**
- * The concrete representation of an IP address,
- * which can be either an IPv4 or IPv6 address.
+ * An IP address, either IPv4 address or IPv6 address.
  */
 export class IpAddr implements IpAddrValue {
 	/** The IP address */
@@ -66,6 +86,9 @@ export class IpAddr implements IpAddrValue {
 
 	/**
 	 * The array of unsigned 8-bit integers that make up this address.
+	 *
+	 * See {@linkcode Ipv4Addr.octets()} and
+	 * {@linkcode Ipv6Addr.octets()} for more information.
 	 */
 	octets(): Uint8Array {
 		return this.addr.octets()
@@ -73,6 +96,9 @@ export class IpAddr implements IpAddrValue {
 
 	/**
 	 * Checks if this address equals another IP address.
+	 *
+	 * See {@linkcode Ipv4Addr.equals()} and
+	 * {@linkcode Ipv6Addr.equals()} for more information.
 	 */
 	equals(other: IpAddr): boolean {
 		return this.addr.equals(other)
@@ -80,6 +106,9 @@ export class IpAddr implements IpAddrValue {
 
 	/**
 	 * Checks if this address is a benchmarking address.
+	 *
+	 * See {@linkcode Ipv4Addr.isBenchmarking()} and
+	 * {@linkcode Ipv6Addr.isBenchmarking()} for more information.
 	 */
 	isBenchmarking(): boolean {
 		return this.addr.isBenchmarking()
@@ -87,6 +116,9 @@ export class IpAddr implements IpAddrValue {
 
 	/**
 	 * Checks if this address is a documentation address.
+	 *
+	 * See {@linkcode Ipv4Addr.isDocumentation()} and
+	 * {@linkcode Ipv6Addr.isDocumentation()} for more information.
 	 */
 	isDocumentation(): boolean {
 		return this.addr.isDocumentation()
@@ -94,6 +126,9 @@ export class IpAddr implements IpAddrValue {
 
 	/**
 	 * Checks if this address is a loopback address.
+	 *
+	 * See {@linkcode Ipv4Addr.isLoopback()} and
+	 * {@linkcode Ipv6Addr.isLoopback()} for more information.
 	 */
 	isLoopback(): boolean {
 		return this.addr.isLoopback()
@@ -101,6 +136,9 @@ export class IpAddr implements IpAddrValue {
 
 	/**
 	 * Checks if this address is a multicast address.
+	 *
+	 * See {@linkcode Ipv4Addr.isMulticast()} and
+	 * {@linkcode Ipv6Addr.isMulticast()} for more information.
 	 */
 	isMulticast(): boolean {
 		return this.addr.isMulticast()
@@ -108,6 +146,9 @@ export class IpAddr implements IpAddrValue {
 
 	/**
 	 * Checks if this address is an unspecified address.
+	 *
+	 * See {@linkcode Ipv4Addr.isUnspecified()} and
+	 * {@linkcode Ipv6Addr.isUnspecified()} for more information.
 	 */
 	isUnspecified(): boolean {
 		return this.addr.isUnspecified()

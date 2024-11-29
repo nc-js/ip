@@ -26,7 +26,7 @@ jobs:
       - name: Check types
         run: deno check $ENTRYPOINT
       - name: Run tests
-        run: deno test -A ./src --doc README.md
+        run: deno test -A --doc ./src ./README.md
 
   codequality:
     name: codequality (${{ matrix.job-name }})
@@ -53,6 +53,6 @@ jobs:
         uses: denoland/setup-deno@v2
         with:
             deno-version: v2.x
-      - name: Check ${{ matrix.job-check }}
+      - name: Check ${{ matrix.job-step }}
         run: ${{ matrix.cmd }}
         continue-on-error: ${{ matrix.continue-on-error }}

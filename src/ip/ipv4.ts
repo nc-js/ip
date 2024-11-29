@@ -3,7 +3,39 @@ import { arrayStartsWith, isValidUint32, isValidUint8 } from '../utils.ts'
 import { parseIpv4Addr } from '../parser.ts'
 
 /**
- * A representation of an IPv4 address
+ * An IPv4 address.
+ *
+ * @example Creating an address
+ * ```ts
+ * import { assertEquals } from '@std/assert'
+ * import { Ipv4Addr } from '@nc/net-addr/ip'
+ *
+ * const ip0 = Ipv4Addr.LOCALHOST
+ * const ip1 = Ipv4Addr.parse('127.0.0.1')
+ * const ip2 = Ipv4Addr.tryNew(127, 0, 0, 1)
+ * const ip3 = Ipv4Addr.tryFromArray([127, 0, 0, 1])
+ * const ip4 = Ipv4Addr.tryFromUint32(2_130_706_433)
+ * const ip5 = Ipv4Addr.tryFromUint8Array(new Uint8Array([127, 0, 0, 1]))
+ *
+ * assertEquals(ip0, ip1)
+ * assertEquals(ip0, ip2)
+ * assertEquals(ip0, ip3)
+ * assertEquals(ip0, ip4)
+ * assertEquals(ip0, ip5)
+ * ```
+ *
+ * @example Properties of an address
+ * ```ts
+ * import { assert, assertEquals } from '@std/assert'
+ * import { Ipv4Addr } from '@nc/net-addr/ip'
+ *
+ * const localhost = Ipv4Addr.LOCALHOST
+ *
+ * assertEquals(localhost.octets(), new Uint8Array([127, 0, 0, 1]))
+ * assert(localhost.isLoopback())
+ * assert(Ipv4Addr.tryNew(0, 0, 0, 0)?.isUnspecified())
+ * assert(Ipv4Addr.tryNew(10, 0, 0, 0)?.isPrivate())
+ * ```
  */
 export class Ipv4Addr implements IpAddrValue {
 	/** An IPv4 address at `255.255.255.255` */
@@ -28,34 +60,22 @@ export class Ipv4Addr implements IpAddrValue {
 		this._octets = octets
 	}
 
-	/**
-	 * The first octet of the IPv4 address in network byte order,
-	 * from bits 0-7.
-	 */
+	/** The 1st octet of the IPv4 address in network byte order (bits 0-7) */
 	public get a(): number {
 		return this._octets[0]
 	}
 
-	/**
-	 * The second octet of the IPv4 address in network byte order,
-	 * from bits 8-15.
-	 */
+	/** The 2nd octet of the IPv4 address in network byte order (bits 8-15) */
 	public get b(): number {
 		return this._octets[1]
 	}
 
-	/**
-	 * The third octet of the IPv4 address in network byte order,
-	 * from bits 16-23.
-	 */
+	/** The 3rd octet of the IPv4 address in network byte order (bits 16-23) */
 	public get c(): number {
 		return this._octets[2]
 	}
 
-	/**
-	 * The fourth octet of the IPv4 address in network byte order,
-	 * from bits 24-31.
-	 */
+	/** The 4th octet of the IPv4 address in network byte order (bits 24-31) */
 	public get d(): number {
 		return this._octets[3]
 	}
@@ -63,8 +83,7 @@ export class Ipv4Addr implements IpAddrValue {
 	/**
 	 * Creates an IP address from 4 numbers.
 	 *
-	 * This returns `null` if any given number
-	 * is not an unsigned 8-bit integer.
+	 * This returns `null` if any given number is not an unsigned 8-bit integer.
 	 */
 	public static tryNew(
 		a: number,
@@ -92,10 +111,10 @@ export class Ipv4Addr implements IpAddrValue {
 	}
 
 	/**
-	 * Creates an IPv4 address from an unsigned 32-bit integer.
+	 * Attempts to create an IPv4 address from an unsigned 32-bit integer.
 	 *
-	 * This returns `null` if the given number is not a valid
-	 * unsigned 32-bit integer (0 to 4,294,967,295).
+	 * This returns `null` if the given number is not a valid unsigned
+	 * 32-bit integer (0 to 4,294,967,295).
 	 */
 	public static tryFromUint32(uint32: number): Ipv4Addr | null {
 		if (!isValidUint32(uint32)) {
@@ -116,8 +135,8 @@ export class Ipv4Addr implements IpAddrValue {
 	 * Parses an IP address string in dot-decimal notation,
 	 * e.g `127.0.0.1`.
 	 *
-	 * The string must have 4 octets (a number in the range
-	 * of an unsigned 8-bit integer, 0 to 255), each separated by a dot.
+	 * The string must have 4 octets (a number in the range of an unsigned
+	 * 8-bit integer, 0 to 255), each separated by a dot.
 	 *
 	 * This returns `null` if the string does not conform to the format.
 	 */
@@ -153,8 +172,7 @@ export class Ipv4Addr implements IpAddrValue {
 	/**
 	 * Attempts to create an `Ipv4Addr` from a `Uint8Array`.
 	 *
-	 * This returns `null` if the array length is not equal to 4,
-	 * otherwise returns an `Ipv4Addr`.
+	 * This returns `null` if the array length is not equal to 4.
 	 */
 	public static tryFromUint8Array(
 		array: Uint8Array,
@@ -165,8 +183,7 @@ export class Ipv4Addr implements IpAddrValue {
 	/**
 	 * Attempts to create an `Ipv4Addr` from a `Uint8ClampedArray`.
 	 *
-	 * This returns `null` if the array length is not equal to 4,
-	 * otherwise returns an `Ipv4Addr`.
+	 * This returns `null` if the array length is not equal to 4.
 	 */
 	public static tryFromUint8ClampedArray(
 		array: Uint8ClampedArray,
@@ -188,8 +205,7 @@ export class Ipv4Addr implements IpAddrValue {
 	/**
 	 * Attempts to create an `Ipv4Addr` from a `DataView`.
 	 *
-	 * This returns `null` if the view is not 4 bytes long,
-	 * otherwise returns an `Ipv4Addr`.
+	 * This returns `null` if the view is not 4 bytes long.
 	 */
 	public static tryFromDataView(view: DataView): Ipv4Addr | null {
 		if (view.byteLength !== 4) {
@@ -260,6 +276,7 @@ export class Ipv4Addr implements IpAddrValue {
 
 	/**
 	 * Checks if this IPv4 address is a benchmarking address.
+	 *
 	 * This range is defined in [IETF RFC 2544][rfc2544]
 	 * as `198.18.0.0/15`.
 	 *
@@ -283,6 +300,7 @@ export class Ipv4Addr implements IpAddrValue {
 
 	/**
 	 * Checks if this IPv4 address is a documentation address.
+	 *
 	 * This range is defined in [IETF RFC 5737][rfc5737]
 	 * as:
 	 * - `192.0.2.0/24` (TEST-NET-1)
@@ -322,6 +340,7 @@ export class Ipv4Addr implements IpAddrValue {
 
 	/**
 	 * Checks if this IPv4 address is a link-local address.
+	 *
 	 * This range is defined in [IETF RFC 3927][rfc3927]
 	 * as `169.254.0.0/16`.
 	 *
@@ -333,6 +352,7 @@ export class Ipv4Addr implements IpAddrValue {
 
 	/**
 	 * Checks if this IPv4 address is a loopback address.
+	 *
 	 * This range is defined in [IETF RFC 1112][rfc1112]
 	 * as `127.0.0.0/8`.
 	 *
@@ -344,6 +364,7 @@ export class Ipv4Addr implements IpAddrValue {
 
 	/**
 	 * Checks if this IPv4 address is a multicast address.
+	 *
 	 * This range is defined in [IETF RFC 5771][rfc5771]
 	 * as `224.0.0.0/4`.
 	 *
@@ -355,6 +376,7 @@ export class Ipv4Addr implements IpAddrValue {
 
 	/**
 	 * Checks if this IPv4 address is a private address.
+	 *
 	 * The ranges are defined in [IETF RFC 1918][rfc1918] as:
 	 * - `10.0.0.0/8`
 	 * - `172.16.0.0/12`
@@ -370,6 +392,7 @@ export class Ipv4Addr implements IpAddrValue {
 
 	/**
 	 * Checks if this IPv4 address is a private address.
+	 *
 	 * This implementation follows Rust's implementation of
 	 * [`Ipv4Addr::is_reserved()`][reserved], see that link
 	 * for further information.
@@ -382,6 +405,7 @@ export class Ipv4Addr implements IpAddrValue {
 
 	/**
 	 * Checks if this IPv4 address is part of the Shared Address Space.
+	 *
 	 * This range is defined in [IETF RFC 6598][rfc6598]
 	 * as `100.64.0.0/10`.
 	 *
@@ -393,6 +417,7 @@ export class Ipv4Addr implements IpAddrValue {
 
 	/**
 	 * Checks if this IPv4 address is an unspecified address.
+	 *
 	 * This address is defined in *UNIX Network Programming, Second Edition*,
 	 * W. Richard Stevens, p. 891; see also [ip7].
 	 *

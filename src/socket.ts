@@ -1,3 +1,15 @@
+/**
+ * Socket addresses, which contain an IPv4 address or IPv6 address, and a port.
+ *  - {@linkcode Port} is a simple newtype class over a port number (unsigned
+ *    16-bit integer) with some built-in getters.
+ *  - {@linkcode SocketAddrV4} contains an IPv4 address and port number.
+ *  - {@linkcode SocketAddrV6} contains an IPv6 address, port number, flow info
+ *    and scope ID.
+ *  - {@linkcode SocketAddr} is either an IPv4 or IPv6 socket address.
+ *  - {@linkcode SocketAddrValue} is an interface to represent a socket address.
+ * @module
+ */
+
 import type { IpAddrValue } from './ip/ip.ts'
 import type { Ipv4Addr } from './ip/ipv4.ts'
 import type { Ipv6Addr } from './ip/ipv6.ts'
@@ -7,6 +19,22 @@ import { isValidUint16, isValidUint32 } from './utils.ts'
 /**
  * An unsigned 16-bit integer which represents
  * a unique identifier for a network connection.
+ *
+ * @example Usage
+ * ```ts
+ * import { assert, assertEquals } from '@std/assert'
+ * import { Port } from '@nc/net-addr/socket'
+ *
+ * // a port can be created either unchecked or checked
+ * // (if the number is within the bounds of an unsigned 16-bit integer)
+ * const port1 = new Port(3000)
+ * const port2 = Port.tryNew(8080)
+ * const port3 = Port.tryNew(65536) // null b/c out of bounds
+ *
+ * assert(port1.isUser)
+ * assert(port2?.isUser)
+ * assertEquals(port3, null)
+ * ```
  */
 export class Port {
 	/** An unsigned 16-bit integer */
@@ -115,7 +143,7 @@ export class Port {
 	 *
 	 * [rfc6535]: https://datatracker.ietf.org/doc/html/rfc6335
 	 */
-	public get isDyanmic(): boolean {
+	public get isDynamic(): boolean {
 		return this.value >= Port.DYNAMIC_MIN && this.value <= Port.DYNAMIC_MAX
 	}
 
@@ -184,6 +212,22 @@ export class SocketAddr implements SocketAddrValue {
 
 /**
  * A socket address, containing an IPv4 address and a port number.
+ *
+ * @example Usage
+ * ```ts
+ * import { assertEquals } from '@std/assert'
+ * import { Ipv4Addr } from '@nc/net-addr/ip'
+ * import { Port, SocketAddrV4 } from '@nc/net-addr/socket'
+ *
+ * const socket1 = new SocketAddrV4(Ipv4Addr.LOCALHOST, new Port(3000))
+ * const socket2 = SocketAddrV4.parse("127.0.0.1:3000")
+ *
+ * assertEquals(socket1, socket2)
+ * assertEquals(socket1.addr, Ipv4Addr.LOCALHOST)
+ * assertEquals(socket1.port.value, 3000)
+ * assertEquals(socket1.toString(), "127.0.0.1:3000")
+ * assertEquals(socket2?.toString(), "127.0.0.1:3000")
+ * ```
  */
 export class SocketAddrV4 implements SocketAddrValue {
 	/** The IPv4 address of the socket */
@@ -193,9 +237,6 @@ export class SocketAddrV4 implements SocketAddrValue {
 
 	/**
 	 * Creates a new socket address from an IPv4 address and a port number.
-	 *
-	 * @param addr The IPv4 address of the socket
-	 * @param port The unsigned 16-bit port number of the address
 	 */
 	public constructor(addr: Ipv4Addr, port: Port) {
 		this.addr = addr
@@ -217,13 +258,13 @@ export class SocketAddrV4 implements SocketAddrValue {
 	}
 
 	/**
-	 * Parses a string in the format of `"ipv4:port"`,
+	 * Parses a string in the format of `"<ipv4>:<port>"`,
 	 * where the port is an unsigned 16-bit integer.
 	 *
 	 * This returns `null` if:
 	 * - The IPv4 address cannot be parsed.
-	 * - The IPV4 address can be parsed, but there's no `:` delimiter.
-	 * - The port number can't be parsed, or is out of bounds of an unsigned
+	 * - The IPv4 address can be parsed, but there's no `:` delimiter.
+	 * - The port number can't be parsed, or is not a valid unsigned
 	 *   16-bit integer (0 to 65,535).
 	 */
 	public static parse(s: string): SocketAddrV4 | null {
@@ -233,7 +274,7 @@ export class SocketAddrV4 implements SocketAddrValue {
 
 	/**
 	 * Returns the socket address as a string in the format of
-	 * `<ipaddr4>:<port>`
+	 * `<ipv4>:<port>`
 	 */
 	public toString(): string {
 		return `${this.addr}:${this.port}`
@@ -242,6 +283,27 @@ export class SocketAddrV4 implements SocketAddrValue {
 
 /**
  * A socket address, containing an IPv6 address and a port number.
+ *
+ * @example Usage
+ * ```ts
+ * import { assertEquals } from '@std/assert'
+ * import { Ipv6Addr } from '@nc/net-addr/ip'
+ * import { Port, SocketAddrV6 } from '@nc/net-addr/socket'
+ *
+ * // callers must ensure that the flow info number and scope ID number
+ * // are both valid unsigned 32-bit integers
+ * const socket = new SocketAddrV6(
+ *     Ipv6Addr.LOCALHOST,
+ *     new Port(3000),
+ *     0, // the flow info
+ *     0, // the scope ID
+ * )
+ *
+ * assertEquals(socket.addr, Ipv6Addr.LOCALHOST)
+ * assertEquals(socket.port.value, 3000)
+ * assertEquals(socket.flowInfo, 0)
+ * assertEquals(socket.scopeId, 0)
+ * ```
  */
 export class SocketAddrV6 implements SocketAddrValue {
 	/** The IPv6 address of the socket */
@@ -257,8 +319,8 @@ export class SocketAddrV6 implements SocketAddrValue {
 	 * Creates a new socket address from an IPv6 address, port number,
 	 * flow info, and scope ID.
 	 *
-	 * **NOTE**: It is the caller's responsibility to validate the following:
-	 * 	- the port is a valid unsigned 16-bit integer.
+	 * **NOTE**: When using the constructor directly, it is the caller's
+	 * responsibility to validate the following:
 	 *  - the flow info is a valid unsigned 32-bit integer.
 	 *  - the scope ID is a valid unsigned 32-bit integer.
 	 */
@@ -301,7 +363,7 @@ export class SocketAddrV6 implements SocketAddrValue {
 	}
 
 	/**
-	 * Parses a string in the format of `"[ipv6]:port"`,
+	 * Parses a string in the format of `"[<ipv6>]:<port>"`,
 	 * where the port is an unsigned 16-bit integer.
 	 *
 	 * TODO: Finish this implementation. This will currently
@@ -313,8 +375,8 @@ export class SocketAddrV6 implements SocketAddrValue {
 
 	/**
 	 * Returns the socket address as a string, in the format of either:
-	 *  - `[<ipv6addr>]:<port>`, if the scope ID is 0
-	 *  - `[<ipv6addr>%<scopeid>]:<port>`, if the scope ID is not 0
+	 *  - `[<ipv6>]:<port>`, if the scope ID is 0
+	 *  - `[<ipv6>%<scopeid>]:<port>`, if the scope ID is not 0
 	 */
 	public toString(): string {
 		if (this.scopeId === 0) {

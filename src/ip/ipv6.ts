@@ -2,7 +2,39 @@ import type { IpAddrValue } from './ip.ts'
 import { arrayStartsWith, isValidUint128, isValidUint16 } from '../utils.ts'
 
 /**
- * A representation of an IPv6 address
+ * An IPv6 address.
+ *
+ * @example Creating an IPv6 address
+ * ```ts
+ * import { assert, assertEquals } from '@std/assert'
+ * import { Ipv6Addr } from '@nc/net-addr/ip'
+ *
+ * // parse() method is not implemented yet
+ * const ip0 = Ipv6Addr.LOCALHOST
+ * const ip1 = Ipv6Addr.tryNew(0, 0, 0, 0, 0, 0, 0, 1)
+ * const ip2 = Ipv6Addr.tryFromUint128(1n)
+ * const ip3 = Ipv6Addr.tryFromArray([0, 0, 0, 0, 0, 0, 0, 1])
+ * const ip4 = Ipv6Addr.tryFromUint16Array(new Uint16Array([0, 0, 0, 0, 0, 0, 0, 1]))
+ *
+ * assertEquals(ip0, ip1)
+ * assertEquals(ip0, ip2)
+ * assertEquals(ip0, ip3)
+ * assertEquals(ip0, ip4)
+ * ```
+ *
+ * @example Properties of an IPv6 address
+ * ```ts
+ * import { assert, assertFalse } from '@std/assert'
+ * import { Ipv6Addr } from '@nc/net-addr/ip'
+ *
+ * const localhost = Ipv6Addr.LOCALHOST
+ *
+ * assert(localhost.isLoopback())
+ * assertFalse(localhost.isBenchmarking())
+ * assertFalse(localhost.isDocumentation())
+ * assertFalse(localhost.isGlobal())
+ * assertFalse(localhost.isIpv4Mapped())
+ * ```
  */
 export class Ipv6Addr implements IpAddrValue {
 	/**
@@ -171,6 +203,11 @@ export class Ipv6Addr implements IpAddrValue {
 	 * This returns `null` if:
 	 *  - the array length is not equal to 8,
 	 *  - any of the numbers are not a valid unsigned 16-bit integer.
+	 *
+	 * @example Usage
+	 * ```ts
+	 *
+	 * ```
 	 */
 	public static tryFromArray(array: number[]): Ipv6Addr | null {
 		if (array.length !== 8) {
@@ -492,7 +529,7 @@ export class Ipv6Addr implements IpAddrValue {
 	 *
 	 * [rfc7346]: https://datatracker.ietf.org/doc/html/rfc7346#section-2
 	 */
-	public multicastScope(): MulticastScope | null {
+	public multicastScope(): Ipv6MulticastScope | null {
 		if (!this.isMulticast()) {
 			return null
 		}
@@ -525,7 +562,7 @@ export class Ipv6Addr implements IpAddrValue {
  *
  * [rfc7346]: https://datatracker.ietf.org/doc/html/rfc7346#section-2
  */
-export type MulticastScope =
+export type Ipv6MulticastScope =
 	| 'InterfaceLocal'
 	| 'LinkLocal'
 	| 'RealmLocal'
