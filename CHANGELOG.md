@@ -8,12 +8,13 @@
 
 ### Documentation
 - Classes now have top-level code block examples of how they work.
-- Modules now have some brief, top-level documentation describing what they contain.
+- Module files and the `README.md` file now have some brief, top-level documentation describing what they contain.
 - Symbols now have more internal links between each other, which should make it easier to navigate.
 - Documentation style and formatting is generally more consistent.
 
 ### Internal changes
-- Fixes a minor typo in a step name of a GitHub Actions CI workflow.
+- CI: The main CI workflow now also runs tests in all documentation code examples, not just in the README.md file.
+- CI: Fixes a minor typo in a step name of a GitHub Actions CI workflow.
 
 ## 0.7.2
 
