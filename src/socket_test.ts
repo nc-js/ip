@@ -24,7 +24,7 @@ Deno.test('port: create a user port', () => {
 Deno.test('port: create a dynamic port', () => {
 	const port = Port.tryNew(randomIntegerBetween(49152, 65535))
 	assertInstanceOf(port, Port)
-	assert(port.isDyanmic)
+	assert(port.isDynamic)
 })
 
 Deno.test('port: create a reserved port', () => {
