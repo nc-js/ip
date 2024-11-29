@@ -8,57 +8,78 @@ export interface IpAddrValue {
 	/**
 	 * The array of unsigned 8-bit integers that make up this address.
 	 *
-	 * See {@linkcode Ipv4Addr.octets | Ipv4Addr.octets()}
-	 * and {@linkcode Ipv6Addr.octets | Ipv6Addr.octets()}
+	 * See [`Ipv4Addr.octets()`][v4]
+	 * and [`Ipv6Addr.octets()`][v6]
 	 * for more information.
-	 */
+	 *
+	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.octets
+	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.octets
+	*/
 	octets(): Uint8Array
 	/**
 	 * Checks if this address equals another IP address.
 	 *
-	 * See {@linkcode Ipv4Addr.equals | Ipv4Addr.equals()}
-	 * and {@linkcode Ipv6Addr.equals | Ipv6Addr.equals()}
+	 * See [`Ipv4Addr.equals()`][v4]
+	 * and [`Ipv6Addr.equals()`][v6]
 	 * for more information.
-	 */
+	 *
+	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.equals
+	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.equals
+	*/
 	equals(other: this): boolean
 	/**
 	 * Checks if this address is a benchmarking address.
 	 *
-	 * See {@linkcode Ipv4Addr.isBenchmarking | Ipv4Addr.isBenchmarking()}
-	 * and {@linkcode Ipv6Addr.isBenchmarking | Ipv6Addr.isBenchmarking()}
+	 * See [`Ipv4Addr.isBenchmarking()`][v4]
+	 * and [`Ipv6Addr.isBenchmarking()`][v6]
 	 * for more information.
-	 */
+	 *
+	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.isBenchmarking
+	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.isBenchmarking
+	*/
 	isBenchmarking(): boolean
 	/**
 	 * Checks if this address is a documentation address.
 	 *
-	 * See {@linkcode Ipv4Addr.isDocumentation | Ipv4Addr.isDocumentation()}
-	 * and {@linkcode Ipv6Addr.isDocumentation | Ipv6Addr.isDocumentation()}
+	 * See [`Ipv4Addr.isDocumentation()`][v4]
+	 * and [`Ipv6Addr.isDocumentation()`][v6]
 	 * for more information.
-	 */
+	 *
+	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.isDocumentation
+	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.isDocumentation
+	*/
 	isDocumentation(): boolean
 	/**
 	 * Checks if this address is a loopback address.
 	 *
-	 * See {@linkcode Ipv4Addr.isLoopback | Ipv4Addr.isLoopback()}
-	 * and {@linkcode Ipv6Addr.isLoopback | Ipv6Addr.isLoopback()}
+	 * See [`Ipv4Addr.isLoopback()`][v4]
+	 * and [`Ipv6Addr.isLoopback()`][v6]
 	 * for more information.
+	 *
+	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.isLoopback
+	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.isLoopback
 	 */
 	isLoopback(): boolean
 	/**
 	 * Checks if this address is a multicast address.
 	 *
-	 * See {@linkcode Ipv4Addr.isMulticast | Ipv4Addr.isMulticast()}
-	 * and {@linkcode Ipv6Addr.isMulticast | Ipv6Addr.isMulticast()}
+	 * See [`Ipv4Addr.isMulticast()`][v4]
+	 * and [`Ipv4Addr.isMulticast()`][v6]
 	 * for more information.
+	 * 
+	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.isMulticast
+	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.isMulticast
 	 */
 	isMulticast(): boolean
 	/**
 	 * Checks if this address is an unspecified address.
 	 *
-	 * See {@linkcode Ipv4Addr.isUnspecified | Ipv4Addr.isUnspecified()}
-	 * and {@linkcode Ipv6Addr.isUnspecified | Ipv6Addr.isUnspecified()}
+	 * See [`Ipv4Addr.isUnspecified()`][v4]
+	 * and [`Ipv6Addr.isUnspecified()`][v6]
 	 * for more information.
+	 *
+	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.isUnspecified
+	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.isUnspecified
 	 */
 	isUnspecified(): boolean
 }
@@ -96,10 +117,13 @@ export class IpAddr implements IpAddrValue {
 	/**
 	 * The array of unsigned 8-bit integers that make up this address.
 	 *
-	 * See {@linkcode Ipv4Addr.octets | Ipv4Addr.octets()}
-	 * and {@linkcode Ipv6Addr.octets | Ipv6Addr.octets()}
+	 * See [`Ipv4Addr.octets()`][v4]
+	 * and [`Ipv6Addr.octets()`][v6]
 	 * for more information.
-	 */
+	 *
+	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.octets
+	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.octets
+	*/
 	octets(): Uint8Array {
 		return this.addr.octets()
 	}
@@ -107,10 +131,13 @@ export class IpAddr implements IpAddrValue {
 	/**
 	 * Checks if this address equals another IP address.
 	 *
-	 * See {@linkcode Ipv4Addr.equals | Ipv4Addr.equals()}
-	 * and {@linkcode Ipv6Addr.equals | Ipv6Addr.equals()}
+	 * See [`Ipv4Addr.equals()`][v4]
+	 * and [`Ipv6Addr.equals()`][v6]
 	 * for more information.
-	 */
+	 *
+	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.equals
+	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.equals
+	*/
 	equals(other: IpAddr): boolean {
 		return this.addr.equals(other)
 	}
@@ -118,10 +145,13 @@ export class IpAddr implements IpAddrValue {
 	/**
 	 * Checks if this address is a benchmarking address.
 	 *
-	 * See {@linkcode Ipv4Addr.isBenchmarking | Ipv4Addr.isBenchmarking()}
-	 * and {@linkcode Ipv6Addr.isBenchmarking | Ipv6Addr.isBenchmarking()}
+	 * See [`Ipv4Addr.isBenchmarking()`][v4]
+	 * and [`Ipv6Addr.isBenchmarking()`][v6]
 	 * for more information.
-	 */
+	 *
+	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.isBenchmarking
+	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.isBenchmarking
+	*/
 	isBenchmarking(): boolean {
 		return this.addr.isBenchmarking()
 	}
@@ -129,10 +159,13 @@ export class IpAddr implements IpAddrValue {
 	/**
 	 * Checks if this address is a documentation address.
 	 *
-	 * See {@linkcode Ipv4Addr.isDocumentation | Ipv4Addr.isDocumentation()}
-	 * and {@linkcode Ipv6Addr.isDocumentation | Ipv6Addr.isDocumentation()}
+	 * See [`Ipv4Addr.isDocumentation()`][v4]
+	 * and [`Ipv6Addr.isDocumentation()`][v6]
 	 * for more information.
-	 */
+	 *
+	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.isDocumentation
+	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.isDocumentation
+	*/
 	isDocumentation(): boolean {
 		return this.addr.isDocumentation()
 	}
@@ -140,9 +173,12 @@ export class IpAddr implements IpAddrValue {
 	/**
 	 * Checks if this address is a loopback address.
 	 *
-	 * See {@linkcode Ipv4Addr.isLoopback | Ipv4Addr.isLoopback()}
-	 * and {@linkcode Ipv6Addr.isLoopback | Ipv6Addr.isLoopback()}
+	 * See [`Ipv4Addr.isLoopback()`][v4]
+	 * and [`Ipv6Addr.isLoopback()`][v6]
 	 * for more information.
+	 *
+	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.isLoopback
+	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.isLoopback
 	 */
 	isLoopback(): boolean {
 		return this.addr.isLoopback()
@@ -151,9 +187,12 @@ export class IpAddr implements IpAddrValue {
 	/**
 	 * Checks if this address is a multicast address.
 	 *
-	 * See {@linkcode Ipv4Addr.isMulticast | Ipv4Addr.isMulticast()}
-	 * and {@linkcode Ipv6Addr.isMulticast | Ipv6Addr.isMulticast()}
+	 * See [`Ipv4Addr.isMulticast()`][v4]
+	 * and [`Ipv6Addr.isMulticast()`][v6]
 	 * for more information.
+	 * 
+	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.isMulticast
+	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.isMulticast
 	 */
 	isMulticast(): boolean {
 		return this.addr.isMulticast()
@@ -162,9 +201,12 @@ export class IpAddr implements IpAddrValue {
 	/**
 	 * Checks if this address is an unspecified address.
 	 *
-	 * See {@linkcode Ipv4Addr.isUnspecified | Ipv4Addr.isUnspecified()}
-	 * and {@linkcode Ipv6Addr.isUnspecified | Ipv6Addr.isUnspecified()}
+	 * See [`Ipv4Addr.isUnspecified()`][v4]
+	 * and [`Ipv6Addr.isUnspecified()`][v6]
 	 * for more information.
+	 *
+	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.isUnspecified
+	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.isUnspecified
 	 */
 	isUnspecified(): boolean {
 		return this.addr.isUnspecified()

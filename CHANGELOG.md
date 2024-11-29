@@ -3,7 +3,7 @@
 ## 0.7.4
 
 ### Documentation
-- Attempts to fix links to method names in `IpAddr` and `IpAddrValue`.
+- Hack-fix links to method names referenced in `IpAddr` and `IpAddrValue`.
 
 ### Internal changes
 - CI: The commands in the main CI workflow no longer has to be manually synced. They now use custom command aliases under `deno task`, including:
