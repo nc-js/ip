@@ -7,7 +7,7 @@
  *  - It's possible to iterate through a range of addresses with
  *    {@linkcode Ipv4AddrIterator} and {@linkcode Ipv6AddrIterator}.
  *  - An {@linkcode IpAddr} is either an IPv4 or IPv6 address.
- *  - An {@linkcode IpAddrValue} is an interface for IP addresses.
+ *  - An {@linkcode IpAddrValue} is an interface for an IP address.
  * @module
  */
 
