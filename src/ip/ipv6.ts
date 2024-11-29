@@ -1,4 +1,5 @@
 import type { IpAddrValue } from './ip.ts'
+import { Ipv4Addr } from './ipv4.ts'
 import { arrayStartsWith, isValidUint128, isValidUint16 } from '../utils.ts'
 
 /**
@@ -203,11 +204,6 @@ export class Ipv6Addr implements IpAddrValue {
 	 * This returns `null` if:
 	 *  - the array length is not equal to 8,
 	 *  - any of the numbers are not a valid unsigned 16-bit integer.
-	 *
-	 * @example Usage
-	 * ```ts
-	 *
-	 * ```
 	 */
 	public static tryFromArray(array: number[]): Ipv6Addr | null {
 		if (array.length !== 8) {
@@ -224,6 +220,17 @@ export class Ipv6Addr implements IpAddrValue {
 			array[6],
 			array[7],
 		)
+	}
+
+	/**
+	 * Attempts to create an `Ipv6Addr` from a `Uint8Array`.
+	 *
+	 * This returns `null` if the array given is not of length 16.
+	 */
+	public static tryFromUint8Array(array: Uint8Array): Ipv6Addr | null {
+		return (array.length === 16)
+			? new Ipv6Addr(uint8ArrayToUint16Array(array))
+			: null
 	}
 
 	/**
@@ -266,7 +273,7 @@ export class Ipv6Addr implements IpAddrValue {
 	 * (via `bigint`).
 	 */
 	public toUint128(): bigint {
-		return uint128FromArray(this._segments)
+		return uint16ArrayToUint128(this._segments)
 	}
 
 	/**
@@ -389,8 +396,8 @@ export class Ipv6Addr implements IpAddrValue {
 			|| this.isDiscardOnly()
 			|| (
 				(this.a === 0x2001 && this.b < 0x200) && !(
-					uint128FromArray(this._segments) === BigInt("0x20010001000000000000000000000001")
-					|| uint128FromArray(this._segments) === BigInt("0x20010001000000000000000000000002")
+					uint16ArrayToUint128(this._segments) === BigInt("0x20010001000000000000000000000001")
+					|| uint16ArrayToUint128(this._segments) === BigInt("0x20010001000000000000000000000002")
 					|| arrayStartsWith(this._segments, new Uint16Array([0x2001, 0x3]))
 					|| arrayStartsWith(this._segments, new Uint16Array([0x2001, 4, 0x112]))
 					|| (this.a === 0x2001 && (this.b >= 0x10 && this.b <= 0x3f))
@@ -553,6 +560,55 @@ export class Ipv6Addr implements IpAddrValue {
 				return null
 		}
 	}
+
+	/**
+	 * Converts this IPv6 address to an IPv4 address if it is either an:
+	 *   - IPv4-compatible address as defined in [IETF RFC 4291 section 2.5.5.1][s2551],
+	 *   - or an IPv4-mapped address as defined in [IETF RFC 4291 section 2.5.5.2][s2552].
+	 * Otherwise, this returns `null`.
+	 *
+	 * Note that this will return an IPv4 address for the IPv6 loopback address `::1`.
+	 * Use {@linkcode toIpv4Mapped} to avoid this.
+	 *
+	 * - `::a.b.c.d` and `::ffff:a.b.c.d` become `a.b.c.d`.
+	 * -`::1` becomes 0.0.0.1`.
+	 * - All addresses not starting with either all zeroes or `::ffff` will return `null`.
+	 *
+	 * [s2551]: https://datatracker.ietf.org/doc/html/rfc4291#section-2.5.5.1
+	 * [s2552]: https://datatracker.ietf.org/doc/html/rfc4291#section-2.5.5.2
+	 */
+	public toIpv4(): Ipv4Addr | null {
+		const segments = this.segments()
+		if (
+			arrayStartsWith(segments, [0, 0, 0, 0, 0]) &&
+			(segments[5] === 0 || segments[5] === 0xffff)
+		) {
+			const [a, b] = uint16ToUint8Array(segments[6])
+			const [c, d] = uint16ToUint8Array(segments[7])
+			return Ipv4Addr.tryFromUint8Array(new Uint8Array([a, b, c, d]))
+		}
+
+		return null
+	}
+
+	/**
+	 * Converts this address to an IPv4 address if it’s an IPv4-mapped address,
+	 * as defined in [IETF RFC 4291 section 2.5.5.2][s2551], otherwise returns `null`.
+	 *
+	 *  - `::ffff:a.b.c.d` becomes `a.b.c.d`.
+	 *  - All addresses not starting with `::ffff` will return `null`.
+	 *
+	 * [s2551]: https://datatracker.ietf.org/doc/html/rfc4291#section-2.5.5.1
+	 */
+	public toIpv4Mapped(): Ipv4Addr | null {
+		const octets = this.octets()
+		const mapped = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xff, 0xff]
+		if (!arrayStartsWith(octets, mapped)) {
+			return null
+		}
+
+		return Ipv4Addr.tryNew(octets[12], octets[13], octets[14], octets[15])
+	}
 }
 
 /**
@@ -571,10 +627,26 @@ export type Ipv6MulticastScope =
 	| 'OrganizationLocal'
 	| 'Global'
 
-function uint128FromArray(array: Uint16Array): bigint {
+function uint8ArrayToUint16Array(array: Uint8Array): Uint16Array {
+	const uint16Array = new Uint16Array(8)
+	for (let i = 0; i < 8; i++) {
+		const hiByte = array[i * 2]
+		const loByte = array[i * 2 + 1]
+		uint16Array[i] = (hiByte << 8) | loByte
+	}
+	return uint16Array
+}
+
+function uint16ArrayToUint128(array: Uint16Array): bigint {
 	let result = BigInt(0)
 	for (let i = 0; i < array.length; i++) {
 		result = (result << BigInt(16)) | BigInt(array[i])
 	}
 	return result
+}
+
+function uint16ToUint8Array(value: number): Uint8Array {
+	const hiByte = (value >> 8) & 0xff
+	const loByte = value & 0xff
+	return new Uint8Array([hiByte, loByte])
 }

@@ -1,4 +1,5 @@
 import { assert, assertEquals, assertFalse, assertNotEquals } from '@std/assert'
+import { Ipv4Addr } from './ipv4.ts'
 import { Ipv6Addr } from './ipv6.ts'
 
 Deno.test('special address localhost', () => {
@@ -84,6 +85,25 @@ Deno.test('try from array is ok', () => {
 
 Deno.test('try from array is error', () => {
 	const addr = Ipv6Addr.tryFromArray([1, 2, 3, 4, 5, 6, 7, 8, 9])
+	assertEquals(addr, null)
+})
+
+// deno-fmt-ignore
+Deno.test('try from uint8array is ok', () => {
+	const addr = Ipv6Addr.tryFromUint8Array(new Uint8Array([
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xff, 0xff
+	])) as Ipv6Addr
+	assertEquals(
+		addr,
+		Ipv6Addr.tryNew(0, 0, 0, 0, 0, 0, 0, 0xffff)
+	)
+})
+
+// deno-fmt-ignore
+Deno.test('try from uint8array is error', () => {
+	const addr = Ipv6Addr.tryFromUint8Array(new Uint8Array([
+		1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17
+	]))
 	assertEquals(addr, null)
 })
 
@@ -478,6 +498,33 @@ Deno.test('multicast scope: unknown', () => {
 	)
 	assertEquals(
 		Ipv6Addr.tryNew(0xffff, 0, 0, 0, 0, 0, 0, 0)?.multicastScope(),
+		null,
+	)
+})
+
+Deno.test('to ipv4 address', () => {
+	assertEquals(Ipv6Addr.tryNew(0xff00, 0, 0, 0, 0, 0, 0, 0)?.toIpv4(), null)
+	assertEquals(
+		Ipv6Addr.tryNew(0, 0, 0, 0, 0, 0xffff, 0xc00a, 0x2ff)?.toIpv4(),
+		Ipv4Addr.tryNew(192, 10, 2, 255) as Ipv4Addr,
+	)
+	assertEquals(
+		Ipv6Addr.tryNew(0, 0, 0, 0, 0, 0, 0, 1)?.toIpv4(),
+		Ipv4Addr.tryNew(0, 0, 0, 1) as Ipv4Addr,
+	)
+})
+
+Deno.test('to ipv4 mapped address', () => {
+	assertEquals(
+		Ipv6Addr.tryNew(0xff00, 0, 0, 0, 0, 0, 0, 0)?.toIpv4Mapped(),
+		null,
+	)
+	assertEquals(
+		Ipv6Addr.tryNew(0, 0, 0, 0, 0, 0xffff, 0xc00a, 0x2ff)?.toIpv4Mapped(),
+		Ipv4Addr.tryNew(192, 10, 2, 255) as Ipv4Addr,
+	)
+	assertEquals(
+		Ipv6Addr.tryNew(0, 0, 0, 0, 0, 0, 0, 1)?.toIpv4Mapped(),
 		null,
 	)
 })

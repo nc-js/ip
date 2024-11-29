@@ -1,4 +1,5 @@
 import type { IpAddrValue } from './ip.ts'
+import { Ipv6Addr } from './ipv6.ts'
 import { arrayStartsWith, isValidUint32, isValidUint8 } from '../utils.ts'
 import { parseIpv4Addr } from '../parser.ts'
 
@@ -425,6 +426,38 @@ export class Ipv4Addr implements IpAddrValue {
 	 */
 	public isUnspecified(): boolean {
 		return this.equals(Ipv4Addr.UNSPECIFIED)
+	}
+
+	/**
+	 * Converts this address to an IPv4-compatible IPv6 address.
+	 *
+	 * `a.b.c.d` becomes `::a.b.c.d`.
+	 *
+	 * Note that IPv4-compatible addresses have been officially deprecated.
+	 * If you don't explicitly need an IPv4-compatible address for legacy reasons,
+	 * consider using {@linkcode toIpv6Mapped} instead.
+	 */
+	public toIpv6Compatible(): Ipv6Addr {
+		const [a, b, c, d] = this.octets()
+		return Ipv6Addr.tryFromUint8Array(
+			new Uint8Array(
+				[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, a, b, c, d],
+			),
+		) as Ipv6Addr
+	}
+
+	/**
+	 * Converts this address to an IPv4-mapped Ipv6 address.
+	 *
+	 * `a.b.c.d` becomes `::ffff:a.b.c.d`.
+	 */
+	public toIpv6Mapped(): Ipv6Addr {
+		const [a, b, c, d] = this.octets()
+		return Ipv6Addr.tryFromUint8Array(
+			new Uint8Array(
+				[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xFF, 0xFF, a, b, c, d],
+			),
+		) as Ipv6Addr
 	}
 }
 

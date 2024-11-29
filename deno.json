@@ -1,6 +1,6 @@
 {
 	"name": "@nc/net-addr",
-	"version": "0.7.5",
+	"version": "0.7.6",
 	"license": "MIT",
 	"tasks": {
 		"check": "deno check ./src/mod.ts",
