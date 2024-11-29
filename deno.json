@@ -1,6 +1,6 @@
 {
 	"name": "@nc/net-addr",
-	"version": "0.7.3",
+	"version": "0.7.4",
 	"license": "MIT",
 	"tasks": {
 		"test": "deno test -A src/ --doc README.md"

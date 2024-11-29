@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.7.4
+
+### Documentation
+- Attempts to fix links to method names in `IpAddr` and `IpAddrValue`.
+
+### Internal changes
+- CI: The CLI command for running tests no longer has to be manually synced, and instead calls through a task alias via `deno task test`.
+
 ## 0.7.3
 
 ### Bug fixes
