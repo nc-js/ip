@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.7.6
+
+### Features
+- `Ipv6Addr` now has 2 new instance methods, `toIpv4()` and `toIpv4Mapped()`. Their implementation and documentation are also ported from Rust's `std::net` module to TypeScript.
+
 ## 0.7.5
 
 ### Documentation
