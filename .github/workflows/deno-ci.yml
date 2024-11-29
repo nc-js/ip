@@ -6,9 +6,6 @@ on:
       - main
   pull_request:
 
-env:
-  ENTRYPOINT: ./src/mod.ts
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
@@ -24,7 +21,7 @@ jobs:
         with:
             deno-version: v2.x
       - name: Check types
-        run: deno check $ENTRYPOINT
+        run: deno task check
       - name: Run tests
         run: deno task test
 
@@ -44,7 +41,7 @@ jobs:
             cmd: deno lint
           - job-name: doc
             job-step: documentation
-            cmd: deno doc --lint $ENTRYPOINT
+            cmd: deno task lintdocs
             continue-on-error: false
     steps:
       - name: Checkout repository
