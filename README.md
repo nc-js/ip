@@ -1,6 +1,6 @@
 # @nc/net-addr
 
-A package of network addresses as types, including IPv4/IPv6 addresses and socket addresses. This TypeScript implementation mostly mirrors as a port of Rust's `std::net` module.
+A package of network addresses as types, including IPv4/IPv6 addresses, IP address iterators, and socket addresses. This TypeScript implementation mostly mirrors as a port of Rust's `std::net` module.
 
 ## Install
 ```sh

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.7.5
+
+### Documentation
+- The root module-level documentation now uses `README.md` which includes examples, instead of documentation in `./src/mod.ts` (now removed).
+- Minor documentation fixes for `SocketAddr`, `SocketAddrValue`, `SocketAddrV4`, and `SocketAddrV6`
+- Minor module-level documentation fixes for `/socket` and `/ip` for consistency.
+
 ## 0.7.4
 
 ### Documentation

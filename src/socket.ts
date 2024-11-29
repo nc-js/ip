@@ -6,7 +6,7 @@
  *  - {@linkcode SocketAddrV6} contains an IPv6 address, port number, flow info
  *    and scope ID.
  *  - {@linkcode SocketAddr} is either an IPv4 or IPv6 socket address.
- *  - {@linkcode SocketAddrValue} is an interface to represent a socket address.
+ *  - {@linkcode SocketAddrValue} is an interface for a socket address.
  * @module
  */
 
@@ -170,7 +170,7 @@ export class Port {
 }
 
 /**
- * A representation of a socket address.
+ * An interface for a socket address.
  */
 export interface SocketAddrValue {
 	/** The IP address associated with this socket address */
@@ -182,8 +182,7 @@ export interface SocketAddrValue {
 }
 
 /**
- * A concrete representation of a socket address,
- * which can either contain a `SocketAddrV4` or `SocketAddrV6`.
+ * A socket address, either IPv4 socket address or IPv6 socket address.
  */
 export class SocketAddr implements SocketAddrValue {
 	/** The socket address */
@@ -211,7 +210,7 @@ export class SocketAddr implements SocketAddrValue {
 }
 
 /**
- * A socket address, containing an IPv4 address and a port number.
+ * A socket address containing an IPv4 address and a port number.
  *
  * @example Usage
  * ```ts
@@ -282,7 +281,7 @@ export class SocketAddrV4 implements SocketAddrValue {
 }
 
 /**
- * A socket address, containing an IPv6 address and a port number.
+ * A socket address containing an IPv6 address, port number, flow info, and scope ID.
  *
  * @example Usage
  * ```ts
