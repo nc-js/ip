@@ -34,12 +34,19 @@ Deno.test('getters', () => {
 	assertEquals(addr.d, 4)
 })
 
-Deno.test('from below range of uint32 returns null', () => {
+Deno.test('try new address errors if any number is not a u8', () => {
+	assertEquals(Ipv4Addr.tryNew(256, 0, 0, 0), null)
+	assertEquals(Ipv4Addr.tryNew(0, 256, 0, 0), null)
+	assertEquals(Ipv4Addr.tryNew(0, 0, 256, 0), null)
+	assertEquals(Ipv4Addr.tryNew(0, 0, 0, 256), null)
+})
+
+Deno.test('try from below range of uint32 returns null', () => {
 	const addr = Ipv4Addr.tryFromUint32(-1)
 	assertEquals(addr, null)
 })
 
-Deno.test('from above range uint32 returns null', () => {
+Deno.test('try from above range uint32 returns null', () => {
 	const addr = Ipv4Addr.tryFromUint32(4_294_967_296)
 	assertEquals(addr, null)
 })

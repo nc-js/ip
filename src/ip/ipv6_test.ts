@@ -60,12 +60,12 @@ Deno.test('try new address errors if any number is not a u16', () => {
 	assertEquals(Ipv6Addr.tryNew(1, 2, 3, 4, 5, 6, 7, notU16), null)
 })
 
-Deno.test('from below range of uint128 returns null', () => {
+Deno.test('try from below range of uint128 returns null', () => {
 	const addr = Ipv6Addr.tryFromUint128(-1n)
 	assertEquals(addr, null)
 })
 
-Deno.test('from above range of uint128 returns null', () => {
+Deno.test('try from above range of uint128 returns null', () => {
 	const addr = Ipv6Addr.tryFromUint128(2n ** 128n)
 	assertEquals(addr, null)
 })
@@ -159,15 +159,47 @@ Deno.test('to uint128 from ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff', () => {
 	assertEquals(addr?.toUint128(), (2n ** 128n) - 1n)
 })
 
-Deno.test('localhost to full string', () => {
-	const localhost = Ipv6Addr.LOCALHOST
-	assertEquals(
-		localhost.toString(),
-		'0000:0000:0000:0000:0000:0000:0000:0001',
-	)
+Deno.test('unspecified to string', () => {
+	const unspecified = Ipv6Addr.UNSPECIFIED
+	assertEquals(unspecified.toString(), '::')
 })
 
-Deno.test('address with hex characters to full string', () => {
+Deno.test('localhost to string', () => {
+	const localhost = Ipv6Addr.LOCALHOST
+	assertEquals(localhost.toString(), '::1')
+})
+
+Deno.test('address to string with ipv4-mapped address', () => {
+	const addr = Ipv6Addr.tryNew(0, 0, 0, 0, 0, 0xffff, 0xc000, 0x280)
+	assertEquals(addr?.toString(), '::ffff:192.0.2.128')
+})
+
+Deno.test('address to string with ipv4-compatible address', () => {
+	const addr = Ipv6Addr.tryNew(0, 0, 0, 0, 0, 0, 0xc000, 0x280)
+	assertEquals(addr?.toString(), '::c000:280')
+})
+
+Deno.test('address to string, remove a single set of zeroes', () => {
+	const addr = Ipv6Addr.tryNew(0xae, 0, 0, 0, 0, 0xffff, 0x0102, 0x0304)
+	assertEquals(addr?.toString(), 'ae::ffff:102:304')
+})
+
+Deno.test('address to string, ends in zeroes', () => {
+	const addr = Ipv6Addr.tryNew(1, 0, 0, 0, 0, 0, 0, 0)
+	assertEquals(addr?.toString(), '1::')
+})
+
+Deno.test('address to string with two runs of zeros, second one is longer', () => {
+	const addr = Ipv6Addr.tryNew(1, 0, 0, 4, 0, 0, 0, 8)
+	assertEquals(addr?.toString(), '1:0:0:4::8')
+})
+
+Deno.test('address to string with two runs of zeros, equal length', () => {
+	const addr = Ipv6Addr.tryNew(1, 0, 0, 4, 5, 0, 0, 8)
+	assertEquals(addr?.toString(), '1::4:5:0:0:8')
+})
+
+Deno.test('address to string, longest possible', () => {
 	const addr = Ipv6Addr.tryNew(
 		0x1234,
 		0x5678,

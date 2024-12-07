@@ -1,10 +1,10 @@
 {
 	"name": "@nc/net-addr",
-	"version": "0.7.6",
+	"version": "0.7.7",
 	"license": "MIT",
 	"tasks": {
 		"check": "deno check ./src/mod.ts",
-		"test": "deno test -A src/ --doc README.md",
+		"test": "rm -rf coverage && deno test -A src/ --doc README.md --coverage",
 		"htmldocs": "deno doc --html ./src/mod.ts",
 		"lintdocs": "deno doc --lint ./src/mod.ts"
 	},

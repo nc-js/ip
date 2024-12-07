@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.7.7
+
+### Features
+- `IPv6Addr` now returns its canonical string representation. This TypeScript implementation is ported over from Rust's implementation (`impl fmt::Display for Ipv6Addr`).
+
+### Internal changes
+- `Ipv4Addr.tryNew()` now has more extensive unit tests.
+
 ## 0.7.6
 
 ### Features
@@ -56,7 +64,7 @@
 - The code example in `README.md` is now fixed.
 - The syntax highlighting in the install section is now fixed.
 
-### Internal
+### Internal changes
 - This also adds some unit tests for pre-existing methods, `Ipv6Addr.tryNew()` and `Ipv6Addr.isIpv4Mapped()`.
 - `.git-blame-ignore-revs` file is now setup.
 - The CI workflow will now also run tests for any code examples set in `README.md`.

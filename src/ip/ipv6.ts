@@ -25,11 +25,12 @@ import { arrayStartsWith, isValidUint128, isValidUint16 } from '../utils.ts'
  *
  * @example Properties of an IPv6 address
  * ```ts
- * import { assert, assertFalse } from '@std/assert'
+ * import { assert, assertEquals, assertFalse } from '@std/assert'
  * import { Ipv6Addr } from '@nc/net-addr/ip'
  *
  * const localhost = Ipv6Addr.LOCALHOST
  *
+ * assertEquals(localhost.toString(), '::1')
  * assert(localhost.isLoopback())
  * assertFalse(localhost.isBenchmarking())
  * assertFalse(localhost.isDocumentation())
@@ -301,15 +302,63 @@ export class Ipv6Addr implements IpAddrValue {
 	}
 
 	/**
-	 * This returns an IPv6 address as a fully uncompressed string,
-	 * as `aaaa:bbbb:cccc:dddd:eeee:ffff:gggg:hhhh`.
+	 * This returns an IPv6 address in its canonical representation,
+	 * according to [IETF RFC 5952][rfc5952].
+	 *
+	 * [rfc5952]: https://datatracker.ietf.org/doc/html/rfc5952
 	 */
 	public toString(): string {
-		const hextets = []
-		for (const segment of this._segments) {
-			hextets.push(segment.toString(16).padStart(4, '0'))
+		const mapped = this.toIpv4Mapped()
+		if (mapped !== null) {
+			return `::ffff:${mapped}`
 		}
-		return hextets.join(':')
+
+		// compute zeroes
+		let longest = { start: 0, len: 0 }
+		let current = { start: 0, len: 0 }
+
+		let i = 0
+		for (const segment of this._segments) {
+			if (segment === 0) {
+				if (current.len === 0) {
+					current.start = i
+				}
+
+				current.len++
+				if (current.len > longest.len) {
+					longest = current
+				}
+			} else {
+				current = { start: 0, len: 0 }
+			}
+			i++
+		}
+		const zeroes = longest
+
+		// format!
+		const formatSubslice = (chunk: Uint16Array): string => {
+			const splitFirst = arraySplitFirst(Array.from(chunk))
+			if (splitFirst === null) {
+				return ''
+			}
+
+			const [first, tail] = splitFirst
+			let buf = `${first.toString(16)}`
+			for (const segment of tail) {
+				buf += `:${segment.toString(16)}`
+			}
+			return buf
+		}
+
+		// deno-fmt-ignore
+		if (zeroes.len > 1) {
+			let buf = formatSubslice(this._segments.subarray(0, zeroes.start))
+			buf += '::'
+			buf += formatSubslice(this._segments.subarray(zeroes.start + zeroes.len))
+			return buf
+		} else {
+			return formatSubslice(this._segments)
+		}
 	}
 
 	/**
@@ -626,6 +675,17 @@ export type Ipv6MulticastScope =
 	| 'SiteLocal'
 	| 'OrganizationLocal'
 	| 'Global'
+
+function arraySplitFirst<T>(
+	array: Array<T>,
+): [T, T[]] | null {
+	if (array.length === 0) {
+		return null
+	}
+
+	const [first, ...rest] = array
+	return [first, rest]
+}
 
 function uint8ArrayToUint16Array(array: Uint8Array): Uint16Array {
 	const uint16Array = new Uint16Array(8)

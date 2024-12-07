@@ -77,15 +77,6 @@ Deno.test('socket address: get v4 as string', () => {
 	assertEquals(v4.toString(), '127.0.0.1:3000')
 })
 
-Deno.test('socket address: get v6 as string', () => {
-	const innerv6 = new SocketAddrV6(Ipv6Addr.LOCALHOST, new Port(3000), 0, 0)
-	const v6 = new SocketAddr(innerv6)
-	assertEquals(
-		v6.toString(),
-		'[0000:0000:0000:0000:0000:0000:0000:0001]:3000',
-	)
-})
-
 Deno.test('socket address v4: constructor does not validate port number (too small)', () => {
 	const socket = new SocketAddrV4(
 		Ipv4Addr.tryNew(127, 0, 0, 1) as Ipv4Addr,
@@ -302,7 +293,7 @@ Deno.test('socket address v6: to string when scope id is 0', () => {
 	assertInstanceOf(socket, SocketAddrV6)
 	assertEquals(
 		socket.toString(),
-		'[0000:0000:0000:0000:0000:0000:0000:0001]:3000',
+		'[::1]:3000',
 	)
 })
 
@@ -316,6 +307,6 @@ Deno.test('socket address v6: to string when scope id is not 0', () => {
 	assertInstanceOf(socket, SocketAddrV6)
 	assertEquals(
 		socket.toString(),
-		'[0000:0000:0000:0000:0000:0000:0000:0001%1]:3000',
+		'[::1%1]:3000',
 	)
 })
