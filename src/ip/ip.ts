@@ -1,5 +1,5 @@
-import { Ipv4Addr } from './ipv4.ts'
-import { Ipv6Addr } from './ipv6.ts'
+import type { Ipv4Addr } from './ipv4.ts'
+import type { Ipv6Addr } from './ipv6.ts'
 
 /**
  * An interface for an IP address.
@@ -94,24 +94,8 @@ export class IpAddr implements IpAddrValue {
 	/**
 	 * Creates a new IP address.
 	 */
-	public constructor(addr: IpAddrValue) {
+	public constructor(addr: Ipv4Addr | Ipv6Addr) {
 		this.addr = addr
-	}
-
-	/**
-	 * Returns true if this is an IPv4 address ({@linkcode Ipv4Addr}),
-	 * or false otherwise.
-	 */
-	isIpv4(): this is Ipv6Addr {
-		return this.addr instanceof Ipv4Addr
-	}
-
-	/**
-	 * Returns true if this is an IPv6 address ({@linkcode Ipv6Addr}),
-	 * or false otherwise.
-	 */
-	isIpv6(): this is Ipv4Addr {
-		return this.addr instanceof Ipv6Addr
 	}
 
 	/**
@@ -139,7 +123,7 @@ export class IpAddr implements IpAddrValue {
 	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.equals
 	 */
 	equals(other: IpAddr): boolean {
-		return this.addr.equals(other)
+		return this.addr.equals(other.addr)
 	}
 
 	/**

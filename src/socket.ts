@@ -189,7 +189,7 @@ export class SocketAddr implements SocketAddrValue {
 	public socket: SocketAddrValue
 
 	/** Creates a new socket address */
-	public constructor(socket: SocketAddrValue) {
+	public constructor(socket: SocketAddrV4 | SocketAddrV6) {
 		this.socket = socket
 	}
 

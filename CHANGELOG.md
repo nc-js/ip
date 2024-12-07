@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.8.0
+
+### Breaking changes
+- `IpAddr` no longer has the methods `isIpv4()` and `isIpv6()`, as they are not usable as type guards in their current state. These methods may be re-introduced in the future.
+
+### Bug fixes
+Two edge cases were fixed:
+- `IpAddr` can no longer recursively contain another `IpAddr`. It can now only contain either `Ipv4Addr` or `Ipv6Addr`.
+- `SocketAddr` can no longer recursively contain another `SocketAddr`. It can now only contain either `SocketAddrV4` or `SocketAddrV6`.
+
+### Internal changes
+- `IpAddr` now has unit tests.
+
 ## 0.7.7
 
 ### Features
