@@ -361,14 +361,6 @@ export class Ipv6Addr implements IpAddrValue {
 		}
 	}
 
-	// if zeroes.len > 1 {
-	//        fmt_subslice(f, &segments[..zeroes.start])?;
-	//        f.write_str("::")?;
-	//        fmt_subslice(f, &segments[zeroes.start + zeroes.len..])
-	//    } else {
-	//        fmt_subslice(f, &segments)
-	//    }
-
 	/**
 	 * A fixed-size array of 16 unsigned 8-bit integers
 	 */
