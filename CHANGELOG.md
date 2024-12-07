@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.7.7
+
+### Features
+- `IPv6Addr` now returns its canonical string representation. This TypeScript implementation is ported over from Rust's implementation (`impl Display for std::net::Ipv6Addr`).
+
 ## 0.7.6
 
 ### Features

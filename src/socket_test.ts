@@ -82,7 +82,7 @@ Deno.test('socket address: get v6 as string', () => {
 	const v6 = new SocketAddr(innerv6)
 	assertEquals(
 		v6.toString(),
-		'[0000:0000:0000:0000:0000:0000:0000:0001]:3000',
+		'[::1]:3000',
 	)
 })
 
@@ -302,7 +302,7 @@ Deno.test('socket address v6: to string when scope id is 0', () => {
 	assertInstanceOf(socket, SocketAddrV6)
 	assertEquals(
 		socket.toString(),
-		'[0000:0000:0000:0000:0000:0000:0000:0001]:3000',
+		'[::1]:3000',
 	)
 })
 
@@ -316,6 +316,6 @@ Deno.test('socket address v6: to string when scope id is not 0', () => {
 	assertInstanceOf(socket, SocketAddrV6)
 	assertEquals(
 		socket.toString(),
-		'[0000:0000:0000:0000:0000:0000:0000:0001%1]:3000',
+		'[::1%1]:3000',
 	)
 })

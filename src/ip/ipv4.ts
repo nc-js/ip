@@ -32,6 +32,7 @@ import { parseIpv4Addr } from '../parser.ts'
  *
  * const localhost = Ipv4Addr.LOCALHOST
  *
+ * assertEquals(localhost.toString(), '127.0.0.1')
  * assertEquals(localhost.octets(), new Uint8Array([127, 0, 0, 1]))
  * assert(localhost.isLoopback())
  * assert(Ipv4Addr.tryNew(0, 0, 0, 0)?.isUnspecified())

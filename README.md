@@ -91,6 +91,7 @@ assertEquals(socket.addr, Ipv6Addr.LOCALHOST)
 assertEquals(socket.port.value, 3000)
 assertEquals(socket.flowInfo, 0)
 assertEquals(socket.scopeId, 0)
+assertEquals(socket.toString(), '[::1]:3000')
 ```
 
 ## License

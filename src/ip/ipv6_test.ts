@@ -159,15 +159,17 @@ Deno.test('to uint128 from ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff', () => {
 	assertEquals(addr?.toUint128(), (2n ** 128n) - 1n)
 })
 
-Deno.test('localhost to full string', () => {
-	const localhost = Ipv6Addr.LOCALHOST
-	assertEquals(
-		localhost.toString(),
-		'0000:0000:0000:0000:0000:0000:0000:0001',
-	)
+Deno.test('unspecified to string', () => {
+	const unspecified = Ipv6Addr.UNSPECIFIED
+	assertEquals(unspecified.toString(), '::')
 })
 
-Deno.test('address with hex characters to full string', () => {
+Deno.test('localhost to string', () => {
+	const localhost = Ipv6Addr.LOCALHOST
+	assertEquals(localhost.toString(), '::1')
+})
+
+Deno.test('some address to string', () => {
 	const addr = Ipv6Addr.tryNew(
 		0x1234,
 		0x5678,
