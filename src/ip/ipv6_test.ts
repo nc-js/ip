@@ -60,12 +60,12 @@ Deno.test('try new address errors if any number is not a u16', () => {
 	assertEquals(Ipv6Addr.tryNew(1, 2, 3, 4, 5, 6, 7, notU16), null)
 })
 
-Deno.test('from below range of uint128 returns null', () => {
+Deno.test('try from below range of uint128 returns null', () => {
 	const addr = Ipv6Addr.tryFromUint128(-1n)
 	assertEquals(addr, null)
 })
 
-Deno.test('from above range of uint128 returns null', () => {
+Deno.test('try from above range of uint128 returns null', () => {
 	const addr = Ipv6Addr.tryFromUint128(2n ** 128n)
 	assertEquals(addr, null)
 })
