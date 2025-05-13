@@ -18,21 +18,28 @@
 	},
 	"exports": {
 		".": "./src/mod.ts",
-		"./ip": "./src/ip/mod.ts",
-		"./socket": "./src/socket.ts"
+		"./v4": "./src/v4/mod.ts",
+		"./v6": "./src/v6/mod.ts",
+		"./socket": "./src/socket/socket.ts"
 	},
 	"imports": {
+		"@nc/whatwg-infra": "jsr:@nc/whatwg-infra@^1.1.0",
 		"@std/assert": "jsr:@std/assert@^1.0.8",
 		"@std/random": "jsr:@std/random@^0.1.0"
 	},
 	"fmt": {
-		"include": ["bench/", "src/"],
+		"include": [
+			"bench/",
+			"src/"
+		],
 		"useTabs": true,
 		"semiColons": false,
 		"singleQuote": true,
 		"indentWidth": 4
 	},
 	"lint": {
-		"include": ["src/"]
+		"include": [
+			"src/"
+		]
 	}
 }

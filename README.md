@@ -1,22 +1,16 @@
-# @nc/net-addr
+# @nc/ip
 
 A package of network addresses as types, including IPv4/IPv6 addresses, IP address iterators, and socket addresses. This TypeScript implementation mostly mirrors as a port of Rust's `std::net` module.
 
-## Install
-```sh
-deno add jsr:@nc/net-addr  # deno
-npx jsr add @nc/net-addr   # npm
-```
-
 ## Usage
 ### IPv4 addresses
-See [`Ipv4Addr`](https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr) for more details.
+See [`Ipv4Addr`](https://jsr.io/@nc/ip/doc/~/Ipv4Addr) for more details.
 
 It is also possible to iterate through ranges of IPv4 addresses with [`Ipv4AddrIterator`](https://jsr.io/@nc/net-addr/doc/~/Ipv4AddrIterator).
 
 ```ts
 import { assertEquals } from '@std/assert'
-import { Ipv4Addr } from '@nc/net-addr/ip'
+import { Ipv4Addr } from '@nc/ip/addr'
 
 const ip0 = Ipv4Addr.parse('127.0.0.1')
 const ip1 = Ipv4Addr.tryNew(127, 0, 0, 1)

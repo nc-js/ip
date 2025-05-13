@@ -10,11 +10,11 @@
  * @module
  */
 
-import type { IpAddrValue } from './ip/ip.ts'
-import type { Ipv4Addr } from './ip/ipv4.ts'
-import type { Ipv6Addr } from './ip/ipv6.ts'
-import { parseSocketAddrV4 } from './parser.ts'
-import { isValidUint16, isValidUint32 } from './utils.ts'
+import { isUint16, isUint32 } from '@nc/whatwg-infra/num'
+import type { IpAddrValue } from './../ip.ts'
+import type { Ipv4Addr } from './../v4/mod.ts'
+import type { Ipv6Addr } from './../v6/mod.ts'
+import { parseSocketAddrV4 } from './../utils/parser.ts'
 
 /**
  * An unsigned 16-bit integer which represents
@@ -74,7 +74,7 @@ export class Port {
 	 * unsigned 16-bit integer.
 	 */
 	public static tryNew(value: number): Port | null {
-		return !isValidUint16(value) ? null : new Port(value)
+		return !isUint16(value) ? null : new Port(value)
 	}
 
 	/**
@@ -215,8 +215,8 @@ export class SocketAddr implements SocketAddrValue {
  * @example Usage
  * ```ts
  * import { assertEquals } from '@std/assert'
- * import { Ipv4Addr } from '@nc/net-addr/ip'
- * import { Port, SocketAddrV4 } from '@nc/net-addr/socket'
+ * import { Ipv4Addr } from '@nc/ip/v4'
+ * import { Port, SocketAddrV4 } from '@nc/ip/socket'
  *
  * const socket1 = new SocketAddrV4(Ipv4Addr.LOCALHOST, new Port(3000))
  * const socket2 = SocketAddrV4.parse("127.0.0.1:3000")
@@ -286,8 +286,8 @@ export class SocketAddrV4 implements SocketAddrValue {
  * @example Usage
  * ```ts
  * import { assertEquals } from '@std/assert'
- * import { Ipv6Addr } from '@nc/net-addr/ip'
- * import { Port, SocketAddrV6 } from '@nc/net-addr/socket'
+ * import { Ipv6Addr } from '@nc/ip/v6'
+ * import { Port, SocketAddrV6 } from '@nc/ip/socket'
  *
  * // callers must ensure that the flow info number and scope ID number
  * // are both valid unsigned 32-bit integers
@@ -352,8 +352,8 @@ export class SocketAddrV6 implements SocketAddrValue {
 		const port = Port.tryNew(portNum)
 		if (
 			port === null ||
-			!isValidUint32(flowInfo) ||
-			!isValidUint32(scopeId)
+			!isUint32(flowInfo) ||
+			!isUint32(scopeId)
 		) {
 			return null
 		}

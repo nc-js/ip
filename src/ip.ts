@@ -1,5 +1,5 @@
-import type { Ipv4Addr } from './ipv4.ts'
-import type { Ipv6Addr } from './ipv6.ts'
+import type { Ipv4Addr } from './v4/mod.ts'
+import type { Ipv6Addr } from './v6/mod.ts'
 
 /**
  * An interface for an IP address.

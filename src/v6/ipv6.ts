@@ -1,6 +1,7 @@
-import type { IpAddrValue } from './ip.ts'
-import { Ipv4Addr } from './ipv4.ts'
-import { arrayStartsWith, isValidUint128, isValidUint16 } from '../utils.ts'
+import { isUint128, isUint16 } from '@nc/whatwg-infra/num'
+import type { IpAddrValue } from '../ip.ts'
+import { Ipv4Addr } from '../mod.ts'
+import { arrayStartsWith } from '../utils/utils.ts'
 
 /**
  * An IPv6 address.
@@ -8,7 +9,7 @@ import { arrayStartsWith, isValidUint128, isValidUint16 } from '../utils.ts'
  * @example Creating an IPv6 address
  * ```ts
  * import { assert, assertEquals } from '@std/assert'
- * import { Ipv6Addr } from '@nc/net-addr/ip'
+ * import { Ipv6Addr } from '@nc/ip/v6'
  *
  * // parse() method is not implemented yet
  * const ip0 = Ipv6Addr.LOCALHOST
@@ -147,14 +148,14 @@ export class Ipv6Addr implements IpAddrValue {
 		h: number,
 	): Ipv6Addr | null {
 		if (
-			!isValidUint16(a) ||
-			!isValidUint16(b) ||
-			!isValidUint16(c) ||
-			!isValidUint16(d) ||
-			!isValidUint16(e) ||
-			!isValidUint16(f) ||
-			!isValidUint16(g) ||
-			!isValidUint16(h)
+			!isUint16(a) ||
+			!isUint16(b) ||
+			!isUint16(c) ||
+			!isUint16(d) ||
+			!isUint16(e) ||
+			!isUint16(f) ||
+			!isUint16(g) ||
+			!isUint16(h)
 		) {
 			return null
 		}
@@ -181,7 +182,7 @@ export class Ipv6Addr implements IpAddrValue {
 	 * unsigned 128-bit integer (0 to (2^128)-1).
 	 */
 	public static tryFromUint128(u128: bigint): Ipv6Addr | null {
-		if (!isValidUint128(u128)) {
+		if (!isUint128(u128)) {
 			return null
 		}
 

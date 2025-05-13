@@ -1,11 +1,15 @@
 {
-  "version": "4",
+  "version": "5",
   "specifiers": {
+    "jsr:@nc/whatwg-infra@^1.1.0": "1.1.0",
     "jsr:@std/assert@^1.0.8": "1.0.8",
     "jsr:@std/internal@^1.0.5": "1.0.5",
     "jsr:@std/random@0.1": "0.1.0"
   },
   "jsr": {
+    "@nc/whatwg-infra@1.1.0": {
+      "integrity": "b40d51db738cdafa1305a9cc18147c9c7ce82c350b162655a71479c0b0d03ac8"
+    },
     "@std/assert@1.0.8": {
       "integrity": "ebe0bd7eb488ee39686f77003992f389a06c3da1bbd8022184804852b2fa641b",
       "dependencies": [
@@ -21,6 +25,7 @@
   },
   "workspace": {
     "dependencies": [
+      "jsr:@nc/whatwg-infra@^1.1.0",
       "jsr:@std/assert@^1.0.8",
       "jsr:@std/random@0.1"
     ]

@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.9.0
+
+### Breaking changes
+- The package has been renamed to `@nc/ip` (formally `@nc/whatwg-infra`).
+- The types `IpAddr` and `IpAddrValue` are now exported under `@nc/ip` (formally `@nc/net-addr/ip`)
+- The types `Ipv4Addr` and `Ipv4AddrIterator` are now exported under `@nc/ip/v4` (formally `@nc/net-addr/ip`)
+- The types `Ipv6Addr` and `Ipv6AddrIterator` are now exported under `@nc/ip/v4` (formally `@nc/net-addr/ip`)
+- The types `Port`, `SocketAddr`, `SocketAddrValue`, `SocketAddrV4`, and `SocketAddrV6` are now exported under `@nc/ip/socket` (formally `@nc/net-addr/socket`).
+
+### Internal changes
+- Unit tests for socket-related types are now in separate files
+
 ## 0.8.0
 
 ### Breaking changes

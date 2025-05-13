@@ -1,5 +1,5 @@
 import { assert, assertEquals, assertFalse, assertNotEquals } from '@std/assert'
-import { Ipv4Addr } from './ipv4.ts'
+import { Ipv4Addr } from './../v4/mod.ts'
 import { Ipv6Addr } from './ipv6.ts'
 
 Deno.test('special address localhost', () => {

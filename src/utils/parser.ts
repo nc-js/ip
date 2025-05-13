@@ -16,9 +16,9 @@
  * @module
  */
 
-import { Ipv4Addr } from './ip/ipv4.ts'
-import { Port, SocketAddrV4 } from './socket.ts'
-import { takeAsciiDigits } from './utils.ts'
+import { Ipv4Addr } from './../v4/mod.ts'
+import { Port, SocketAddrV4 } from './../socket/mod.ts'
+import { takeAsciiDigits } from './../utils/mod.ts'
 
 /**
  * - A tuple where:
