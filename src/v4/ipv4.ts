@@ -29,7 +29,7 @@ import { arrayStartsWith } from '../utils/utils.ts'
  * @example Properties of an address
  * ```ts
  * import { assert, assertEquals } from '@std/assert'
- * import { Ipv4Addr } from '@nc/ip/addr'
+ * import { Ipv4Addr } from '@nc/ip/v4'
  *
  * const localhost = Ipv4Addr.LOCALHOST
  *
