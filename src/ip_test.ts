@@ -1,6 +1,7 @@
-import { assert, assertFalse } from '@std/assert'
-import { IpAddr, Ipv4Addr, Ipv6Addr } from './mod.ts'
-import { assertEquals } from '@std/assert/equals'
+import { assert, assertEquals, assertFalse } from '@std/assert'
+import { IpAddr } from './ip.ts'
+import { Ipv4Addr } from './v4/mod.ts'
+import { Ipv6Addr } from './v6/mod.ts'
 
 Deno.test('ip address v4 basic method + property checks', () => {
 	const ip = new IpAddr(Ipv4Addr.LOCALHOST)

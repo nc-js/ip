@@ -1,7 +1,8 @@
-import type { IpAddrValue } from './ip.ts'
-import { Ipv6Addr } from './ipv6.ts'
-import { arrayStartsWith, isValidUint32, isValidUint8 } from '../utils.ts'
-import { parseIpv4Addr } from '../parser.ts'
+import { isUint32, isUint8 } from '@nc/whatwg-infra/num'
+import type { IpAddrValue } from '../ip.ts'
+import { Ipv6Addr } from '../mod.ts'
+import { parseIpv4Addr } from '../utils/parser.ts'
+import { arrayStartsWith } from '../utils/utils.ts'
 
 /**
  * An IPv4 address.
@@ -9,7 +10,7 @@ import { parseIpv4Addr } from '../parser.ts'
  * @example Creating an address
  * ```ts
  * import { assertEquals } from '@std/assert'
- * import { Ipv4Addr } from '@nc/net-addr/ip'
+ * import { Ipv4Addr } from '@nc/ip/v4'
  *
  * const ip0 = Ipv4Addr.LOCALHOST
  * const ip1 = Ipv4Addr.parse('127.0.0.1')
@@ -28,7 +29,7 @@ import { parseIpv4Addr } from '../parser.ts'
  * @example Properties of an address
  * ```ts
  * import { assert, assertEquals } from '@std/assert'
- * import { Ipv4Addr } from '@nc/net-addr/ip'
+ * import { Ipv4Addr } from '@nc/ip/v4'
  *
  * const localhost = Ipv4Addr.LOCALHOST
  *
@@ -94,10 +95,10 @@ export class Ipv4Addr implements IpAddrValue {
 		d: number,
 	): Ipv4Addr | null {
 		if (
-			!isValidUint8(a) ||
-			!isValidUint8(b) ||
-			!isValidUint8(c) ||
-			!isValidUint8(d)
+			!isUint8(a) ||
+			!isUint8(b) ||
+			!isUint8(c) ||
+			!isUint8(d)
 		) {
 			return null
 		}
@@ -119,7 +120,7 @@ export class Ipv4Addr implements IpAddrValue {
 	 * 32-bit integer (0 to 4,294,967,295).
 	 */
 	public static tryFromUint32(uint32: number): Ipv4Addr | null {
-		if (!isValidUint32(uint32)) {
+		if (!isUint32(uint32)) {
 			return null
 		}
 
