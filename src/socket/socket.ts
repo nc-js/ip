@@ -23,7 +23,7 @@ import { parseSocketAddrV4 } from './../utils/parser.ts'
  * @example Usage
  * ```ts
  * import { assert, assertEquals } from '@std/assert'
- * import { Port } from '@nc/net-addr/socket'
+ * import { Port } from '@nc/ip/socket'
  *
  * // a port can be created either unchecked or checked
  * // (if the number is within the bounds of an unsigned 16-bit integer)

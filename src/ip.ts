@@ -12,8 +12,8 @@ export interface IpAddrValue {
 	 * and [`Ipv6Addr.octets()`][v6]
 	 * for more information.
 	 *
-	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.octets
-	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.octets
+	 * [v4]: https://jsr.io/@nc/ip/doc/~/Ipv4Addr.prototype.octets
+	 * [v6]: https://jsr.io/@nc/ip/doc/~/Ipv6Addr.prototype.octets
 	 */
 	octets(): Uint8Array
 	/**
@@ -23,8 +23,8 @@ export interface IpAddrValue {
 	 * and [`Ipv6Addr.equals()`][v6]
 	 * for more information.
 	 *
-	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.equals
-	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.equals
+	 * [v4]: https://jsr.io/@nc/ip/doc/~/Ipv4Addr.prototype.equals
+	 * [v6]: https://jsr.io/@nc/ip/doc/~/Ipv6Addr.prototype.equals
 	 */
 	equals(other: this): boolean
 	/**
@@ -34,8 +34,8 @@ export interface IpAddrValue {
 	 * and [`Ipv6Addr.isBenchmarking()`][v6]
 	 * for more information.
 	 *
-	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.isBenchmarking
-	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.isBenchmarking
+	 * [v4]: https://jsr.io/@nc/ip/doc/~/Ipv4Addr.prototype.isBenchmarking
+	 * [v6]: https://jsr.io/@nc/ip/doc/~/Ipv6Addr.prototype.isBenchmarking
 	 */
 	isBenchmarking(): boolean
 	/**
@@ -45,8 +45,8 @@ export interface IpAddrValue {
 	 * and [`Ipv6Addr.isDocumentation()`][v6]
 	 * for more information.
 	 *
-	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.isDocumentation
-	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.isDocumentation
+	 * [v4]: https://jsr.io/@nc/ip/doc/~/Ipv4Addr.prototype.isDocumentation
+	 * [v6]: https://jsr.io/@nc/ip/doc/~/Ipv6Addr.prototype.isDocumentation
 	 */
 	isDocumentation(): boolean
 	/**
@@ -56,8 +56,8 @@ export interface IpAddrValue {
 	 * and [`Ipv6Addr.isLoopback()`][v6]
 	 * for more information.
 	 *
-	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.isLoopback
-	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.isLoopback
+	 * [v4]: https://jsr.io/@nc/ip/doc/~/Ipv4Addr.prototype.isLoopback
+	 * [v6]: https://jsr.io/@nc/ip/doc/~/Ipv6Addr.prototype.isLoopback
 	 */
 	isLoopback(): boolean
 	/**
@@ -67,8 +67,8 @@ export interface IpAddrValue {
 	 * and [`Ipv4Addr.isMulticast()`][v6]
 	 * for more information.
 	 *
-	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.isMulticast
-	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.isMulticast
+	 * [v4]: https://jsr.io/@nc/ip/doc/~/Ipv4Addr.prototype.isMulticast
+	 * [v6]: https://jsr.io/@nc/ip/doc/~/Ipv6Addr.prototype.isMulticast
 	 */
 	isMulticast(): boolean
 	/**
@@ -78,8 +78,8 @@ export interface IpAddrValue {
 	 * and [`Ipv6Addr.isUnspecified()`][v6]
 	 * for more information.
 	 *
-	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.isUnspecified
-	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.isUnspecified
+	 * [v4]: https://jsr.io/@nc/ip/doc/~/Ipv4Addr.prototype.isUnspecified
+	 * [v6]: https://jsr.io/@nc/ip/doc/~/Ipv6Addr.prototype.isUnspecified
 	 */
 	isUnspecified(): boolean
 }
@@ -105,8 +105,8 @@ export class IpAddr implements IpAddrValue {
 	 * and [`Ipv6Addr.octets()`][v6]
 	 * for more information.
 	 *
-	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.octets
-	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.octets
+	 * [v4]: https://jsr.io/@nc/ip/doc/~/Ipv4Addr.prototype.octets
+	 * [v6]: https://jsr.io/@nc/ip/doc/~/Ipv6Addr.prototype.octets
 	 */
 	octets(): Uint8Array {
 		return this.addr.octets()
@@ -119,8 +119,8 @@ export class IpAddr implements IpAddrValue {
 	 * and [`Ipv6Addr.equals()`][v6]
 	 * for more information.
 	 *
-	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.equals
-	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.equals
+	 * [v4]: https://jsr.io/@nc/ip/doc/~/Ipv4Addr.prototype.equals
+	 * [v6]: https://jsr.io/@nc/ip/doc/~/Ipv6Addr.prototype.equals
 	 */
 	equals(other: IpAddr): boolean {
 		return this.addr.equals(other.addr)
@@ -133,8 +133,8 @@ export class IpAddr implements IpAddrValue {
 	 * and [`Ipv6Addr.isBenchmarking()`][v6]
 	 * for more information.
 	 *
-	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.isBenchmarking
-	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.isBenchmarking
+	 * [v4]: https://jsr.io/@nc/ip/doc/~/Ipv4Addr.prototype.isBenchmarking
+	 * [v6]: https://jsr.io/@nc/ip/doc/~/Ipv6Addr.prototype.isBenchmarking
 	 */
 	isBenchmarking(): boolean {
 		return this.addr.isBenchmarking()
@@ -147,8 +147,8 @@ export class IpAddr implements IpAddrValue {
 	 * and [`Ipv6Addr.isDocumentation()`][v6]
 	 * for more information.
 	 *
-	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.isDocumentation
-	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.isDocumentation
+	 * [v4]: https://jsr.io/@nc/ip/doc/~/Ipv4Addr.prototype.isDocumentation
+	 * [v6]: https://jsr.io/@nc/ip/doc/~/Ipv6Addr.prototype.isDocumentation
 	 */
 	isDocumentation(): boolean {
 		return this.addr.isDocumentation()
@@ -161,8 +161,8 @@ export class IpAddr implements IpAddrValue {
 	 * and [`Ipv6Addr.isLoopback()`][v6]
 	 * for more information.
 	 *
-	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.isLoopback
-	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.isLoopback
+	 * [v4]: https://jsr.io/@nc/ip/doc/~/Ipv4Addr.prototype.isLoopback
+	 * [v6]: https://jsr.io/@nc/ip/doc/~/Ipv6Addr.prototype.isLoopback
 	 */
 	isLoopback(): boolean {
 		return this.addr.isLoopback()
@@ -175,8 +175,8 @@ export class IpAddr implements IpAddrValue {
 	 * and [`Ipv6Addr.isMulticast()`][v6]
 	 * for more information.
 	 *
-	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.isMulticast
-	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.isMulticast
+	 * [v4]: https://jsr.io/@nc/ip/doc/~/Ipv4Addr.prototype.isMulticast
+	 * [v6]: https://jsr.io/@nc/ip/doc/~/Ipv6Addr.prototype.isMulticast
 	 */
 	isMulticast(): boolean {
 		return this.addr.isMulticast()
@@ -189,8 +189,8 @@ export class IpAddr implements IpAddrValue {
 	 * and [`Ipv6Addr.isUnspecified()`][v6]
 	 * for more information.
 	 *
-	 * [v4]: https://jsr.io/@nc/net-addr/doc/~/Ipv4Addr.prototype.isUnspecified
-	 * [v6]: https://jsr.io/@nc/net-addr/doc/~/Ipv6Addr.prototype.isUnspecified
+	 * [v4]: https://jsr.io/@nc/ip/doc/~/Ipv4Addr.prototype.isUnspecified
+	 * [v6]: https://jsr.io/@nc/ip/doc/~/Ipv6Addr.prototype.isUnspecified
 	 */
 	isUnspecified(): boolean {
 		return this.addr.isUnspecified()

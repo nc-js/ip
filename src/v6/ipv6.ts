@@ -27,7 +27,7 @@ import { arrayStartsWith } from '../utils/utils.ts'
  * @example Properties of an IPv6 address
  * ```ts
  * import { assert, assertEquals, assertFalse } from '@std/assert'
- * import { Ipv6Addr } from '@nc/net-addr/ip'
+ * import { Ipv6Addr } from '@nc/ip/v6'
  *
  * const localhost = Ipv6Addr.LOCALHOST
  *

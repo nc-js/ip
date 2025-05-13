@@ -1,5 +1,5 @@
 {
-	"name": "@nc/net-addr",
+	"name": "@nc/ip",
 	"version": "0.8.0",
 	"license": "MIT",
 	"tasks": {
